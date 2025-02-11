@@ -1,0 +1,2372 @@
+window.BENCHMARK_DATA = {
+  "lastUpdate": 1770899248486,
+  "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
+  "entries": {
+    "Benchmark": [
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "fddf48f2c39b8d1c7fe500f7b3625783af086612",
+          "message": "Expand CI matrix to all 4 backends with shaded renders\n\n- Add OCCT, Embree, SIMD4, SIMD8 backend configurations for Linux\n- Update benchmark parser to accept --backend flag\n- Create render_shaded.py for Lambertian-shaded geometry renders\n- Upload rendered images to gh-pages for dashboard display\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T15:34:35Z",
+          "tree_id": "19ca2878454bc724ac218699054106fa4a3985c2",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/fddf48f2c39b8d1c7fe500f7b3625783af086612"
+        },
+        "date": 1765640188215,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 19159290,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 52.19ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3797242,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 263.35ms"
+          },
+          {
+            "name": "cone",
+            "value": 6039596,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.57ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19334880,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.72ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5024722,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 199.02ms"
+          },
+          {
+            "name": "torus",
+            "value": 7129566,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 140.26ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "786108fec2805b0e864a7e7dbaeae36920f2fb25",
+          "message": "Fix render script: use absolute paths for subprocess",
+          "timestamp": "2025-12-13T15:38:45Z",
+          "tree_id": "29610083dbc0bc4630ce905dd6c1ee6b7216bb4a",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/786108fec2805b0e864a7e7dbaeae36920f2fb25"
+        },
+        "date": 1765640438177,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 19721143,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 50.71ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3895537,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 256.70ms"
+          },
+          {
+            "name": "cone",
+            "value": 6055798,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.13ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19615920,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 50.98ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5028385,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 198.87ms"
+          },
+          {
+            "name": "torus",
+            "value": 7290064,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.17ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "41f1e7d379f7c277b8a81d0a4b26bd4c3ee6bd32",
+          "message": "Fix render: add --allow-disconnected flag and debug output",
+          "timestamp": "2025-12-13T15:45:25Z",
+          "tree_id": "96cd32a57c2c5d4e1595cdea279d70cfa57071d8",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/41f1e7d379f7c277b8a81d0a4b26bd4c3ee6bd32"
+        },
+        "date": 1765640829517,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 13299995,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 75.19ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3450632,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 289.80ms"
+          },
+          {
+            "name": "cone",
+            "value": 4967019,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 201.33ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 13516619,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 73.98ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4198576,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 238.18ms"
+          },
+          {
+            "name": "torus",
+            "value": 5926734,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 168.73ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "137cb5a927ec4fec4f78fc098528c214c42d69b2",
+          "message": "Fix render script to look for npy output in correct directory\n\nThe raytracer outputs to the same directory as the input file, not\nthe current working directory. Fixed the script to look in the\nbrep file's directory for the generated npy file.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T15:58:59Z",
+          "tree_id": "4d9fa015fbbfc07b7039f6a3daee126e517261e1",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/137cb5a927ec4fec4f78fc098528c214c42d69b2"
+        },
+        "date": 1765641651876,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 19548813,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.15ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3981526,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.16ms"
+          },
+          {
+            "name": "cone",
+            "value": 6036387,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.66ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19554547,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.14ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4941957,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 202.35ms"
+          },
+          {
+            "name": "torus",
+            "value": 7273150,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.49ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "7a4aedd6cdca98982d2d838899e4199a493c0abb",
+          "message": "Increase render resolution to 1024 and add mesh statistics\n\n- Update resolution from 256 to 1024 for higher quality renders\n- Add mesh statistics collection (tessellation time, triangle count)\n- Export STL to capture triangle count from raytracer output\n- Generate metadata.json with per-geometry stats\n- Add new test geometry files\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:05:23Z",
+          "tree_id": "b96c77ca71f4bae07038a28e0aa9a1f6bbede18a",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/7a4aedd6cdca98982d2d838899e4199a493c0abb"
+        },
+        "date": 1765642118086,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7048309,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 141.88ms"
+          },
+          {
+            "name": "box",
+            "value": 19165900,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 52.18ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3971642,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.78ms"
+          },
+          {
+            "name": "cone",
+            "value": 6087020,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 164.28ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19371586,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.62ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2759001,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 362.45ms"
+          },
+          {
+            "name": "mr",
+            "value": 10768204,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.87ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10408210,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 96.08ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5040983,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 198.37ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3847589,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 259.90ms"
+          },
+          {
+            "name": "torus",
+            "value": 7261057,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.72ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "052942841368d952e7b29fb8c3720dcc0118f255",
+          "message": "Also upload metadata.json to gh-pages with renders\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:22:21Z",
+          "tree_id": "38be952309c19e209b3d41c38b541dc8af29a428",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/052942841368d952e7b29fb8c3720dcc0118f255"
+        },
+        "date": 1765643122902,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7117134,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 140.51ms"
+          },
+          {
+            "name": "box",
+            "value": 19925479,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 50.19ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3985318,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 250.92ms"
+          },
+          {
+            "name": "cone",
+            "value": 6116283,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 163.50ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19368959,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.63ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2777693,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 360.01ms"
+          },
+          {
+            "name": "mr",
+            "value": 10916077,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 91.61ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10506409,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 95.18ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5082825,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 196.74ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3864824,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 258.74ms"
+          },
+          {
+            "name": "torus",
+            "value": 7305456,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 136.88ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "29ef15f78038dd7697a287b853e6dd798b0a44ea",
+          "message": "Fix Windows benchmarks by copying DLLs to build directory\n\nThe Python subprocess on Windows doesn't inherit PATH properly from\nGit Bash, so the raytracer couldn't find OCCT DLLs. Fix by:\n- Adding a step to copy TK*.dll and tbb*.dll to build/bin\n- Using PowerShell instead of Git Bash for benchmark step\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:24:22Z",
+          "tree_id": "b5b76ad6a2d3a253657b753df6db1d2d2c89f76e",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/29ef15f78038dd7697a287b853e6dd798b0a44ea"
+        },
+        "date": 1765643249925,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7014098,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 142.57ms"
+          },
+          {
+            "name": "box",
+            "value": 18565965,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 53.86ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3955227,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 252.83ms"
+          },
+          {
+            "name": "cone",
+            "value": 6026747,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.93ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19261885,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.92ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2762828,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.95ms"
+          },
+          {
+            "name": "mr",
+            "value": 10766696,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.88ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10437760,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 95.81ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5025025,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 199.00ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3815352,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 262.10ms"
+          },
+          {
+            "name": "torus",
+            "value": 7227993,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 138.35ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "b374ee08daa913cd04a494a6fb0801c7d97d70f0",
+          "message": "Add Windows raytracer debug step and fix PATH for subprocess\n\n- Add test step to run raytracer --help directly\n- Set PATH in PowerShell before running benchmarks\n- Use Windows-style paths for raytracer and test_data\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:30:42Z",
+          "tree_id": "530ab58cba6e8ccd93256ed5a2ced6f2caacb5a7",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/b374ee08daa913cd04a494a6fb0801c7d97d70f0"
+        },
+        "date": 1765643606133,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 5907652,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 169.27ms"
+          },
+          {
+            "name": "box",
+            "value": 13637355,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 73.33ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3524304,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 283.74ms"
+          },
+          {
+            "name": "cone",
+            "value": 5140437,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 194.54ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 13315579,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 75.10ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2320369,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 430.97ms"
+          },
+          {
+            "name": "mr",
+            "value": 8244907,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 121.29ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 8360086,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 119.62ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4357602,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 229.48ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3477438,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 287.57ms"
+          },
+          {
+            "name": "torus",
+            "value": 6067593,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 164.81ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "79c72c38b1fc9f733295e6c73f543c371db1a84e",
+          "message": "Add more Windows DLLs and improve raytracer debug output\n\n- Copy freetype, freeimage, tcl, zlib DLLs in addition to OCCT/TBB\n- Use dumpbin to check exe dependencies\n- Use Start-Process with output redirection for better diagnostics\n- Add continue-on-error to see benchmark step even if test fails\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:39:33Z",
+          "tree_id": "028573d93738730deb27cd6b3e49d0556407a5ae",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/79c72c38b1fc9f733295e6c73f543c371db1a84e"
+        },
+        "date": 1765644144694,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 5292545,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 188.94ms"
+          },
+          {
+            "name": "box",
+            "value": 10792959,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 92.65ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3278431,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 305.02ms"
+          },
+          {
+            "name": "cone",
+            "value": 4568171,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 218.91ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 10860122,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 92.08ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2207910,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 452.92ms"
+          },
+          {
+            "name": "mr",
+            "value": 7091897,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 141.01ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 7233430,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 138.25ms"
+          },
+          {
+            "name": "sphere",
+            "value": 3947155,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 253.35ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3273751,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 305.46ms"
+          },
+          {
+            "name": "torus",
+            "value": 5428941,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 184.20ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "41ca429b9b358644e101579c23528a72bfff532e",
+          "message": "Debug Windows: find and copy OCCT_RT.dll\n\nThe raytracer can't find OCCT_RT.dll (our library). Add debugging\nto find where CMake places it in the build directory, then copy it\nto build/bin along with other DLLs.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:49:01Z",
+          "tree_id": "c0207d6ff32f25e48c4621d6c576cc9af3c8a675",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/41ca429b9b358644e101579c23528a72bfff532e"
+        },
+        "date": 1765644724055,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 6953184,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 143.82ms"
+          },
+          {
+            "name": "box",
+            "value": 18588743,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 53.80ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3984207,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 250.99ms"
+          },
+          {
+            "name": "cone",
+            "value": 6083798,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 164.37ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19517908,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.24ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2775727,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 360.27ms"
+          },
+          {
+            "name": "mr",
+            "value": 10786090,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.71ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10443646,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 95.75ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4981469,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 200.74ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3846539,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 259.97ms"
+          },
+          {
+            "name": "torus",
+            "value": 7266597,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.62ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "f328d144d970736e029332a469674c798bb8cbe1",
+          "message": "Add Windows Embree/SIMD4/SIMD8 benchmark configurations\n\n- Add win-x64-embree, win-x64-simd4, win-x64-simd8 jobs to CI matrix\n- Include embree*.dll in Windows DLL copy step\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T17:01:27Z",
+          "tree_id": "2d2257f28d1e0b2b1f826e44f318d75f5e0e73af",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/f328d144d970736e029332a469674c798bb8cbe1"
+        },
+        "date": 1765645486232,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 6945795,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 143.97ms"
+          },
+          {
+            "name": "box",
+            "value": 19534302,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.19ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3978199,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.37ms"
+          },
+          {
+            "name": "cone",
+            "value": 6092434,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 164.14ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19533921,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.19ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2764027,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.79ms"
+          },
+          {
+            "name": "mr",
+            "value": 10828957,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.34ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10391554,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 96.23ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4966230,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 201.36ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3671328,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 272.38ms"
+          },
+          {
+            "name": "torus",
+            "value": 7283162,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.30ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "5d152d8fd23370d975506ed4e667eb7bdca4c5fc",
+          "message": "Add macOS ARM64 Embree/SIMD4/SIMD8 benchmark configurations\n\n- Embree supports ARM64 since v3.13, conda-forge has osx-arm64 packages\n- Add macos-arm64-embree, macos-arm64-simd4, macos-arm64-simd8 jobs\n- Update macOS install step to include Embree when needed\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T17:42:58Z",
+          "tree_id": "f092267c80309d0261db9099979e779557b5cbb5",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/5d152d8fd23370d975506ed4e667eb7bdca4c5fc"
+        },
+        "date": 1765647962125,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7009673,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 142.66ms"
+          },
+          {
+            "name": "box",
+            "value": 19440880,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.44ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3969010,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.95ms"
+          },
+          {
+            "name": "cone",
+            "value": 6111610,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 163.62ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19544611,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.17ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2777500,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 360.04ms"
+          },
+          {
+            "name": "mr",
+            "value": 10757778,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.96ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10569819,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 94.61ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5054768,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 197.83ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3845326,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 260.06ms"
+          },
+          {
+            "name": "torus",
+            "value": 7337403,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 136.29ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "9f028a80159dbb4f510bce14f5f76feaae6063ef",
+          "message": "Add interactive GLFW viewer with trackball rotation\n\nFeatures:\n- occt-rt-viewer executable for BREP/STEP/IGES files\n- Perspective camera with quaternion-based trackball (no gimbal lock)\n- ParaView-style navigation: left-drag rotate, scroll zoom, middle-drag pan\n- Lambertian shading from surface normals\n- Low-res preview during interaction for smooth rotation\n- Connected component validation (errors if not single component)\n- GitHub release workflow for cross-platform binaries\n\nNew files:\n- src/Viewer/Viewer_Camera.hxx/cxx - Perspective camera + trackball\n- src/Viewer/Viewer_CADLoader.hxx/cxx - Unified CAD loader\n- tools/viewer.cxx - GLFW render loop\n- .github/workflows/release.yml - Release automation\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T18:34:57Z",
+          "tree_id": "485348c84ad7039b7b65d5a6adcb86718c1e91e7",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/9f028a80159dbb4f510bce14f5f76feaae6063ef"
+        },
+        "date": 1765651093233,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7127889,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 140.29ms"
+          },
+          {
+            "name": "box",
+            "value": 19630938,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 50.94ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3977756,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.40ms"
+          },
+          {
+            "name": "cone",
+            "value": 6062002,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 164.96ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19390743,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.57ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2767844,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.29ms"
+          },
+          {
+            "name": "mr",
+            "value": 10970085,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 91.16ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10284045,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 97.24ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5057069,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 197.74ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3735595,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 267.69ms"
+          },
+          {
+            "name": "torus",
+            "value": 7329927,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 136.43ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "b93657ebb7e646875f7de8f8f30aa9351c9e5798",
+          "message": "Fix YAML heredoc syntax in release workflow\n\nReplace heredocs with printf/echo to avoid YAML parsing issues.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T18:37:02Z",
+          "tree_id": "87240cc2c1a6c9fc78abcd413e8b478e589c60df",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/b93657ebb7e646875f7de8f8f30aa9351c9e5798"
+        },
+        "date": 1765651200326,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7112274,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 140.60ms"
+          },
+          {
+            "name": "box",
+            "value": 19763236,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 50.60ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3980337,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.24ms"
+          },
+          {
+            "name": "cone",
+            "value": 6119202,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 163.42ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19402406,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.54ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2777030,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 360.10ms"
+          },
+          {
+            "name": "mr",
+            "value": 10834706,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.30ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10247477,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 97.59ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5035906,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 198.57ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3827883,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 261.24ms"
+          },
+          {
+            "name": "torus",
+            "value": 7317109,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 136.67ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "21aead782944001b36bee36a52ac4cc20035f71e",
+          "message": "Fix remaining YAML multi-line string issues in release workflow\n\nConvert all multi-line strings to single-line printf/PowerShell format.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T18:38:35Z",
+          "tree_id": "f7b591fb00e98f686ddd9077e75edd1f24e7fe93",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/21aead782944001b36bee36a52ac4cc20035f71e"
+        },
+        "date": 1765651380564,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7055122,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 141.74ms"
+          },
+          {
+            "name": "box",
+            "value": 18767008,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 53.29ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3963206,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 252.32ms"
+          },
+          {
+            "name": "cone",
+            "value": 5994305,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 166.82ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19343482,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.70ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2767293,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.36ms"
+          },
+          {
+            "name": "mr",
+            "value": 10694615,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 93.51ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10178117,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 98.25ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4993459,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 200.26ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3814464,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 262.16ms"
+          },
+          {
+            "name": "torus",
+            "value": 7201083,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 138.87ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "4496fdada6c2fdc81498712e82b673599428ba34",
+          "message": "Fix TKXSBase library name case\n\nUse TKXSBase (correct case) instead of TKXSBASE.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T19:08:31Z",
+          "tree_id": "5436339ef80590e9dffa5eb89a7325553dcb4ce2",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/4496fdada6c2fdc81498712e82b673599428ba34"
+        },
+        "date": 1765653101809,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 6910372,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 144.71ms"
+          },
+          {
+            "name": "box",
+            "value": 18538774,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 53.94ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3921615,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 255.00ms"
+          },
+          {
+            "name": "cone",
+            "value": 5955607,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 167.91ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 18498992,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 54.06ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2756302,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 362.81ms"
+          },
+          {
+            "name": "mr",
+            "value": 10454783,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 95.65ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 9966811,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 100.33ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4939589,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 202.45ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3626868,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 275.72ms"
+          },
+          {
+            "name": "torus",
+            "value": 7169949,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 139.47ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "9575bef07694eb15b6c47fc2a3aef882e449fb72",
+          "message": "Add ad-hoc codesigning for macOS releases\n\nSign all dylibs and executables with ad-hoc signature for better\nGatekeeper compatibility. Users will need to approve the app once\non first run (right-click → Open) but won't see the \"damaged\" error.\n\nAlso adds macOS first-run instructions to the bundled README.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T22:19:28Z",
+          "tree_id": "6d151b1308432793d2cdedb34c3ab2d36c98fee7",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/9575bef07694eb15b6c47fc2a3aef882e449fb72"
+        },
+        "date": 1765664537283,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 5817031,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 171.91ms"
+          },
+          {
+            "name": "box",
+            "value": 13683634,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 73.08ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3530600,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 283.24ms"
+          },
+          {
+            "name": "cone",
+            "value": 5107096,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 195.81ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 13447367,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 74.36ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2321085,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 430.83ms"
+          },
+          {
+            "name": "mr",
+            "value": 8174342,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 122.33ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 8239065,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 121.37ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4315367,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 231.73ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3449049,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 289.93ms"
+          },
+          {
+            "name": "torus",
+            "value": 6046351,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 165.39ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "3329e5704e7c69e8ea5676f617d9c965f5f9d713",
+          "message": "Add CAD face type tracking to raytracer and benchmarks\n\n- Add FaceTypeCounts struct to BRepIntCurveSurface_InterBVH to track\n  face types (plane, cylinder, cone, sphere, torus, bspline, bezier, other)\n- Output face type breakdown in raytracer.cxx after loading\n- Parse face count and types in render_shaded.py for metadata.json\n- Benchmark page updated (gh-pages) to display face information\n\nThis enables better understanding of geometry complexity in benchmark results.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T22:56:36Z",
+          "tree_id": "6a069b08e788c56ad41d12b3d6f8d263d440dd6d",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/3329e5704e7c69e8ea5676f617d9c965f5f9d713"
+        },
+        "date": 1765666785105,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 6908415,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 144.75ms"
+          },
+          {
+            "name": "box",
+            "value": 18233203,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 54.85ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3913067,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 255.55ms"
+          },
+          {
+            "name": "cone",
+            "value": 5985623,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 167.07ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 18118240,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 55.19ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2731785,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 366.06ms"
+          },
+          {
+            "name": "mr",
+            "value": 10422095,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 95.95ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 9972874,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 100.27ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4927249,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 202.95ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3782163,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 264.40ms"
+          },
+          {
+            "name": "torus",
+            "value": 7056366,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 141.72ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "968ffaf7fcadf8ccb1d43c4053e33f9b74362514",
+          "message": "Add multi-level benchmark support\n\nAdd 4 benchmark levels to measure performance at each computation stage:\n- raw: BVH traversal + triangle intersection only (skip Newton)\n- refined: Above + Newton refinement for exact UV\n- normals: Above + D1 evaluation for surface normals\n- curvature: Above + D2 evaluation for curvature values\n\nChanges:\n- Add SetSkipAllNewton() to InterBVH for raw benchmark mode\n- Add --bench-level flag to raytracer CLI\n- Update parse_benchmark.py to support --bench-level\n- Update render_shaded.py to generate 4 render types (depth, normals, curvature)\n- Update CI workflow to run all 4 benchmark levels\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T23:15:54Z",
+          "tree_id": "44cf71390c2cde5b7d1dec27a89e7e4168c9f916",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/968ffaf7fcadf8ccb1d43c4053e33f9b74362514"
+        },
+        "date": 1765668168872,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe_raw",
+            "value": 12249198,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 81.64ms"
+          },
+          {
+            "name": "box_raw",
+            "value": 19262998,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.91ms"
+          },
+          {
+            "name": "bspline_surface_raw",
+            "value": 11269637,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 88.73ms"
+          },
+          {
+            "name": "cone_raw",
+            "value": 15551132,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 64.30ms"
+          },
+          {
+            "name": "cylinder_raw",
+            "value": 19172147,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 52.16ms"
+          },
+          {
+            "name": "io1-ca-214_raw",
+            "value": 11923214,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 83.87ms"
+          },
+          {
+            "name": "mr_raw",
+            "value": 23374863,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 42.78ms"
+          },
+          {
+            "name": "simple_L021_raw",
+            "value": 14315777,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 69.85ms"
+          },
+          {
+            "name": "sphere_raw",
+            "value": 14514420,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 68.90ms"
+          },
+          {
+            "name": "spiral_wind_turbine_raw",
+            "value": 13967066,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 71.60ms"
+          },
+          {
+            "name": "torus_raw",
+            "value": 17505164,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 57.13ms"
+          },
+          {
+            "name": "bellow_pipe_refined",
+            "value": 7681672,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 130.18ms"
+          },
+          {
+            "name": "box_refined",
+            "value": 19316579,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.77ms"
+          },
+          {
+            "name": "bspline_surface_refined",
+            "value": 4434629,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 225.50ms"
+          },
+          {
+            "name": "cone_refined",
+            "value": 6337698,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 157.79ms"
+          },
+          {
+            "name": "cylinder_refined",
+            "value": 19622464,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 50.96ms"
+          },
+          {
+            "name": "io1-ca-214_refined",
+            "value": 3217814,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 310.77ms"
+          },
+          {
+            "name": "mr_refined",
+            "value": 11952572,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 83.66ms"
+          },
+          {
+            "name": "simple_L021_refined",
+            "value": 10647813,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 93.92ms"
+          },
+          {
+            "name": "sphere_refined",
+            "value": 5237302,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 190.94ms"
+          },
+          {
+            "name": "spiral_wind_turbine_refined",
+            "value": 4062861,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 246.13ms"
+          },
+          {
+            "name": "torus_refined",
+            "value": 7624101,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 131.16ms"
+          },
+          {
+            "name": "bellow_pipe_normals",
+            "value": 7646838,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 130.77ms"
+          },
+          {
+            "name": "box_normals",
+            "value": 19302783,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.81ms"
+          },
+          {
+            "name": "bspline_surface_normals",
+            "value": 4301279,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 232.49ms"
+          },
+          {
+            "name": "cone_normals",
+            "value": 5956884,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 167.87ms"
+          },
+          {
+            "name": "cylinder_normals",
+            "value": 19417853,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.50ms"
+          },
+          {
+            "name": "io1-ca-214_normals",
+            "value": 3226202,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 309.96ms"
+          },
+          {
+            "name": "mr_normals",
+            "value": 11889617,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 84.11ms"
+          },
+          {
+            "name": "simple_L021_normals",
+            "value": 10615373,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 94.20ms"
+          },
+          {
+            "name": "sphere_normals",
+            "value": 5222614,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 191.48ms"
+          },
+          {
+            "name": "spiral_wind_turbine_normals",
+            "value": 4051913,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 246.80ms"
+          },
+          {
+            "name": "torus_normals",
+            "value": 7616378,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 131.30ms"
+          },
+          {
+            "name": "bellow_pipe_curvature",
+            "value": 7102424,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 140.80ms"
+          },
+          {
+            "name": "box_curvature",
+            "value": 19422378,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.49ms"
+          },
+          {
+            "name": "bspline_surface_curvature",
+            "value": 3961400,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 252.44ms"
+          },
+          {
+            "name": "cone_curvature",
+            "value": 6053782,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.19ms"
+          },
+          {
+            "name": "cylinder_curvature",
+            "value": 19301293,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.81ms"
+          },
+          {
+            "name": "io1-ca-214_curvature",
+            "value": 2768174,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.25ms"
+          },
+          {
+            "name": "mr_curvature",
+            "value": 10943553,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 91.38ms"
+          },
+          {
+            "name": "simple_L021_curvature",
+            "value": 10440811,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 95.78ms"
+          },
+          {
+            "name": "sphere_curvature",
+            "value": 5012129,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 199.52ms"
+          },
+          {
+            "name": "spiral_wind_turbine_curvature",
+            "value": 3853579,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 259.50ms"
+          },
+          {
+            "name": "torus_curvature",
+            "value": 7266333,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.62ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "b83b38c19805e9c8909d2f29e0bc831a40faa02f",
+          "message": "night",
+          "timestamp": "2025-12-14T00:05:12Z",
+          "tree_id": "f1a2c0e73f7f42e0f6df24745c6fd58665efa72c",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/b83b38c19805e9c8909d2f29e0bc831a40faa02f"
+        },
+        "date": 1765671093533,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe_raw",
+            "value": 12364149,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 80.88ms"
+          },
+          {
+            "name": "box_raw",
+            "value": 19601694,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.02ms"
+          },
+          {
+            "name": "bspline_surface_raw",
+            "value": 11267352,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 88.75ms"
+          },
+          {
+            "name": "cone_raw",
+            "value": 15625244,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 64.00ms"
+          },
+          {
+            "name": "cylinder_raw",
+            "value": 19379845,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.60ms"
+          },
+          {
+            "name": "io1-ca-214_raw",
+            "value": 12001488,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 83.32ms"
+          },
+          {
+            "name": "mr_raw",
+            "value": 23303505,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 42.91ms"
+          },
+          {
+            "name": "simple_L021_raw",
+            "value": 14011097,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 71.37ms"
+          },
+          {
+            "name": "sphere_raw",
+            "value": 14608137,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 68.46ms"
+          },
+          {
+            "name": "spiral_wind_turbine_raw",
+            "value": 14152279,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 70.66ms"
+          },
+          {
+            "name": "torus_raw",
+            "value": 17526026,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 57.06ms"
+          },
+          {
+            "name": "bellow_pipe_refined",
+            "value": 7051490,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 141.81ms"
+          },
+          {
+            "name": "box_refined",
+            "value": 16948578,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 59.00ms"
+          },
+          {
+            "name": "bspline_surface_refined",
+            "value": 4419753,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 226.26ms"
+          },
+          {
+            "name": "cone_refined",
+            "value": 6331959,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 157.93ms"
+          },
+          {
+            "name": "cylinder_refined",
+            "value": 19220789,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 52.03ms"
+          },
+          {
+            "name": "io1-ca-214_refined",
+            "value": 3195460,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 312.94ms"
+          },
+          {
+            "name": "mr_refined",
+            "value": 11848762,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 84.40ms"
+          },
+          {
+            "name": "simple_L021_refined",
+            "value": 10592098,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 94.41ms"
+          },
+          {
+            "name": "sphere_refined",
+            "value": 5219806,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 191.58ms"
+          },
+          {
+            "name": "spiral_wind_turbine_refined",
+            "value": 4062365,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 246.16ms"
+          },
+          {
+            "name": "torus_refined",
+            "value": 7600344,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 131.57ms"
+          },
+          {
+            "name": "bellow_pipe_normals",
+            "value": 7513204,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 133.10ms"
+          },
+          {
+            "name": "box_normals",
+            "value": 19002014,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 52.63ms"
+          },
+          {
+            "name": "bspline_surface_normals",
+            "value": 4368720,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 228.90ms"
+          },
+          {
+            "name": "cone_normals",
+            "value": 6236669,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 160.34ms"
+          },
+          {
+            "name": "cylinder_normals",
+            "value": 19231139,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 52.00ms"
+          },
+          {
+            "name": "io1-ca-214_normals",
+            "value": 3152794,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 317.18ms"
+          },
+          {
+            "name": "mr_normals",
+            "value": 11943579,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 83.73ms"
+          },
+          {
+            "name": "simple_L021_normals",
+            "value": 10602430,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 94.32ms"
+          },
+          {
+            "name": "sphere_normals",
+            "value": 5206110,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 192.08ms"
+          },
+          {
+            "name": "spiral_wind_turbine_normals",
+            "value": 4050059,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 246.91ms"
+          },
+          {
+            "name": "torus_normals",
+            "value": 7613363,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 131.35ms"
+          },
+          {
+            "name": "bellow_pipe_curvature",
+            "value": 7121442,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 140.42ms"
+          },
+          {
+            "name": "box_curvature",
+            "value": 19151952,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 52.21ms"
+          },
+          {
+            "name": "bspline_surface_curvature",
+            "value": 3983270,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.05ms"
+          },
+          {
+            "name": "cone_curvature",
+            "value": 6103590,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 163.84ms"
+          },
+          {
+            "name": "cylinder_curvature",
+            "value": 19425019,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.48ms"
+          },
+          {
+            "name": "io1-ca-214_curvature",
+            "value": 2780999,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 359.58ms"
+          },
+          {
+            "name": "mr_curvature",
+            "value": 10767856,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.87ms"
+          },
+          {
+            "name": "simple_L021_curvature",
+            "value": 10380012,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 96.34ms"
+          },
+          {
+            "name": "sphere_curvature",
+            "value": 5033346,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 198.68ms"
+          },
+          {
+            "name": "spiral_wind_turbine_curvature",
+            "value": 3849678,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 259.76ms"
+          },
+          {
+            "name": "torus_curvature",
+            "value": 7261584,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.71ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "433f740839ccd21fcefade82497d7a66cd8c905c",
+          "message": "night",
+          "timestamp": "2025-12-14T00:05:12Z",
+          "tree_id": "f1a2c0e73f7f42e0f6df24745c6fd58665efa72c",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/433f740839ccd21fcefade82497d7a66cd8c905c"
+        },
+        "date": 1770899247249,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe_raw",
+            "value": 11687158,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 85.56ms"
+          },
+          {
+            "name": "box_raw",
+            "value": 17618662,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 56.76ms"
+          },
+          {
+            "name": "bspline_surface_raw",
+            "value": 10521664,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 95.04ms"
+          },
+          {
+            "name": "cone_raw",
+            "value": 14481840,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 69.05ms"
+          },
+          {
+            "name": "cylinder_raw",
+            "value": 17969775,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 55.65ms"
+          },
+          {
+            "name": "io1-ca-214_raw",
+            "value": 10647473,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 93.92ms"
+          },
+          {
+            "name": "mr_raw",
+            "value": 16118373,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 62.04ms"
+          },
+          {
+            "name": "simple_L021_raw",
+            "value": 12523168,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 79.85ms"
+          },
+          {
+            "name": "sphere_raw",
+            "value": 11605371,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 86.17ms"
+          },
+          {
+            "name": "spiral_wind_turbine_raw",
+            "value": 11156107,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 89.64ms"
+          },
+          {
+            "name": "torus_raw",
+            "value": 14952600,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 66.88ms"
+          },
+          {
+            "name": "bellow_pipe_refined",
+            "value": 7248741,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 137.96ms"
+          },
+          {
+            "name": "box_refined",
+            "value": 16981965,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 58.89ms"
+          },
+          {
+            "name": "bspline_surface_refined",
+            "value": 4275953,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 233.87ms"
+          },
+          {
+            "name": "cone_refined",
+            "value": 6047741,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.35ms"
+          },
+          {
+            "name": "cylinder_refined",
+            "value": 17190992,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 58.17ms"
+          },
+          {
+            "name": "io1-ca-214_refined",
+            "value": 3099228,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 322.66ms"
+          },
+          {
+            "name": "mr_refined",
+            "value": 11486859,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 87.06ms"
+          },
+          {
+            "name": "simple_L021_refined",
+            "value": 10326951,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 96.83ms"
+          },
+          {
+            "name": "sphere_refined",
+            "value": 5083212,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 196.73ms"
+          },
+          {
+            "name": "spiral_wind_turbine_refined",
+            "value": 3986430,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 250.85ms"
+          },
+          {
+            "name": "torus_refined",
+            "value": 6775251,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 147.60ms"
+          },
+          {
+            "name": "bellow_pipe_normals",
+            "value": 7231129,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 138.29ms"
+          },
+          {
+            "name": "box_normals",
+            "value": 16015631,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 62.44ms"
+          },
+          {
+            "name": "bspline_surface_normals",
+            "value": 4111166,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 243.24ms"
+          },
+          {
+            "name": "cone_normals",
+            "value": 6108549,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 163.70ms"
+          },
+          {
+            "name": "cylinder_normals",
+            "value": 16319070,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 61.28ms"
+          },
+          {
+            "name": "io1-ca-214_normals",
+            "value": 3085030,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 324.15ms"
+          },
+          {
+            "name": "mr_normals",
+            "value": 10700566,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 93.45ms"
+          },
+          {
+            "name": "simple_L021_normals",
+            "value": 9577902,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 104.41ms"
+          },
+          {
+            "name": "sphere_normals",
+            "value": 4839732,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 206.62ms"
+          },
+          {
+            "name": "spiral_wind_turbine_normals",
+            "value": 3921369,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 255.01ms"
+          },
+          {
+            "name": "torus_normals",
+            "value": 6656992,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 150.22ms"
+          },
+          {
+            "name": "bellow_pipe_curvature",
+            "value": 6758995,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 147.95ms"
+          },
+          {
+            "name": "box_curvature",
+            "value": 16963241,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 58.95ms"
+          },
+          {
+            "name": "bspline_surface_curvature",
+            "value": 3772560,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 265.07ms"
+          },
+          {
+            "name": "cone_curvature",
+            "value": 5862936,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 170.56ms"
+          },
+          {
+            "name": "cylinder_curvature",
+            "value": 17219706,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 58.07ms"
+          },
+          {
+            "name": "io1-ca-214_curvature",
+            "value": 2693298,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 371.29ms"
+          },
+          {
+            "name": "mr_curvature",
+            "value": 8862420,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 112.84ms"
+          },
+          {
+            "name": "simple_L021_curvature",
+            "value": 9754575,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 102.52ms"
+          },
+          {
+            "name": "sphere_curvature",
+            "value": 4836806,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 206.75ms"
+          },
+          {
+            "name": "spiral_wind_turbine_curvature",
+            "value": 3589788,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 278.57ms"
+          },
+          {
+            "name": "torus_curvature",
+            "value": 6964564,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 143.58ms"
+          }
+        ]
+      }
+    ]
+  }
+}

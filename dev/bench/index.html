@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>OCCT-RT Benchmarks</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      background: #f5f5f5;
+      color: #333;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    h1 { margin: 0 0 5px 0; font-size: 28px; }
+    .subtitle {
+      color: #666;
+      margin-bottom: 20px;
+      font-size: 14px;
+    }
+    .subtitle a { color: #0066cc; text-decoration: none; }
+    .subtitle a:hover { text-decoration: underline; }
+
+    /* Tab Navigation */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: white;
+      padding: 6px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .tab {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .tab:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .tab.active {
+      background: #333;
+      color: white;
+    }
+    .tab-desc {
+      font-size: 11px;
+      color: #999;
+      display: block;
+      margin-top: 2px;
+    }
+    .tab.active .tab-desc {
+      color: #aaa;
+    }
+
+    /* Geometry Section */
+    .geometry-section {
+      background: white;
+      border-radius: 8px;
+      padding: 20px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 20px;
+      align-items: start;
+    }
+    @media (max-width: 700px) {
+      .geometry-section {
+        grid-template-columns: 1fr;
+      }
+      .tabs {
+        flex-wrap: wrap;
+      }
+      .tab {
+        flex: 1;
+        min-width: 120px;
+      }
+    }
+    .geometry-header {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .geometry-title {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      color: #333;
+      text-transform: capitalize;
+    }
+    .mesh-stats {
+      font-size: 12px;
+      color: #888;
+      font-family: "SF Mono", Monaco, "Consolas", monospace;
+    }
+    .mesh-stats span {
+      margin-left: 15px;
+    }
+    .mesh-stats span:first-child {
+      margin-left: 0;
+    }
+
+    /* Performance Table */
+    .perf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .perf-table th, .perf-table td {
+      padding: 8px 10px;
+      text-align: right;
+      border-bottom: 1px solid #eee;
+    }
+    .perf-table th {
+      font-weight: 600;
+      color: #555;
+      background: #fafafa;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .perf-table th:first-child, .perf-table td:first-child {
+      text-align: left;
+    }
+    .perf-table tr:hover td { background: #f8f8f8; }
+    .value {
+      font-family: "SF Mono", Monaco, "Consolas", monospace;
+      font-weight: 500;
+    }
+    .na { color: #ccc; }
+
+    /* Render Image */
+    .render-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .render-container img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
+      border-radius: 6px;
+      background: #f0f0f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .placeholder {
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 12px;
+    }
+
+    .loading {
+      text-align: center;
+      padding: 60px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <h1>OCCT-RT Benchmark Results</h1>
+  <p class="subtitle">
+    Performance tracking for <a href="https://github.com/PozzettiAndrea/OCCT-RT">OCCT-RT</a> raytracer
+    &nbsp;•&nbsp; Values in M rays/sec (higher is better)
+  </p>
+
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-level="raw">
+      Intersection
+      <span class="tab-desc">BVH + triangles</span>
+    </button>
+    <button class="tab" data-level="refined">
+      + Refinement
+      <span class="tab-desc">Newton UV solve</span>
+    </button>
+    <button class="tab" data-level="normals">
+      + Normals
+      <span class="tab-desc">D1 evaluation</span>
+    </button>
+    <button class="tab" data-level="curvature">
+      + Curvature
+      <span class="tab-desc">D2 evaluation</span>
+    </button>
+  </div>
+
+  <div id="content">
+    <div class="loading">Loading benchmark data...</div>
+  </div>
+
+  <script>
+    const platforms = [
+      { id: 'linux-x64-occt', os: 'Linux x64', backend: 'occt' },
+      { id: 'linux-x64-embree', os: 'Linux x64', backend: 'embree' },
+      { id: 'linux-x64-simd4', os: 'Linux x64', backend: 'simd4' },
+      { id: 'linux-x64-simd8', os: 'Linux x64', backend: 'simd8' },
+      { id: 'macos-arm64-occt', os: 'macOS ARM64', backend: 'occt' },
+      { id: 'macos-arm64-embree', os: 'macOS ARM64', backend: 'embree' },
+      { id: 'macos-arm64-simd4', os: 'macOS ARM64', backend: 'simd4' },
+      { id: 'macos-arm64-simd8', os: 'macOS ARM64', backend: 'simd8' },
+      { id: 'win-x64-occt', os: 'Windows x64', backend: 'occt' },
+      { id: 'win-x64-embree', os: 'Windows x64', backend: 'embree' },
+      { id: 'win-x64-simd4', os: 'Windows x64', backend: 'simd4' },
+      { id: 'win-x64-simd8', os: 'Windows x64', backend: 'simd8' }
+    ];
+
+    const backendOrder = ['occt', 'embree', 'simd4', 'simd8'];
+    const osOrder = ['Linux x64', 'macOS ARM64', 'Windows x64'];
+    const benchLevels = ['raw', 'refined', 'normals', 'curvature'];
+
+    // Map bench levels to render types
+    const levelToRender = {
+      'raw': 'raw',
+      'refined': 'refined',
+      'normals': 'normals',
+      'curvature': 'curvature'
+    };
+
+    let meshMetadata = null;
+    let allData = {};
+    let currentLevel = 'raw';
+
+    async function loadData(platformId) {
+      try {
+        const response = await fetch(`${platformId}/data.js`);
+        const text = await response.text();
+        const match = text.match(/window\.BENCHMARK_DATA\s*=\s*(\{[\s\S]*\});?/);
+        if (match) return JSON.parse(match[1]);
+      } catch (e) {}
+      return null;
+    }
+
+    async function loadMeshMetadata() {
+      try {
+        const response = await fetch('../renders/metadata.json');
+        return await response.json();
+      } catch (e) {}
+      return null;
+    }
+
+    function getLatestValue(data, benchName) {
+      const entries = data?.entries?.Benchmark || [];
+      if (entries.length === 0) return null;
+      const latest = entries[entries.length - 1];
+      const bench = latest.benches?.find(b => b.name === benchName);
+      return bench ? bench.value / 1000000 : null;
+    }
+
+    function formatNumber(num) {
+      if (num === undefined || num === null) return 'N/A';
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    function formatTime(ms) {
+      if (ms === undefined || ms === null) return 'N/A';
+      if (ms >= 1000) return (ms / 1000).toFixed(2) + 's';
+      return ms.toFixed(1) + 'ms';
+    }
+
+    function parseGeometryName(benchName) {
+      // Extract base geometry name by removing level suffix
+      for (const level of benchLevels) {
+        const suffix = `_${level}`;
+        if (benchName.endsWith(suffix)) {
+          return benchName.slice(0, -suffix.length);
+        }
+      }
+      return benchName; // Legacy format without suffix
+    }
+
+    function createGeometrySection(geomName, level) {
+      const benchName = `${geomName}_${level}`;
+      const section = document.createElement('div');
+      section.className = 'geometry-section';
+
+      // Header with title and mesh stats
+      const header = document.createElement('div');
+      header.className = 'geometry-header';
+
+      const title = document.createElement('h2');
+      title.className = 'geometry-title';
+      title.textContent = geomName.replace(/_/g, ' ');
+      header.appendChild(title);
+
+      // Add mesh stats if available
+      const geomMeta = meshMetadata?.[geomName];
+      if (geomMeta) {
+        const stats = document.createElement('div');
+        stats.className = 'mesh-stats';
+
+        // Build face types string (only non-zero types)
+        let faceTypesStr = '';
+        if (geomMeta.face_types) {
+          const ft = geomMeta.face_types;
+          const parts = [];
+          if (ft.plane > 0) parts.push(`${ft.plane} plane`);
+          if (ft.cylinder > 0) parts.push(`${ft.cylinder} cyl`);
+          if (ft.cone > 0) parts.push(`${ft.cone} cone`);
+          if (ft.sphere > 0) parts.push(`${ft.sphere} sphere`);
+          if (ft.torus > 0) parts.push(`${ft.torus} torus`);
+          if (ft.bspline > 0) parts.push(`${ft.bspline} bspline`);
+          if (ft.bezier > 0) parts.push(`${ft.bezier} bezier`);
+          if (ft.other > 0) parts.push(`${ft.other} other`);
+          if (parts.length > 0) faceTypesStr = ` (${parts.join(', ')})`;
+        }
+
+        const faceCount = geomMeta.cad_face_count ? `<span>${geomMeta.cad_face_count} CAD faces${faceTypesStr}</span>` : '';
+
+        stats.innerHTML = `
+          <span>${formatNumber(geomMeta.triangle_count)} triangles</span>
+          <span>meshed in ${formatTime(geomMeta.tessellation_time_ms)}</span>
+          ${faceCount}
+        `;
+        header.appendChild(stats);
+      }
+
+      section.appendChild(header);
+
+      // Table
+      const tableWrapper = document.createElement('div');
+      const table = document.createElement('table');
+      table.className = 'perf-table';
+
+      // Header
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = '<th>Platform</th>' +
+        backendOrder.map(b => `<th>${b.toUpperCase()}</th>`).join('');
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
+
+      // Body
+      const tbody = document.createElement('tbody');
+      for (const os of osOrder) {
+        const row = document.createElement('tr');
+
+        const nameCell = document.createElement('td');
+        nameCell.textContent = os;
+        row.appendChild(nameCell);
+
+        for (const backend of backendOrder) {
+          const cell = document.createElement('td');
+          const platformId = platforms.find(p => p.os === os && p.backend === backend)?.id;
+
+          if (platformId && allData[platformId]) {
+            // Try with level suffix first, then without (for legacy data)
+            let value = getLatestValue(allData[platformId], benchName);
+            if (value === null) {
+              value = getLatestValue(allData[platformId], geomName);
+            }
+            if (value !== null) {
+              cell.innerHTML = `<span class="value">${value.toFixed(1)}</span>`;
+            } else {
+              cell.innerHTML = '<span class="na">-</span>';
+            }
+          } else {
+            cell.innerHTML = '<span class="na">-</span>';
+          }
+          row.appendChild(cell);
+        }
+        tbody.appendChild(row);
+      }
+      table.appendChild(tbody);
+      tableWrapper.appendChild(table);
+      section.appendChild(tableWrapper);
+
+      // Render image - use level-specific render
+      const renderContainer = document.createElement('div');
+      renderContainer.className = 'render-container';
+      const renderType = levelToRender[level];
+      const imgUrl = `../renders/${geomName}_${renderType}.png`;
+      // Fallback to legacy format without suffix
+      const fallbackUrl = `../renders/${geomName}.png`;
+      renderContainer.innerHTML = `
+        <img src="${imgUrl}" alt="${geomName}"
+             onerror="this.onerror=null; this.src='${fallbackUrl}'; this.onerror=function(){this.outerHTML='<div class=\\'placeholder\\'>No render</div>';}" />
+      `;
+      section.appendChild(renderContainer);
+
+      return section;
+    }
+
+    function renderContent() {
+      const content = document.getElementById('content');
+
+      // Collect all unique geometry names from benchmark data
+      const allGeometries = new Set();
+      for (const data of Object.values(allData)) {
+        const entries = data?.entries?.Benchmark || [];
+        for (const entry of entries) {
+          for (const bench of entry.benches || []) {
+            const geomName = parseGeometryName(bench.name);
+            allGeometries.add(geomName);
+          }
+        }
+      }
+
+      content.innerHTML = '';
+
+      if (allGeometries.size === 0) {
+        content.innerHTML = '<div class="loading">No benchmark data available yet.</div>';
+        return;
+      }
+
+      // Create section for each geometry
+      for (const geomName of [...allGeometries].sort()) {
+        content.appendChild(createGeometrySection(geomName, currentLevel));
+      }
+    }
+
+    function setupTabs() {
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Update active state
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          // Update current level and re-render
+          currentLevel = tab.dataset.level;
+          renderContent();
+        });
+      });
+    }
+
+    async function init() {
+      const content = document.getElementById('content');
+
+      // Load mesh metadata
+      meshMetadata = await loadMeshMetadata();
+
+      // Load all platform data
+      for (const platform of platforms) {
+        const data = await loadData(platform.id);
+        if (data) allData[platform.id] = data;
+      }
+
+      // Setup tab handlers
+      setupTabs();
+
+      // Initial render
+      renderContent();
+    }
+
+    init();
+  </script>
+</body>
+</html>
