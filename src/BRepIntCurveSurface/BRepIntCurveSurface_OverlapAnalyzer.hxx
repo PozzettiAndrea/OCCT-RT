@@ -31,14 +31,17 @@
 //! Result of face-to-face overlap analysis in XY projection
 struct BRepIntCurveSurface_OverlapResult
 {
-  Standard_Integer Face1Index;      //!< First face index (1-based)
-  Standard_Integer Face2Index;      //!< Second face index (1-based)
-  Bnd_Box2d        OverlapRegion;   //!< Overlapping XY region (bounding box intersection)
-  Standard_Real    OverlapArea;     //!< Area of overlap region in XY
+  Standard_Integer Face1Index;    //!< First face index (1-based)
+  Standard_Integer Face2Index;    //!< Second face index (1-based)
+  Bnd_Box2d        OverlapRegion; //!< Overlapping XY region (bounding box intersection)
+  Standard_Real    OverlapArea;   //!< Area of overlap region in XY
 
   BRepIntCurveSurface_OverlapResult()
-    : Face1Index(0), Face2Index(0), OverlapArea(0.0)
-  {}
+      : Face1Index(0),
+        Face2Index(0),
+        OverlapArea(0.0)
+  {
+  }
 };
 
 //! Analyzer for detecting face overlaps in XY projection.
@@ -103,8 +106,8 @@ private:
   void FindOverlaps();
 
 private:
-  TopTools_IndexedMapOfShape myFaces;
-  std::vector<Bnd_Box2d> myXYBounds;           //!< XY bounds per face (0-based)
+  TopTools_IndexedMapOfShape                     myFaces;
+  std::vector<Bnd_Box2d>                         myXYBounds; //!< XY bounds per face (0-based)
   std::vector<BRepIntCurveSurface_OverlapResult> myOverlaps;
 };
 

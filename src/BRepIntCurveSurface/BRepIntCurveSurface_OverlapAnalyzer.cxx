@@ -25,16 +25,12 @@
 //=======================================================================
 // BRepIntCurveSurface_OverlapAnalyzer - Constructor
 //=======================================================================
-BRepIntCurveSurface_OverlapAnalyzer::BRepIntCurveSurface_OverlapAnalyzer()
-{
-}
+BRepIntCurveSurface_OverlapAnalyzer::BRepIntCurveSurface_OverlapAnalyzer() {}
 
 //=======================================================================
 // BRepIntCurveSurface_OverlapAnalyzer - Destructor
 //=======================================================================
-BRepIntCurveSurface_OverlapAnalyzer::~BRepIntCurveSurface_OverlapAnalyzer()
-{
-}
+BRepIntCurveSurface_OverlapAnalyzer::~BRepIntCurveSurface_OverlapAnalyzer() {}
 
 //=======================================================================
 // Perform - Main analysis
@@ -122,7 +118,7 @@ void BRepIntCurveSurface_OverlapAnalyzer::FindOverlaps()
       if (overlapXMin < overlapXMax && overlapYMin < overlapYMax)
       {
         BRepIntCurveSurface_OverlapResult overlap;
-        overlap.Face1Index = i + 1;  // 1-based
+        overlap.Face1Index = i + 1; // 1-based
         overlap.Face2Index = j + 1;
         overlap.OverlapRegion.Add(gp_Pnt2d(overlapXMin, overlapYMin));
         overlap.OverlapRegion.Add(gp_Pnt2d(overlapXMax, overlapYMax));
@@ -134,7 +130,9 @@ void BRepIntCurveSurface_OverlapAnalyzer::FindOverlaps()
   }
 
   // Sort by overlap area (largest first)
-  std::sort(myOverlaps.begin(), myOverlaps.end(),
+  std::sort(
+    myOverlaps.begin(),
+    myOverlaps.end(),
     [](const BRepIntCurveSurface_OverlapResult& a, const BRepIntCurveSurface_OverlapResult& b) {
       return a.OverlapArea > b.OverlapArea;
     });

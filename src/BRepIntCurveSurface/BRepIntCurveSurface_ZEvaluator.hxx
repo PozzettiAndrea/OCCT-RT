@@ -39,17 +39,20 @@ typedef BVH_BoxSet<Standard_Real, 2, Standard_Integer> BRepIntCurveSurface_BVH2D
 //! Structure to hold a Z evaluation result
 struct BRepIntCurveSurface_ZResult
 {
-  Standard_Boolean IsValid;      //!< True if result is valid
-  Standard_Real    Z;            //!< Z coordinate
-  Standard_Real    U;            //!< U parameter on surface
-  Standard_Real    V;            //!< V parameter on surface
-  Standard_Integer FaceIndex;    //!< Index of face (1-based)
+  Standard_Boolean IsValid;   //!< True if result is valid
+  Standard_Real    Z;         //!< Z coordinate
+  Standard_Real    U;         //!< U parameter on surface
+  Standard_Real    V;         //!< V parameter on surface
+  Standard_Integer FaceIndex; //!< Index of face (1-based)
 
   BRepIntCurveSurface_ZResult()
-    : IsValid(Standard_False),
-      Z(0.0), U(0.0), V(0.0),
-      FaceIndex(0)
-  {}
+      : IsValid(Standard_False),
+        Z(0.0),
+        U(0.0),
+        V(0.0),
+        FaceIndex(0)
+  {
+  }
 };
 
 //! 2D XY-to-Z surface evaluator using BVH acceleration.
@@ -92,16 +95,15 @@ public:
   //! Load a shape and build the 2D BVH acceleration structure.
   //! @param theShape Shape to evaluate (must contain faces)
   //! @param theTol Tolerance for classification
-  Standard_EXPORT void Load(const TopoDS_Shape& theShape,
-                            const Standard_Real theTol);
+  Standard_EXPORT void Load(const TopoDS_Shape& theShape, const Standard_Real theTol);
 
   //! Evaluate Z at a single XY point.
   //! Returns all Z values from faces that contain the XY point.
   //! @param theX X coordinate
   //! @param theY Y coordinate
   //! @param theResults Output sequence of Z results (one per overlapping face)
-  Standard_EXPORT void Evaluate(const Standard_Real theX,
-                                const Standard_Real theY,
+  Standard_EXPORT void Evaluate(const Standard_Real                                theX,
+                                const Standard_Real                                theY,
                                 NCollection_Sequence<BRepIntCurveSurface_ZResult>& theResults);
 
   //! Evaluate Z at multiple XY points (parallelized).
@@ -109,9 +111,9 @@ public:
   //! @param theResults Output array of result sequences (resized automatically)
   //! @param theNumThreads Number of threads (0 = auto)
   Standard_EXPORT void EvaluateBatch(
-    const NCollection_Array1<gp_Pnt2d>& thePoints,
+    const NCollection_Array1<gp_Pnt2d>&                                    thePoints,
     NCollection_Array1<NCollection_Sequence<BRepIntCurveSurface_ZResult>>& theResults,
-    const Standard_Integer theNumThreads = 0);
+    const Standard_Integer                                                 theNumThreads = 0);
 
   //! Returns true if the shape has been loaded
   Standard_Boolean IsLoaded() const { return myIsLoaded; }
@@ -121,9 +123,9 @@ public:
 
 private:
   //! Evaluate a single XY point against a specific face
-  Standard_Boolean EvaluateFace(const Standard_Integer theFaceIdx,
-                                const Standard_Real theX,
-                                const Standard_Real theY,
+  Standard_Boolean EvaluateFace(const Standard_Integer       theFaceIdx,
+                                const Standard_Real          theX,
+                                const Standard_Real          theY,
                                 BRepIntCurveSurface_ZResult& theResult);
 
 private:
@@ -131,9 +133,9 @@ private:
   opencascade::handle<BRepIntCurveSurface_BVH2DBoxSet> myBVH2D;
 
   // Face data
-  TopTools_IndexedMapOfShape myFaces;
+  TopTools_IndexedMapOfShape        myFaces;
   std::vector<Handle(Geom_Surface)> mySurfaces;
-  std::vector<Bnd_Box2d> myXYBounds;  // XY bounding boxes for quick rejection
+  std::vector<Bnd_Box2d>            myXYBounds; // XY bounding boxes for quick rejection
 
   // Tolerance
   Standard_Real myTolerance;

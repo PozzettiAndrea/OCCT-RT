@@ -13,7 +13,7 @@ message(STATUS "=== OCCT-RT: BVH Raytracer for OpenCASCADE ===")
 # =============================================================================
 # OPTIONS
 # =============================================================================
-option(BUILD_RAYTRACER_TEST "Build the raytracer test executable" ON)
+option(BUILD_RAYTRACER "Build the raytracer command-line tool" ON)
 option(OCCT_RT_USE_OPENMP "Enable OpenMP for parallel ray processing" ON)
 option(OCCT_RT_USE_EMBREE "Enable Embree for SIMD ray-triangle intersection" ON)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
@@ -41,6 +41,39 @@ else()
 endif()
 
 # =============================================================================
+# HELPER: Find OCCT library by name (cross-platform)
+# =============================================================================
+function(find_occt_library VAR_NAME LIB_NAME)
+    find_library(${VAR_NAME}
+        NAMES ${LIB_NAME}
+        PATHS ${OpenCASCADE_LIBRARY_DIR}
+        NO_DEFAULT_PATH
+    )
+    if(NOT ${VAR_NAME})
+        message(FATAL_ERROR "Could not find OCCT library: ${LIB_NAME}")
+    endif()
+endfunction()
+
+# =============================================================================
+# FIND OCCT COMPONENT LIBRARIES
+# =============================================================================
+# Core libraries needed for OCCT_RT
+find_occt_library(OCCT_TKTopAlgo TKTopAlgo)
+find_occt_library(OCCT_TKBRep TKBRep)
+find_occt_library(OCCT_TKMath TKMath)
+find_occt_library(OCCT_TKernel TKernel)
+find_occt_library(OCCT_TKG3d TKG3d)
+find_occt_library(OCCT_TKGeomBase TKGeomBase)
+find_occt_library(OCCT_TKMesh TKMesh)
+
+# Additional libraries for raytracer tool
+find_occt_library(OCCT_TKDESTEP TKDESTEP)
+find_occt_library(OCCT_TKDEIGES TKDEIGES)
+find_occt_library(OCCT_TKDE TKDE)
+find_occt_library(OCCT_TKShHealing TKShHealing)
+find_occt_library(OCCT_TKPrim TKPrim)
+
+# =============================================================================
 # OCCT-RT LIBRARY
 # =============================================================================
 message(STATUS "Building OCCT-RT library...")
@@ -65,15 +98,15 @@ target_include_directories(OCCT_RT PUBLIC
     ${OpenCASCADE_INCLUDE_DIR}
 )
 
-# Link against OCCT libraries
+# Link against OCCT libraries (cross-platform)
 target_link_libraries(OCCT_RT PUBLIC
-    ${OpenCASCADE_LIBRARY_DIR}/libTKTopAlgo.so
-    ${OpenCASCADE_LIBRARY_DIR}/libTKBRep.so
-    ${OpenCASCADE_LIBRARY_DIR}/libTKMath.so
-    ${OpenCASCADE_LIBRARY_DIR}/libTKernel.so
-    ${OpenCASCADE_LIBRARY_DIR}/libTKG3d.so
-    ${OpenCASCADE_LIBRARY_DIR}/libTKGeomBase.so
-    ${OpenCASCADE_LIBRARY_DIR}/libTKMesh.so
+    ${OCCT_TKTopAlgo}
+    ${OCCT_TKBRep}
+    ${OCCT_TKMath}
+    ${OCCT_TKernel}
+    ${OCCT_TKG3d}
+    ${OCCT_TKGeomBase}
+    ${OCCT_TKMesh}
 )
 
 # =============================================================================
@@ -93,7 +126,11 @@ endif()
 # OPTIONAL: EMBREE SUPPORT
 # =============================================================================
 if(OCCT_RT_USE_EMBREE)
-    find_package(embree 3 QUIET CONFIG)
+    # Try Embree 4 first, then fall back to Embree 3
+    find_package(embree 4 QUIET CONFIG)
+    if(NOT embree_FOUND)
+        find_package(embree 3 QUIET CONFIG)
+    endif()
     if(embree_FOUND)
         target_link_libraries(OCCT_RT PUBLIC embree)
         target_compile_definitions(OCCT_RT PUBLIC OCCT_USE_EMBREE)
@@ -104,30 +141,30 @@ if(OCCT_RT_USE_EMBREE)
 endif()
 
 # =============================================================================
-# RAYTRACER TEST EXECUTABLE
+# RAYTRACER COMMAND-LINE TOOL
 # =============================================================================
-if(BUILD_RAYTRACER_TEST)
-    message(STATUS "Building raytracer_test executable...")
+if(BUILD_RAYTRACER)
+    message(STATUS "Building raytracer command-line tool...")
 
-    add_executable(raytracer_test
-        ${PROJECT_SOURCE_DIR}/samples/raytracer/raytracer_test.cxx
+    add_executable(raytracer
+        ${PROJECT_SOURCE_DIR}/tools/raytracer.cxx
     )
 
-    target_link_libraries(raytracer_test PRIVATE
+    target_link_libraries(raytracer PRIVATE
         OCCT_RT
-        ${OpenCASCADE_LIBRARY_DIR}/libTKDESTEP.so
-        ${OpenCASCADE_LIBRARY_DIR}/libTKDEIGES.so
-        ${OpenCASCADE_LIBRARY_DIR}/libTKDE.so
-        ${OpenCASCADE_LIBRARY_DIR}/libTKShHealing.so
-        ${OpenCASCADE_LIBRARY_DIR}/libTKPrim.so
+        ${OCCT_TKDESTEP}
+        ${OCCT_TKDEIGES}
+        ${OCCT_TKDE}
+        ${OCCT_TKShHealing}
+        ${OCCT_TKPrim}
     )
 
-    target_include_directories(raytracer_test PRIVATE
+    target_include_directories(raytracer PRIVATE
         ${PROJECT_SOURCE_DIR}/src/BRepIntCurveSurface
         ${OpenCASCADE_INCLUDE_DIR}
     )
 
-    set_target_properties(raytracer_test PROPERTIES
+    set_target_properties(raytracer PROPERTIES
         RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
     )
 endif()
@@ -151,5 +188,11 @@ install(EXPORT OCCT_RTTargets
     NAMESPACE OCCT_RT::
     DESTINATION lib/cmake/OCCT_RT
 )
+
+if(BUILD_RAYTRACER)
+    install(TARGETS raytracer
+        RUNTIME DESTINATION bin
+    )
+endif()
 
 message(STATUS "=== OCCT-RT configuration complete ===")

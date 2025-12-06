@@ -37,17 +37,24 @@
 #include <vector>
 
 #ifdef OCCT_USE_EMBREE
-#include <embree3/rtcore.h>
+  #if __has_include(<embree4/rtcore.h>)
+    #include <embree4/rtcore.h>
+  #elif __has_include(<embree3/rtcore.h>)
+    #include <embree3/rtcore.h>
+  #else
+    #error "Embree headers not found (tried embree3 and embree4)"
+  #endif
 #endif
 
 class BRepIntCurveSurface_InterBVH;
 
 //! Backend selection for ray-triangle intersection
-enum class BRepIntCurveSurface_BVHBackend {
-  OCCT_BVH,           //!< OCCT's built-in BVH (fastest single-ray)
-  Embree_Scalar,      //!< Embree rtcIntersect1 (single ray)
-  Embree_SIMD4,       //!< Embree rtcIntersect4 (SSE, 4 rays at once)
-  Embree_SIMD8        //!< Embree rtcIntersect8 (AVX, 8 rays at once)
+enum class BRepIntCurveSurface_BVHBackend
+{
+  OCCT_BVH,      //!< OCCT's built-in BVH (fastest single-ray)
+  Embree_Scalar, //!< Embree rtcIntersect1 (single ray)
+  Embree_SIMD4,  //!< Embree rtcIntersect4 (SSE, 4 rays at once)
+  Embree_SIMD8   //!< Embree rtcIntersect8 (AVX, 8 rays at once)
 };
 
 //! Typedef for triangle BVH
@@ -56,40 +63,43 @@ typedef BVH_Triangulation<Standard_Real, 3> BRepIntCurveSurface_TriBVH;
 //! Structure mapping a triangle to its source face and UV coordinates
 struct BRepIntCurveSurface_TriangleInfo
 {
-  Standard_Integer FaceIndex;  //!< 0-based index into myFaces
-  gp_Pnt2d UV0, UV1, UV2;      //!< UV coordinates of triangle vertices on the face
+  Standard_Integer FaceIndex;     //!< 0-based index into myFaces
+  gp_Pnt2d         UV0, UV1, UV2; //!< UV coordinates of triangle vertices on the face
 };
 
 //! Structure to hold a single ray-surface hit result
 struct BRepIntCurveSurface_HitResult
 {
-  Standard_Boolean IsValid;      //!< True if hit is valid
-  gp_Pnt           Point;        //!< Hit point in 3D
-  Standard_Real    U;            //!< U parameter on surface
-  Standard_Real    V;            //!< V parameter on surface
-  Standard_Real    W;            //!< Parameter on ray (distance from origin)
-  Standard_Integer FaceIndex;    //!< Index of hit face (1-based)
-  gp_Dir           Normal;       //!< Surface normal at hit point
+  Standard_Boolean                  IsValid;    //!< True if hit is valid
+  gp_Pnt                            Point;      //!< Hit point in 3D
+  Standard_Real                     U;          //!< U parameter on surface
+  Standard_Real                     V;          //!< V parameter on surface
+  Standard_Real                     W;          //!< Parameter on ray (distance from origin)
+  Standard_Integer                  FaceIndex;  //!< Index of hit face (1-based)
+  gp_Dir                            Normal;     //!< Surface normal at hit point
   IntCurveSurface_TransitionOnCurve Transition; //!< Transition type
-  TopAbs_State     State;        //!< State (IN or ON)
+  TopAbs_State                      State;      //!< State (IN or ON)
 
   // Curvature fields (computed when requested)
-  Standard_Real    GaussianCurvature; //!< Gaussian curvature K = κ1 × κ2
-  Standard_Real    MeanCurvature;     //!< Mean curvature H = (κ1 + κ2) / 2
-  Standard_Real    MinCurvature;      //!< Minimum principal curvature κ1
-  Standard_Real    MaxCurvature;      //!< Maximum principal curvature κ2
+  Standard_Real GaussianCurvature; //!< Gaussian curvature K = κ1 × κ2
+  Standard_Real MeanCurvature;     //!< Mean curvature H = (κ1 + κ2) / 2
+  Standard_Real MinCurvature;      //!< Minimum principal curvature κ1
+  Standard_Real MaxCurvature;      //!< Maximum principal curvature κ2
 
   BRepIntCurveSurface_HitResult()
-    : IsValid(Standard_False),
-      U(0.0), V(0.0), W(RealLast()),
-      FaceIndex(0),
-      Transition(IntCurveSurface_Tangent),
-      State(TopAbs_UNKNOWN),
-      GaussianCurvature(0.0),
-      MeanCurvature(0.0),
-      MinCurvature(0.0),
-      MaxCurvature(0.0)
-  {}
+      : IsValid(Standard_False),
+        U(0.0),
+        V(0.0),
+        W(RealLast()),
+        FaceIndex(0),
+        Transition(IntCurveSurface_Tangent),
+        State(TopAbs_UNKNOWN),
+        GaussianCurvature(0.0),
+        MeanCurvature(0.0),
+        MinCurvature(0.0),
+        MaxCurvature(0.0)
+  {
+  }
 };
 
 //! BVH-accelerated intersection between a curve (line) and a shape.
@@ -131,7 +141,8 @@ public:
   //! @param theShape Shape to intersect with (must contain faces, must be pre-tessellated)
   //! @param theTol Tolerance for intersection calculations
   //! @param theDeflection Linear deflection for tessellation (defaults to 0.1 if <= 0)
-  //!        Controls vertex welding tolerance. Shape must already be tessellated before calling Load().
+  //!        Controls vertex welding tolerance. Shape must already be tessellated before calling
+  //!        Load().
   Standard_EXPORT void Load(const TopoDS_Shape& theShape,
                             const Standard_Real theTol,
                             const Standard_Real theDeflection = 0.0);
@@ -141,7 +152,7 @@ public:
   //! @param theLine Ray to intersect
   //! @param theMin Minimum parameter on ray (default 0)
   //! @param theMax Maximum parameter on ray (default infinite)
-  Standard_EXPORT void Perform(const gp_Lin& theLine,
+  Standard_EXPORT void Perform(const gp_Lin&       theLine,
                                const Standard_Real theMin = 0.0,
                                const Standard_Real theMax = RealLast());
 
@@ -149,7 +160,7 @@ public:
   //! @param theRays Array of rays to intersect
   //! @param theResults Output array of hit results (resized automatically)
   //! @param theNumThreads Number of threads (0 = auto)
-  Standard_EXPORT void PerformBatch(const NCollection_Array1<gp_Lin>& theRays,
+  Standard_EXPORT void PerformBatch(const NCollection_Array1<gp_Lin>&                  theRays,
                                     NCollection_Array1<BRepIntCurveSurface_HitResult>& theResults,
                                     const Standard_Integer theNumThreads = 0);
 
@@ -157,9 +168,9 @@ public:
   //! @param theRays Array of rays to intersect
   //! @param theHitCounts Output array of intersection counts per ray
   //! @param theNumThreads Number of threads (0 = auto)
-  Standard_EXPORT void PerformBatchCount(const NCollection_Array1<gp_Lin>& theRays,
+  Standard_EXPORT void PerformBatchCount(const NCollection_Array1<gp_Lin>&     theRays,
                                          NCollection_Array1<Standard_Integer>& theHitCounts,
-                                         const Standard_Integer theNumThreads = 0);
+                                         const Standard_Integer                theNumThreads = 0);
 
   //! Returns true if intersection was performed successfully
   Standard_Boolean IsDone() const { return myIsDone; }
@@ -186,7 +197,8 @@ public:
   Standard_EXPORT gp_Dir Normal(const Standard_Integer theIndex) const;
 
   //! Returns the transition type at i-th intersection
-  Standard_EXPORT IntCurveSurface_TransitionOnCurve Transition(const Standard_Integer theIndex) const;
+  Standard_EXPORT IntCurveSurface_TransitionOnCurve
+    Transition(const Standard_Integer theIndex) const;
 
   //! Returns the state (IN or ON) at i-th intersection
   Standard_EXPORT TopAbs_State State(const Standard_Integer theIndex) const;
@@ -216,8 +228,8 @@ private:
 
   // Triangle BVH for tessellation-accelerated intersection
   opencascade::handle<BRepIntCurveSurface_TriBVH> myTriBVH;
-  std::vector<BRepIntCurveSurface_TriangleInfo> myTriangleInfo;  // Maps triangle index to face + UV
-  Standard_Boolean myUseTessellation;
+  std::vector<BRepIntCurveSurface_TriangleInfo> myTriangleInfo; // Maps triangle index to face + UV
+  Standard_Boolean                              myUseTessellation;
 
   // Surface adaptors for fast UV-guided Newton refinement (used with tessellation BVH)
   std::vector<Handle(BRepAdaptor_Surface)> mySurfaceAdaptors;
@@ -232,16 +244,16 @@ private:
 
   // Results storage for single-ray query
   std::vector<BRepIntCurveSurface_HitResult> myResults;
-  Standard_Integer myNbPnt;
+  Standard_Integer                           myNbPnt;
 
   // Runtime configuration
   BRepIntCurveSurface_BVHBackend myBackend;
-  Standard_Boolean myUseOpenMP;
+  Standard_Boolean               myUseOpenMP;
 
 #ifdef OCCT_USE_EMBREE
   // Embree BVH acceleration
   RTCDevice myEmbreeDevice;
-  RTCScene myEmbreeScene;
+  RTCScene  myEmbreeScene;
 #endif
 };
 
