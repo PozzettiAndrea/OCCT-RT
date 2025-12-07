@@ -2048,3 +2048,48 @@ TopAbs_State BRepIntCurveSurface_InterBVH::State(const Standard_Integer theIndex
     throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::State - index out of range");
   return myResults[theIndex - 1].State;
 }
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::GaussianCurvature(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::GaussianCurvature - index out of range");
+  return myResults[theIndex - 1].GaussianCurvature;
+}
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::MeanCurvature(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::MeanCurvature - index out of range");
+  return myResults[theIndex - 1].MeanCurvature;
+}
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::MinCurvature(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::MinCurvature - index out of range");
+  return myResults[theIndex - 1].MinCurvature;
+}
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::MaxCurvature(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::MaxCurvature - index out of range");
+  return myResults[theIndex - 1].MaxCurvature;
+}
+
+//=================================================================================================
+
+Standard_Integer BRepIntCurveSurface_InterBVH::FaceIndex(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::FaceIndex - index out of range");
+  return myResults[theIndex - 1].FaceIndex;
+}

@@ -203,6 +203,21 @@ public:
   //! Returns the state (IN or ON) at i-th intersection
   Standard_EXPORT TopAbs_State State(const Standard_Integer theIndex) const;
 
+  //! Returns Gaussian curvature (K = κ1 × κ2) at i-th intersection
+  Standard_EXPORT Standard_Real GaussianCurvature(const Standard_Integer theIndex) const;
+
+  //! Returns Mean curvature (H = (κ1 + κ2) / 2) at i-th intersection
+  Standard_EXPORT Standard_Real MeanCurvature(const Standard_Integer theIndex) const;
+
+  //! Returns minimum principal curvature (κ1) at i-th intersection
+  Standard_EXPORT Standard_Real MinCurvature(const Standard_Integer theIndex) const;
+
+  //! Returns maximum principal curvature (κ2) at i-th intersection
+  Standard_EXPORT Standard_Real MaxCurvature(const Standard_Integer theIndex) const;
+
+  //! Returns the face index (1-based) at i-th intersection
+  Standard_EXPORT Standard_Integer FaceIndex(const Standard_Integer theIndex) const;
+
   //! Returns true if the shape has been loaded and BVH built
   Standard_Boolean IsLoaded() const { return myIsLoaded; }
 
