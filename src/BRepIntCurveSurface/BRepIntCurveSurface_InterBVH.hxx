@@ -33,6 +33,8 @@
 #include <TopAbs_State.hxx>
 #include <NCollection_Array1.hxx>
 #include <BRepAdaptor_Surface.hxx>
+#include <BSplSLib_Cache.hxx>
+#include <Geom_BSplineSurface.hxx>
 
 #include <vector>
 
@@ -65,6 +67,14 @@ struct BRepIntCurveSurface_TriangleInfo
 {
   Standard_Integer FaceIndex;     //!< 0-based index into myFaces
   gp_Pnt2d         UV0, UV1, UV2; //!< UV coordinates of triangle vertices on the face
+
+  //! Knot span indices for B-spline surfaces (enables fast local Bézier evaluation)
+  //! -1 means not computed or surface is not B-spline
+  Standard_Integer USpanIndex;    //!< Index of U knot span containing triangle centroid
+  Standard_Integer VSpanIndex;    //!< Index of V knot span containing triangle centroid
+
+  BRepIntCurveSurface_TriangleInfo()
+    : FaceIndex(-1), USpanIndex(-1), VSpanIndex(-1) {}
 };
 
 //! Structure to hold a single ray-surface hit result
@@ -237,6 +247,82 @@ public:
   //! Check if OpenMP parallelization is enabled
   Standard_Boolean GetUseOpenMP() const { return myUseOpenMP; }
 
+  //! Perform batch intersection with coherent packet tracing.
+  //! Rays are sorted by direction and grouped into packets for better cache utilization.
+  //! This is faster than PerformBatch for coherent ray patterns (e.g., grid rendering).
+  //! @param theRays Array of rays to intersect
+  //! @param theResults Output array of hit results (resized automatically)
+  //! @param theNumThreads Number of threads (0 = auto)
+  Standard_EXPORT void PerformBatchCoherent(const NCollection_Array1<gp_Lin>&                  theRays,
+                                            NCollection_Array1<BRepIntCurveSurface_HitResult>& theResults,
+                                            const Standard_Integer theNumThreads = 0);
+
+  //! Set packet size for coherent tracing (4, 8, or 16)
+  void SetPacketSize(Standard_Integer theSize) { myPacketSize = theSize; }
+
+  //! Get current packet size
+  Standard_Integer GetPacketSize() const { return myPacketSize; }
+
+  //! Enable/disable ray sorting for coherent tracing
+  void SetEnableRaySorting(Standard_Boolean theEnable) { myEnableRaySorting = theEnable; }
+
+  //! Check if ray sorting is enabled
+  Standard_Boolean GetEnableRaySorting() const { return myEnableRaySorting; }
+
+  //! Enable/disable curvature computation (D2 evaluation)
+  //! When disabled, only normals are computed (faster)
+  void SetComputeCurvature(Standard_Boolean theCompute) { myComputeCurvature = theCompute; }
+
+  //! Check if curvature computation is enabled
+  Standard_Boolean GetComputeCurvature() const { return myComputeCurvature; }
+
+  //! Enable/disable skipping Newton refinement for planar faces
+  //! When enabled, planar faces use triangle intersection directly (much faster)
+  void SetSkipNewtonForPlanar(Standard_Boolean theSkip) { mySkipNewtonForPlanar = theSkip; }
+
+  //! Check if Newton skipping for planar faces is enabled
+  Standard_Boolean GetSkipNewtonForPlanar() const { return mySkipNewtonForPlanar; }
+
+  //! Set Newton refinement tolerance (default 1e-7)
+  //! Larger values (e.g., 1e-4) converge faster but with less precision
+  //! For rendering/visualization, 1e-4 to 1e-5 is usually sufficient
+  void SetNewtonTolerance(Standard_Real theTol) { myNewtonTolerance = theTol; }
+
+  //! Get Newton refinement tolerance
+  Standard_Real GetNewtonTolerance() const { return myNewtonTolerance; }
+
+  //! Set maximum Newton iterations (default 10)
+  //! Lower values (e.g., 3-5) are faster but may not fully converge on high-curvature surfaces
+  void SetNewtonMaxIter(Standard_Integer theMaxIter) { myNewtonMaxIter = theMaxIter; }
+
+  //! Get maximum Newton iterations
+  Standard_Integer GetNewtonMaxIter() const { return myNewtonMaxIter; }
+
+  //! Enable/disable SIMD-accelerated Newton refinement batching
+  //! When enabled, curved surface hits are batched and refined using SSE/AVX
+  //! Requires a two-phase approach: BVH traversal, then batched Newton
+  void SetUseSIMDNewton(Standard_Boolean theUse) { myUseSIMDNewton = theUse; }
+
+  //! Check if SIMD Newton batching is enabled
+  Standard_Boolean GetUseSIMDNewton() const { return myUseSIMDNewton; }
+
+  //! Returns true if the specified face (1-based index) is planar
+  Standard_Boolean IsFacePlanar(Standard_Integer theFaceIndex) const
+  {
+    if (theFaceIndex < 1 || theFaceIndex > static_cast<Standard_Integer>(myIsPlanarFace.size()))
+      return Standard_False;
+    return myIsPlanarFace[theFaceIndex - 1];
+  }
+
+  //! Returns the number of planar faces in the loaded shape
+  Standard_Integer NbPlanarFaces() const
+  {
+    Standard_Integer count = 0;
+    for (const auto& isPlanar : myIsPlanarFace)
+      if (isPlanar) ++count;
+    return count;
+  }
+
 private:
   // Face data
   TopTools_IndexedMapOfShape myFaces;
@@ -264,6 +350,28 @@ private:
   // Runtime configuration
   BRepIntCurveSurface_BVHBackend myBackend;
   Standard_Boolean               myUseOpenMP;
+
+  // Packet tracing configuration
+  Standard_Integer myPacketSize;       //!< Packet size (4, 8, or 16)
+  Standard_Boolean myEnableRaySorting; //!< Enable ray sorting for coherent tracing
+
+  // Newton refinement optimization
+  std::vector<Standard_Boolean> myIsPlanarFace;       //!< Pre-classified face planarity
+  std::vector<Standard_Boolean> myFaceReversed;       //!< Pre-cached face orientation (true if reversed)
+  Standard_Boolean              myComputeCurvature;   //!< Whether to compute curvatures (D2)
+  Standard_Boolean              mySkipNewtonForPlanar; //!< Skip Newton for planar faces
+  Standard_Real                 myNewtonTolerance;    //!< Newton convergence tolerance (default 1e-7)
+  Standard_Integer              myNewtonMaxIter;      //!< Max Newton iterations (default 10)
+  Standard_Boolean              myUseSIMDNewton;      //!< Use SIMD-accelerated Newton batching
+
+  // B-spline surface caching for fast Newton refinement
+  //! B-spline surface handles (null for non-B-spline faces)
+  std::vector<Handle(Geom_BSplineSurface)> myBSplineSurfaces;
+  //! Per-thread BSplSLib_Cache for each B-spline face (indexed by [faceIdx * numThreads + threadId])
+  //! Using thread-local to avoid contention in parallel Newton refinement
+  mutable std::vector<Handle(BSplSLib_Cache)> myBSplineCaches;
+  //! Number of threads used for cache allocation
+  Standard_Integer myNumBSplineCacheThreads;
 
 #ifdef OCCT_USE_EMBREE
   // Embree BVH acceleration
