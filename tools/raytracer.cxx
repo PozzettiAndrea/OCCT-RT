@@ -812,7 +812,8 @@ void GenerateGridRays(NCollection_Array1<gp_Lin>& theRays,
 
 void RunBenchmark(BRepIntCurveSurface_InterBVH& theRaytracer,
                   Standard_Integer              theResolution,
-                  const Bnd_Box&                theBndBox)
+                  const Bnd_Box&                theBndBox,
+                  bool                          useCoherent = false)
 {
   Standard_Integer nRays = theResolution * theResolution;
 
@@ -823,7 +824,14 @@ void RunBenchmark(BRepIntCurveSurface_InterBVH& theRaytracer,
 
   OSD_Timer timer;
   timer.Start();
-  theRaytracer.PerformBatch(rays, results);
+  if (useCoherent)
+  {
+    theRaytracer.PerformBatchCoherent(rays, results);
+  }
+  else
+  {
+    theRaytracer.PerformBatch(rays, results);
+  }
   timer.Stop();
 
   Standard_Integer hitCount = 0;
@@ -858,6 +866,9 @@ void PrintUsage(const char* progName)
   std::cout << "                      embree8 = Embree rtcIntersect8 (AVX, 8 rays)" << std::endl;
   std::cout << "  --openmp            Enable OpenMP parallelization (default: on)" << std::endl;
   std::cout << "  --no-openmp         Disable OpenMP parallelization" << std::endl;
+  std::cout << "  --coherent          Use coherent packet raytracing (groups rays by direction)"
+            << std::endl;
+  std::cout << "  --no-sorting        Disable ray sorting for coherent tracing" << std::endl;
   std::cout << std::endl;
   std::cout << "NumPy Output Options (mix and match, outputs float32 .npy file):" << std::endl;
   std::cout << "  --position          Output hit point X/Y/Z coordinates (3 channels)" << std::endl;
@@ -885,6 +896,11 @@ void PrintUsage(const char* progName)
   std::cout << "                      Smaller = finer mesh, more accurate" << std::endl;
   std::cout << "  -a, --angle A       Angular deflection in radians (default 0.1)" << std::endl;
   std::cout << "                      Controls segment count on curves" << std::endl;
+  std::cout << "  --newton-tol T      Newton refinement tolerance (default 1e-7)" << std::endl;
+  std::cout << "                      Larger values (1e-4) = faster but less precise" << std::endl;
+  std::cout << "  --newton-iter N     Max Newton iterations (default 10)" << std::endl;
+  std::cout << "                      Lower values (3-5) = faster convergence" << std::endl;
+  std::cout << "  --simd-newton       Enable SIMD-accelerated Newton batching (experimental)" << std::endl;
   std::cout << "  -s, --export-stl    Export tessellation as STL file" << std::endl;
   std::cout << "  --roi X1,Y1,X2,Y2   Region of interest (XY bounds for raytracing)" << std::endl;
   std::cout << std::endl;
@@ -910,6 +926,9 @@ int main(int argc, char* argv[])
   int         imageResolution   = 500;
   double      deflection        = 0.02; // tessellation BVH deflection (default)
   double      angularDeflection = 0.1;  // radians (default)
+  double      newtonTolerance   = 1e-7; // Newton refinement tolerance (default)
+  int         newtonMaxIter     = 10;   // Newton max iterations (default)
+  bool        useSIMDNewton     = false; // SIMD Newton batching (experimental)
   bool        useROI            = false;
   double      roiX1 = 0, roiY1 = 0, roiX2 = 0, roiY2 = 0;
 
@@ -917,6 +936,8 @@ int main(int argc, char* argv[])
   BRepIntCurveSurface_BVHBackend backend           = BRepIntCurveSurface_BVHBackend::OCCT_BVH;
   bool                           useOpenMP         = true;  // Enabled by default
   bool                           allowDisconnected = false; // Allow disconnected shapes
+  bool                           useCoherent       = false; // Use coherent packet raytracing
+  bool                           enableRaySorting  = true;  // Enable ray sorting for coherent tracing
 
   // NumPy output channel flags
   bool npyPosition  = false; // X, Y, Z position (3 channels)
@@ -985,6 +1006,30 @@ int main(int argc, char* argv[])
         if (angularDeflection <= 0)
           angularDeflection = 0.5;
       }
+    }
+    else if (arg == "--newton-tol")
+    {
+      if (i + 1 < argc)
+      {
+        newtonTolerance = std::atof(argv[++i]);
+        if (newtonTolerance <= 0)
+          newtonTolerance = 1e-7;
+      }
+    }
+    else if (arg == "--newton-iter")
+    {
+      if (i + 1 < argc)
+      {
+        newtonMaxIter = std::atoi(argv[++i]);
+        if (newtonMaxIter < 1)
+          newtonMaxIter = 1;
+        if (newtonMaxIter > 100)
+          newtonMaxIter = 100;
+      }
+    }
+    else if (arg == "--simd-newton")
+    {
+      useSIMDNewton = true;
     }
     else if (arg == "--roi")
     {
@@ -1080,6 +1125,14 @@ int main(int argc, char* argv[])
     {
       useOpenMP = false;
     }
+    else if (arg == "--coherent")
+    {
+      useCoherent = true;
+    }
+    else if (arg == "--no-sorting")
+    {
+      enableRaySorting = false;
+    }
     else if (arg == "--allow-disconnected")
     {
       allowDisconnected = true;
@@ -1163,6 +1216,10 @@ int main(int argc, char* argv[])
   // Configure backend and parallelization
   raytracer.SetBackend(backend);
   raytracer.SetUseOpenMP(useOpenMP);
+  raytracer.SetEnableRaySorting(enableRaySorting);
+  raytracer.SetNewtonTolerance(newtonTolerance);
+  raytracer.SetNewtonMaxIter(newtonMaxIter);
+  raytracer.SetUseSIMDNewton(useSIMDNewton);
 
   OSD_Timer loadTimer;
   loadTimer.Start();
@@ -1229,13 +1286,17 @@ int main(int argc, char* argv[])
   {
     std::cout << "\n=== Batch Raytracing Benchmarks ===" << std::endl;
     std::cout << "Ray grid covering bounding box, shooting -Z direction" << std::endl;
+    if (useCoherent)
+    {
+      std::cout << "Using COHERENT packet raytracing" << std::endl;
+    }
     std::cout << std::string(65, '-') << std::endl;
 
     std::vector<Standard_Integer> resolutions = {10, 32, 64, 100, 200, 500, 1000};
 
     for (Standard_Integer res : resolutions)
     {
-      RunBenchmark(raytracer, res, bndBox);
+      RunBenchmark(raytracer, res, bndBox, useCoherent);
     }
 
     std::cout << std::string(65, '-') << std::endl;

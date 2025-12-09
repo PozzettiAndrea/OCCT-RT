@@ -17,6 +17,48 @@ option(BUILD_RAYTRACER "Build the raytracer command-line tool" ON)
 option(OCCT_RT_USE_OPENMP "Enable OpenMP for parallel ray processing" ON)
 option(OCCT_RT_USE_EMBREE "Enable Embree for SIMD ray-triangle intersection" ON)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(OCCT_RT_NATIVE_ARCH "Enable -march=native for optimal SIMD (AVX/SSE)" ON)
+option(OCCT_RT_ENABLE_LTO "Enable Link Time Optimization for Release builds" OFF)
+
+# =============================================================================
+# COMPILER OPTIMIZATION FLAGS
+# =============================================================================
+if(CMAKE_BUILD_TYPE STREQUAL "Release" OR CMAKE_BUILD_TYPE STREQUAL "RelWithDebInfo")
+  if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang|AppleClang")
+    # Enable aggressive optimizations
+    add_compile_options(-O3 -funroll-loops -ftree-vectorize)
+
+    # Enable native architecture for best SIMD support (AVX/AVX2/SSE4)
+    if(OCCT_RT_NATIVE_ARCH)
+      add_compile_options(-march=native)
+      message(STATUS "Native architecture enabled (-march=native) for optimal SIMD")
+    endif()
+
+    # Fast math for raytracing (acceptable precision trade-off)
+    add_compile_options(-ffast-math)
+
+  elseif(MSVC)
+    # MSVC optimizations
+    add_compile_options(/O2 /Ob2 /Oi /Ot /GL)
+    if(OCCT_RT_NATIVE_ARCH)
+      # Enable AVX2 on MSVC (most modern CPUs support this)
+      add_compile_options(/arch:AVX2)
+      message(STATUS "AVX2 enabled for MSVC")
+    endif()
+  endif()
+endif()
+
+# Link Time Optimization (can provide 10-20% speedup)
+if(OCCT_RT_ENABLE_LTO)
+  include(CheckIPOSupported)
+  check_ipo_supported(RESULT lto_supported OUTPUT lto_error)
+  if(lto_supported)
+    set(CMAKE_INTERPROCEDURAL_OPTIMIZATION TRUE)
+    message(STATUS "Link Time Optimization (LTO) enabled")
+  else()
+    message(WARNING "LTO not supported: ${lto_error}")
+  endif()
+endif()
 
 # =============================================================================
 # FIND OPENCASCADE
@@ -65,6 +107,7 @@ find_occt_library(OCCT_TKernel TKernel)
 find_occt_library(OCCT_TKG3d TKG3d)
 find_occt_library(OCCT_TKGeomBase TKGeomBase)
 find_occt_library(OCCT_TKMesh TKMesh)
+find_occt_library(OCCT_TKGeomAlgo TKGeomAlgo)
 
 # Additional libraries for raytracer tool
 find_occt_library(OCCT_TKDESTEP TKDESTEP)
@@ -107,6 +150,7 @@ target_link_libraries(OCCT_RT PUBLIC
     ${OCCT_TKG3d}
     ${OCCT_TKGeomBase}
     ${OCCT_TKMesh}
+    ${OCCT_TKGeomAlgo}
 )
 
 # =============================================================================
