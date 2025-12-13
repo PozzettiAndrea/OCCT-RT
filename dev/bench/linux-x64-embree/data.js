@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765644156172,
+  "lastUpdate": 1765644719449,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -1050,6 +1050,96 @@ window.BENCHMARK_DATA = {
             "value": 7162503,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 139.62ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "41ca429b9b358644e101579c23528a72bfff532e",
+          "message": "Debug Windows: find and copy OCCT_RT.dll\n\nThe raytracer can't find OCCT_RT.dll (our library). Add debugging\nto find where CMake places it in the build directory, then copy it\nto build/bin along with other DLLs.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:49:01Z",
+          "tree_id": "c0207d6ff32f25e48c4621d6c576cc9af3c8a675",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/41ca429b9b358644e101579c23528a72bfff532e"
+        },
+        "date": 1765644718839,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7093356,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 140.98ms"
+          },
+          {
+            "name": "box",
+            "value": 17755682,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 56.32ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3928764,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 254.53ms"
+          },
+          {
+            "name": "cone",
+            "value": 5925259,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 168.77ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 18126122,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 55.17ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2744365,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 364.38ms"
+          },
+          {
+            "name": "mr",
+            "value": 10833884,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.30ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10293149,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 97.15ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4991415,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 200.34ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3809132,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 262.53ms"
+          },
+          {
+            "name": "torus",
+            "value": 7148423,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 139.89ms"
           }
         ]
       }
