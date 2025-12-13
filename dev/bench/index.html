@@ -217,9 +217,29 @@
       if (geomMeta) {
         const stats = document.createElement('div');
         stats.className = 'mesh-stats';
+
+        // Build face types string (only non-zero types)
+        let faceTypesStr = '';
+        if (geomMeta.face_types) {
+          const ft = geomMeta.face_types;
+          const parts = [];
+          if (ft.plane > 0) parts.push(`${ft.plane} plane`);
+          if (ft.cylinder > 0) parts.push(`${ft.cylinder} cyl`);
+          if (ft.cone > 0) parts.push(`${ft.cone} cone`);
+          if (ft.sphere > 0) parts.push(`${ft.sphere} sphere`);
+          if (ft.torus > 0) parts.push(`${ft.torus} torus`);
+          if (ft.bspline > 0) parts.push(`${ft.bspline} bspline`);
+          if (ft.bezier > 0) parts.push(`${ft.bezier} bezier`);
+          if (ft.other > 0) parts.push(`${ft.other} other`);
+          if (parts.length > 0) faceTypesStr = ` (${parts.join(', ')})`;
+        }
+
+        const faceCount = geomMeta.cad_face_count ? `<span>${geomMeta.cad_face_count} CAD faces${faceTypesStr}</span>` : '';
+
         stats.innerHTML = `
           <span>${formatNumber(geomMeta.triangle_count)} triangles</span>
           <span>meshed in ${formatTime(geomMeta.tessellation_time_ms)}</span>
+          ${faceCount}
         `;
         header.appendChild(stats);
       }
