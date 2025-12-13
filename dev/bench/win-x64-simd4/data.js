@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765652113124,
+  "lastUpdate": 1765653505913,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -540,6 +540,96 @@ window.BENCHMARK_DATA = {
             "value": 5621489,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 177.89ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "4496fdada6c2fdc81498712e82b673599428ba34",
+          "message": "Fix TKXSBase library name case\n\nUse TKXSBase (correct case) instead of TKXSBASE.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T19:08:31Z",
+          "tree_id": "5436339ef80590e9dffa5eb89a7325553dcb4ce2",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/4496fdada6c2fdc81498712e82b673599428ba34"
+        },
+        "date": 1765653488581,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 4408244,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 226.85ms"
+          },
+          {
+            "name": "box",
+            "value": 8437537,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 118.52ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2578720,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 387.79ms"
+          },
+          {
+            "name": "cone",
+            "value": 3724502,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 268.49ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 9548153,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 104.73ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2047917,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 488.30ms"
+          },
+          {
+            "name": "mr",
+            "value": 8317108,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 120.23ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 6993873,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 142.98ms"
+          },
+          {
+            "name": "sphere",
+            "value": 3786832,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 264.07ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3230027,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 309.59ms"
+          },
+          {
+            "name": "torus",
+            "value": 5577783,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 179.28ms"
           }
         ]
       }
