@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765643131884,
+  "lastUpdate": 1765643251967,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -780,6 +780,96 @@ window.BENCHMARK_DATA = {
             "value": 7092500,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 140.99ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "29ef15f78038dd7697a287b853e6dd798b0a44ea",
+          "message": "Fix Windows benchmarks by copying DLLs to build directory\n\nThe Python subprocess on Windows doesn't inherit PATH properly from\nGit Bash, so the raytracer couldn't find OCCT DLLs. Fix by:\n- Adding a step to copy TK*.dll and tbb*.dll to build/bin\n- Using PowerShell instead of Git Bash for benchmark step\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:24:22Z",
+          "tree_id": "b5b76ad6a2d3a253657b753df6db1d2d2c89f76e",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/29ef15f78038dd7697a287b853e6dd798b0a44ea"
+        },
+        "date": 1765643251346,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7021584,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 142.42ms"
+          },
+          {
+            "name": "box",
+            "value": 18064563,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 55.36ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3924785,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 254.79ms"
+          },
+          {
+            "name": "cone",
+            "value": 5987056,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 167.03ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 17950743,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 55.71ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2742649,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 364.61ms"
+          },
+          {
+            "name": "mr",
+            "value": 10746333,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 93.06ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10174286,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 98.29ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5003052,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 199.88ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3812763,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 262.28ms"
+          },
+          {
+            "name": "torus",
+            "value": 7192382,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 139.04ms"
           }
         ]
       }
