@@ -39,13 +39,17 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
     temp_dir = Path(output_png).parent / "temp"
     temp_dir.mkdir(exist_ok=True)
 
+    # Convert paths to absolute (needed because we change cwd)
+    raytracer_abs = str(Path(raytracer).resolve())
+    brep_file_abs = str(Path(brep_file).resolve())
+
     brep_stem = Path(brep_file).stem
     npy_file = temp_dir / f"{brep_stem}_data.npy"
 
     try:
         # Run raytracer to get normals and positions
         result = subprocess.run(
-            [raytracer, "-r", str(resolution), "--normals", "--position", brep_file],
+            [raytracer_abs, "-r", str(resolution), "--normals", "--position", brep_file_abs],
             capture_output=True,
             text=True,
             timeout=120,
