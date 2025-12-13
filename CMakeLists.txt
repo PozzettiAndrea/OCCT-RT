@@ -116,7 +116,7 @@ find_occt_library(OCCT_TKDEIGES TKDEIGES)
 find_occt_library(OCCT_TKDE TKDE)
 find_occt_library(OCCT_TKShHealing TKShHealing)
 find_occt_library(OCCT_TKPrim TKPrim)
-find_occt_library(OCCT_TKXSBASE TKXSBASE)
+find_occt_library(OCCT_TKXSBase TKXSBase)
 
 # =============================================================================
 # OCCT-RT LIBRARY
@@ -280,7 +280,7 @@ if(BUILD_VIEWER)
             ${OCCT_TKDEIGES}
             ${OCCT_TKDE}
             ${OCCT_TKShHealing}
-            ${OCCT_TKXSBASE}
+            ${OCCT_TKXSBase}
         )
 
         # Viewer executable
