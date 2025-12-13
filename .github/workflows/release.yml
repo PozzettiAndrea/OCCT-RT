@@ -232,6 +232,21 @@ jobs:
             fi
           done
 
+          # Ad-hoc code signing for Gatekeeper compatibility
+          # Sign all libraries first
+          for lib in dist/lib/*.dylib; do
+            if [ -f "$lib" ]; then
+              codesign --force --sign - "$lib" 2>/dev/null || true
+            fi
+          done
+
+          # Sign executables
+          for exe in dist/bin/raytracer dist/bin/occt-rt-viewer; do
+            if [ -f "$exe" ]; then
+              codesign --force --sign - "$exe" 2>/dev/null || true
+            fi
+          done
+
           # Create wrapper scripts for compatibility using printf
           printf '#!/bin/bash\nSCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\nexport DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"\nexec "$SCRIPT_DIR/raytracer" "$@"\n' > dist/bin/raytracer.command
           chmod +x dist/bin/raytracer.command
@@ -240,7 +255,7 @@ jobs:
           chmod +x dist/bin/occt-rt-viewer.command
 
           # Create README
-          printf 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE\n=========================================================\n\nUsage:\n  ./bin/raytracer [options] <file.brep>\n  ./bin/occt-rt-viewer [options] <file.step|file.iges|file.brep>\n\nNote: If you get library errors, use the .command wrapper scripts instead.\n\nViewer Controls:\n  Left-drag     Rotate (trackball)\n  Scroll        Zoom\n  Middle-drag   Pan\n  R             Reset view\n  Q/Escape      Quit\n\nFor more options, run with --help\n\nGitHub: https://github.com/pozzettiandrea/OCCT-RT\n' > dist/README.txt
+          printf 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE\n=========================================================\n\nmacOS First Run:\n  The app is ad-hoc signed. On first run, right-click the binary\n  and select "Open", then click "Open" in the dialog.\n  Alternatively, run: xattr -cr /path/to/occt-rt-macos-arm64\n\nUsage:\n  ./bin/raytracer [options] <file.brep>\n  ./bin/occt-rt-viewer [options] <file.step|file.iges|file.brep>\n\nNote: If you get library errors, use the .command wrapper scripts instead.\n\nViewer Controls:\n  Left-drag     Rotate (trackball)\n  Scroll        Zoom\n  Middle-drag   Pan\n  R             Reset view\n  Q/Escape      Quit\n\nFor more options, run with --help\n\nGitHub: https://github.com/pozzettiandrea/OCCT-RT\n' > dist/README.txt
 
           # Create tarball
           cd dist
