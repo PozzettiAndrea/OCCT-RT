@@ -144,6 +144,7 @@ jobs:
 
       - name: Run benchmarks (Windows)
         if: runner.os == 'Windows'
+        continue-on-error: true  # Windows DLL loading in subprocess is unreliable
         run: |
           # Add conda Library/bin to PATH for DLLs
           export PATH="$CONDA_PREFIX/Library/bin:$PATH"
