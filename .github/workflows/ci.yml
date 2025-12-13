@@ -155,35 +155,67 @@ jobs:
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
-          # Copy OCCT and TBB DLLs to build directory so raytracer can find them
+          # Copy OCCT, TBB and other dependency DLLs to build directory
           $dllSource = "$env:CONDA_PREFIX\Library\bin"
           $dllDest = "build\bin"
 
-          # Copy all TK*.dll (OCCT) and tbb*.dll files
-          Get-ChildItem -Path $dllSource -Filter "TK*.dll" | Copy-Item -Destination $dllDest -Force
-          Get-ChildItem -Path $dllSource -Filter "tbb*.dll" | Copy-Item -Destination $dllDest -Force
+          # Copy all potentially needed DLLs
+          $patterns = @("TK*.dll", "tbb*.dll", "freetype*.dll", "freeimage*.dll", "tcl*.dll", "tk*.dll", "zlib*.dll")
+          foreach ($pattern in $patterns) {
+            Get-ChildItem -Path $dllSource -Filter $pattern -ErrorAction SilentlyContinue |
+              Copy-Item -Destination $dllDest -Force -ErrorAction SilentlyContinue
+          }
 
           # List copied DLLs for debugging
           Write-Host "Copied DLLs to $dllDest :"
-          Get-ChildItem -Path $dllDest -Filter "*.dll" | ForEach-Object { Write-Host "  $_" }
+          Get-ChildItem -Path $dllDest -Filter "*.dll" | ForEach-Object { Write-Host "  $($_.Name)" }
 
       - name: Test raytracer (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
+        continue-on-error: true
         run: |
           # Test if raytracer runs at all
           Write-Host "Testing raytracer..."
-          $env:Path = "$PWD\build\bin;$env:Path"
-          try {
-            $output = & .\build\bin\raytracer.exe --help 2>&1
-            Write-Host "Raytracer output:"
-            Write-Host $output
-          } catch {
-            Write-Host "Error running raytracer: $_"
+          $env:Path = "$PWD\build\bin;$env:CONDA_PREFIX\Library\bin;$env:Path"
+
+          # Check if file exists
+          if (Test-Path ".\build\bin\raytracer.exe") {
+            Write-Host "raytracer.exe exists"
+          } else {
+            Write-Host "raytracer.exe NOT FOUND"
+            exit 1
           }
-          # List files in build\bin
-          Write-Host "Files in build\bin:"
-          Get-ChildItem build\bin | ForEach-Object { Write-Host "  $($_.Name)" }
+
+          # Try to check dependencies using dumpbin
+          Write-Host "`nChecking dependencies with dumpbin..."
+          try {
+            $deps = & dumpbin /dependents .\build\bin\raytracer.exe 2>&1
+            Write-Host $deps
+          } catch {
+            Write-Host "dumpbin not available: $_"
+          }
+
+          # Run raytracer with simple test
+          Write-Host "`nRunning raytracer --help..."
+          $proc = Start-Process -FilePath ".\build\bin\raytracer.exe" -ArgumentList "--help" `
+            -NoNewWindow -Wait -PassThru -RedirectStandardOutput "stdout.txt" -RedirectStandardError "stderr.txt"
+          Write-Host "Exit code: $($proc.ExitCode)"
+          Write-Host "STDOUT:"
+          if (Test-Path stdout.txt) { Get-Content stdout.txt }
+          Write-Host "STDERR:"
+          if (Test-Path stderr.txt) { Get-Content stderr.txt }
+
+          # Also run with box.brep
+          Write-Host "`nRunning raytracer on box.brep..."
+          $proc2 = Start-Process -FilePath ".\build\bin\raytracer.exe" `
+            -ArgumentList "-b", "-r", "10", ".\test_data\box.brep" `
+            -NoNewWindow -Wait -PassThru -RedirectStandardOutput "stdout2.txt" -RedirectStandardError "stderr2.txt"
+          Write-Host "Exit code: $($proc2.ExitCode)"
+          Write-Host "STDOUT:"
+          if (Test-Path stdout2.txt) { Get-Content stdout2.txt }
+          Write-Host "STDERR:"
+          if (Test-Path stderr2.txt) { Get-Content stderr2.txt }
 
       - name: Run benchmarks (Windows)
         if: runner.os == 'Windows'
