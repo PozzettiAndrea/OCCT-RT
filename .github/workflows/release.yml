@@ -163,26 +163,15 @@ jobs:
           # Standard C++ library (for portable builds)
           # Usually not needed if users have a modern system
 
-          # Create wrapper scripts
-          cat > dist/bin/raytracer.sh << 'EOF'
-#!/bin/bash
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-export LD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$LD_LIBRARY_PATH"
-exec "$SCRIPT_DIR/raytracer" "$@"
-EOF
+          # Create wrapper scripts using printf to avoid heredoc YAML issues
+          printf '#!/bin/bash\nSCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\nexport LD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$LD_LIBRARY_PATH"\nexec "$SCRIPT_DIR/raytracer" "$@"\n' > dist/bin/raytracer.sh
           chmod +x dist/bin/raytracer.sh
 
-          cat > dist/bin/occt-rt-viewer.sh << 'EOF'
-#!/bin/bash
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-export LD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$LD_LIBRARY_PATH"
-exec "$SCRIPT_DIR/occt-rt-viewer" "$@"
-EOF
+          printf '#!/bin/bash\nSCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\nexport LD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$LD_LIBRARY_PATH"\nexec "$SCRIPT_DIR/occt-rt-viewer" "$@"\n' > dist/bin/occt-rt-viewer.sh
           chmod +x dist/bin/occt-rt-viewer.sh
 
           # Create README
-          cat > dist/README.txt << 'EOF'
-OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
+          echo 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
 =========================================================
 
 Usage:
@@ -198,8 +187,7 @@ Viewer Controls:
 
 For more options, run with --help
 
-GitHub: https://github.com/pozzettiandrea/OCCT-RT
-EOF
+GitHub: https://github.com/pozzettiandrea/OCCT-RT' > dist/README.txt
 
           # Create tarball
           cd dist
@@ -260,26 +248,15 @@ EOF
             fi
           done
 
-          # Create wrapper scripts for compatibility
-          cat > dist/bin/raytracer.command << 'EOF'
-#!/bin/bash
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-export DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"
-exec "$SCRIPT_DIR/raytracer" "$@"
-EOF
+          # Create wrapper scripts for compatibility using printf
+          printf '#!/bin/bash\nSCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\nexport DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"\nexec "$SCRIPT_DIR/raytracer" "$@"\n' > dist/bin/raytracer.command
           chmod +x dist/bin/raytracer.command
 
-          cat > dist/bin/occt-rt-viewer.command << 'EOF'
-#!/bin/bash
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-export DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"
-exec "$SCRIPT_DIR/occt-rt-viewer" "$@"
-EOF
+          printf '#!/bin/bash\nSCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"\nexport DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"\nexec "$SCRIPT_DIR/occt-rt-viewer" "$@"\n' > dist/bin/occt-rt-viewer.command
           chmod +x dist/bin/occt-rt-viewer.command
 
           # Create README
-          cat > dist/README.txt << 'EOF'
-OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
+          echo 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
 =========================================================
 
 Usage:
@@ -297,8 +274,7 @@ Viewer Controls:
 
 For more options, run with --help
 
-GitHub: https://github.com/pozzettiandrea/OCCT-RT
-EOF
+GitHub: https://github.com/pozzettiandrea/OCCT-RT' > dist/README.txt
 
           # Create tarball
           cd dist
