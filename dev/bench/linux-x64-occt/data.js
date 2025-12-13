@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765643347261,
+  "lastUpdate": 1765643707702,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -690,6 +690,96 @@ window.BENCHMARK_DATA = {
             "value": 2734407,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 365.71ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "b374ee08daa913cd04a494a6fb0801c7d97d70f0",
+          "message": "Add Windows raytracer debug step and fix PATH for subprocess\n\n- Add test step to run raytracer --help directly\n- Set PATH in PowerShell before running benchmarks\n- Use Windows-style paths for raytracer and test_data\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:30:42Z",
+          "tree_id": "530ab58cba6e8ccd93256ed5a2ced6f2caacb5a7",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/b374ee08daa913cd04a494a6fb0801c7d97d70f0"
+        },
+        "date": 1765643706930,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 811786,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 1231.85ms"
+          },
+          {
+            "name": "box",
+            "value": 10796688,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 92.62ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2956760,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 338.21ms"
+          },
+          {
+            "name": "cone",
+            "value": 3450203,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 289.84ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 6760045,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 147.93ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 1899310,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 526.51ms"
+          },
+          {
+            "name": "mr",
+            "value": 4926278,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 202.99ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 2854280,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 350.35ms"
+          },
+          {
+            "name": "sphere",
+            "value": 2407765,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 415.32ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 2566590,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 389.62ms"
+          },
+          {
+            "name": "torus",
+            "value": 2729265,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 366.40ms"
           }
         ]
       }
