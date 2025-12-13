@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765645569828,
+  "lastUpdate": 1765648051001,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -1050,6 +1050,96 @@ window.BENCHMARK_DATA = {
             "value": 2715982,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 368.19ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "5d152d8fd23370d975506ed4e667eb7bdca4c5fc",
+          "message": "Add macOS ARM64 Embree/SIMD4/SIMD8 benchmark configurations\n\n- Embree supports ARM64 since v3.13, conda-forge has osx-arm64 packages\n- Add macos-arm64-embree, macos-arm64-simd4, macos-arm64-simd8 jobs\n- Update macOS install step to include Embree when needed\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T17:42:58Z",
+          "tree_id": "f092267c80309d0261db9099979e779557b5cbb5",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/5d152d8fd23370d975506ed4e667eb7bdca4c5fc"
+        },
+        "date": 1765648050320,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 816755,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 1224.36ms"
+          },
+          {
+            "name": "box",
+            "value": 10726506,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 93.23ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2937246,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 340.46ms"
+          },
+          {
+            "name": "cone",
+            "value": 3456213,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 289.33ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 6729203,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 148.61ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 1895972,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 527.43ms"
+          },
+          {
+            "name": "mr",
+            "value": 5005606,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 199.78ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 2840094,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 352.10ms"
+          },
+          {
+            "name": "sphere",
+            "value": 2392705,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 417.94ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 2551027,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 392.00ms"
+          },
+          {
+            "name": "torus",
+            "value": 2735260,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 365.60ms"
           }
         ]
       }
