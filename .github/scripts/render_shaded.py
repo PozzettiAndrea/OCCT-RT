@@ -6,12 +6,15 @@ Usage: python render_shaded.py <raytracer> <test_data_dir> <output_dir> [--resol
 
 Runs the raytracer on each BREP file to get normals, then computes
 Lambertian shading with a top-right-front light for a clean clay look.
+Also captures mesh statistics (tessellation time, triangle count).
 """
 
 import subprocess
 import numpy as np
 import os
 import sys
+import re
+import json
 import argparse
 from pathlib import Path
 
@@ -22,7 +25,24 @@ except ImportError:
     sys.exit(1)
 
 
-def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: int = 256) -> bool:
+def parse_mesh_stats(stdout: str) -> dict:
+    """Extract mesh statistics from raytracer stdout."""
+    stats = {}
+
+    # Parse tessellation time: "Tessellation completed in X.XX ms"
+    tess_match = re.search(r"Tessellation completed in ([\d.]+) ms", stdout)
+    if tess_match:
+        stats["tessellation_time_ms"] = float(tess_match.group(1))
+
+    # Parse triangle count: "Wrote N triangles to STL"
+    tri_match = re.search(r"Wrote (\d+) triangles to STL", stdout)
+    if tri_match:
+        stats["triangle_count"] = int(tri_match.group(1))
+
+    return stats
+
+
+def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: int = 256) -> tuple:
     """
     Render a BREP file with Lambertian shading.
 
@@ -33,29 +53,34 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
         resolution: Image resolution
 
     Returns:
-        True on success, False on failure
+        Tuple of (success: bool, stats: dict)
     """
     # Raytracer outputs to the same directory as the input file
     brep_path = Path(brep_file).resolve()
     brep_dir = brep_path.parent
     brep_stem = brep_path.stem
     npy_file = brep_dir / f"{brep_stem}_data.npy"
+    stl_file = brep_dir / f"{brep_stem}_tessellation.stl"
 
     try:
         # Run raytracer to get normals and positions
+        # -s: export STL to get triangle count
         # --allow-disconnected: some test shapes have multiple disconnected components
         result = subprocess.run(
             [raytracer, "-r", str(resolution), "--normals", "--position",
-             "--allow-disconnected", str(brep_path)],
+             "-s", "--allow-disconnected", str(brep_path)],
             capture_output=True,
             text=True,
-            timeout=120
+            timeout=300  # Increased for 1024 resolution
         )
+
+        # Parse mesh stats from stdout even if render fails
+        stats = parse_mesh_stats(result.stdout)
 
         if result.returncode != 0:
             print(f"  Raytracer failed: {result.stderr[:200]}", file=sys.stderr)
             print(f"  stdout: {result.stdout[:200]}", file=sys.stderr)
-            return False
+            return False, stats
 
         # Find the output npy file (raytracer outputs to input file's directory)
         if not npy_file.exists():
@@ -68,7 +93,7 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
                 print(f"  No .npy output found in {brep_dir}", file=sys.stderr)
                 print(f"  Expected: {npy_file}", file=sys.stderr)
                 print(f"  Raytracer stdout: {result.stdout[:500]}", file=sys.stderr)
-                return False
+                return False, stats
 
         # Load the data
         data = np.load(npy_file)
@@ -77,7 +102,7 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
         # With --normals --position: 6 channels (X, Y, Z, Nx, Ny, Nz)
         if data.ndim != 3 or data.shape[2] < 6:
             print(f"  Unexpected data shape: {data.shape}", file=sys.stderr)
-            return False
+            return False, stats
 
         # Extract normals (channels 3, 4, 5)
         normals = data[:, :, 3:6]
@@ -129,17 +154,18 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
         img = Image.fromarray(rgb_8bit, mode='RGB')
         img.save(output_png)
 
-        # Clean up npy file (it's in the test_data directory)
+        # Clean up npy and stl files (they're in the test_data directory)
         npy_file.unlink(missing_ok=True)
+        stl_file.unlink(missing_ok=True)
 
-        return True
+        return True, stats
 
     except subprocess.TimeoutExpired:
         print(f"  Timeout rendering {brep_file}", file=sys.stderr)
     except Exception as e:
         print(f"  Error rendering {brep_file}: {e}", file=sys.stderr)
 
-    return False
+    return False, {}
 
 
 def main():
@@ -184,6 +210,7 @@ def main():
     print()
 
     success_count = 0
+    all_stats = {}
 
     for brep_file in brep_files:
         filename = brep_file.stem
@@ -191,11 +218,23 @@ def main():
 
         print(f"Rendering: {filename}...")
 
-        if render_shaded(raytracer, str(brep_file), str(output_png), resolution):
+        success, stats = render_shaded(raytracer, str(brep_file), str(output_png), resolution)
+        if success:
             print(f"  -> {output_png}")
+            if stats:
+                tess_time = stats.get("tessellation_time_ms", "N/A")
+                tri_count = stats.get("triangle_count", "N/A")
+                print(f"     Tessellation: {tess_time} ms, {tri_count} triangles")
+            all_stats[filename] = stats
             success_count += 1
         else:
             print(f"  -> FAILED")
+
+    # Write metadata JSON file
+    metadata_file = output_dir / "metadata.json"
+    with open(metadata_file, "w") as f:
+        json.dump(all_stats, f, indent=2)
+    print(f"\nMetadata written to: {metadata_file}")
 
     print()
     print(f"Successfully rendered {success_count}/{len(brep_files)} images")

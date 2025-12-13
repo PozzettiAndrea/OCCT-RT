@@ -170,7 +170,7 @@ jobs:
             ./build/bin/raytracer \
             ./test_data \
             ./renders \
-            --resolution 256
+            --resolution 1024
 
       - name: Upload rendered images
         if: matrix.backend == 'occt'
