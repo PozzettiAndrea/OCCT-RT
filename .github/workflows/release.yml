@@ -1,0 +1,404 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag (e.g., v1.0.0)'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+env:
+  CMAKE_BUILD_TYPE: Release
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            name: linux-x64
+            artifact: occt-rt-linux-x64
+            extension: tar.gz
+
+          - os: macos-14
+            name: macos-arm64
+            artifact: occt-rt-macos-arm64
+            extension: tar.gz
+
+          - os: windows-latest
+            name: win-x64
+            artifact: occt-rt-win-x64
+            extension: zip
+
+    runs-on: ${{ matrix.os }}
+    name: Build ${{ matrix.name }}
+
+    defaults:
+      run:
+        shell: bash -el {0}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          lfs: true
+
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v3
+        with:
+          miniforge-version: latest
+          channels: conda-forge
+          activate-environment: occt-rt
+
+      - name: Install dependencies (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          conda install -y occt cmake ninja embree glfw
+          # Install patchelf for bundling
+          sudo apt-get update && sudo apt-get install -y patchelf
+
+      - name: Install dependencies (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          conda install -y occt cmake ninja llvm-openmp embree glfw
+
+      - name: Install dependencies (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          conda install -y occt cmake ninja embree glfw
+
+      - name: Setup MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
+      - name: Configure CMake (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \
+            -DCMAKE_CXX_FLAGS="-msse4.1" \
+            -DOCCT_RT_NATIVE_ARCH=OFF \
+            -DOCCT_RT_USE_OPENMP=ON \
+            -DOCCT_RT_USE_EMBREE=ON \
+            -DBUILD_RAYTRACER=ON \
+            -DBUILD_VIEWER=ON
+
+      - name: Configure CMake (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \
+            -DOCCT_RT_NATIVE_ARCH=OFF \
+            -DOCCT_RT_USE_OPENMP=ON \
+            -DOCCT_RT_USE_EMBREE=ON \
+            -DBUILD_RAYTRACER=ON \
+            -DBUILD_VIEWER=ON
+
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \
+            -DCMAKE_C_COMPILER=cl \
+            -DCMAKE_CXX_COMPILER=cl \
+            -DCMAKE_CXX_FLAGS="/arch:AVX2 /EHsc" \
+            -DOCCT_RT_NATIVE_ARCH=OFF \
+            -DOCCT_RT_USE_OPENMP=ON \
+            -DOCCT_RT_USE_EMBREE=ON \
+            -DBUILD_RAYTRACER=ON \
+            -DBUILD_VIEWER=ON
+
+      - name: Build
+        run: cmake --build build --parallel
+
+      - name: Package (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          mkdir -p dist/bin dist/lib
+
+          # Copy executables
+          cp build/bin/raytracer dist/bin/
+          cp build/bin/occt-rt-viewer dist/bin/ 2>/dev/null || true
+
+          # Copy OCCT_RT library
+          cp build/libOCCT_RT.so dist/lib/ 2>/dev/null || true
+          cp build/libOCCT_RT_Viewer.so dist/lib/ 2>/dev/null || true
+
+          # Copy required shared libraries from conda
+          CONDA_LIB="$CONDA_PREFIX/lib"
+
+          # Function to copy library and its symlinks
+          copy_lib() {
+            local pattern=$1
+            for f in $CONDA_LIB/$pattern; do
+              if [ -f "$f" ]; then
+                cp -P "$f" dist/lib/
+              fi
+            done
+          }
+
+          # OCCT libraries
+          copy_lib "libTK*.so*"
+
+          # Embree
+          copy_lib "libembree*.so*"
+
+          # TBB (required by Embree and OCCT)
+          copy_lib "libtbb*.so*"
+
+          # GLFW
+          copy_lib "libglfw*.so*"
+
+          # OpenMP
+          copy_lib "libgomp*.so*"
+
+          # Standard C++ library (for portable builds)
+          # Usually not needed if users have a modern system
+
+          # Create wrapper scripts
+          cat > dist/bin/raytracer.sh << 'EOF'
+#!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export LD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$LD_LIBRARY_PATH"
+exec "$SCRIPT_DIR/raytracer" "$@"
+EOF
+          chmod +x dist/bin/raytracer.sh
+
+          cat > dist/bin/occt-rt-viewer.sh << 'EOF'
+#!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export LD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$LD_LIBRARY_PATH"
+exec "$SCRIPT_DIR/occt-rt-viewer" "$@"
+EOF
+          chmod +x dist/bin/occt-rt-viewer.sh
+
+          # Create README
+          cat > dist/README.txt << 'EOF'
+OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
+=========================================================
+
+Usage:
+  ./bin/raytracer.sh [options] <file.brep>
+  ./bin/occt-rt-viewer.sh [options] <file.step|file.iges|file.brep>
+
+Viewer Controls:
+  Left-drag     Rotate (trackball)
+  Scroll        Zoom
+  Middle-drag   Pan
+  R             Reset view
+  Q/Escape      Quit
+
+For more options, run with --help
+
+GitHub: https://github.com/pozzettiandrea/OCCT-RT
+EOF
+
+          # Create tarball
+          cd dist
+          tar -czvf ../${{ matrix.artifact }}.tar.gz .
+          cd ..
+
+      - name: Package (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          mkdir -p dist/bin dist/lib
+
+          # Copy executables
+          cp build/bin/raytracer dist/bin/
+          cp build/bin/occt-rt-viewer dist/bin/ 2>/dev/null || true
+
+          # Copy OCCT_RT library
+          cp build/libOCCT_RT.dylib dist/lib/ 2>/dev/null || true
+          cp build/libOCCT_RT_Viewer.dylib dist/lib/ 2>/dev/null || true
+
+          # Copy required shared libraries from conda
+          CONDA_LIB="$CONDA_PREFIX/lib"
+
+          # Function to copy library
+          copy_lib() {
+            local pattern=$1
+            for f in $CONDA_LIB/$pattern; do
+              if [ -f "$f" ]; then
+                cp -P "$f" dist/lib/
+              fi
+            done
+          }
+
+          # OCCT libraries
+          copy_lib "libTK*.dylib"
+
+          # Embree
+          copy_lib "libembree*.dylib"
+
+          # TBB
+          copy_lib "libtbb*.dylib"
+
+          # GLFW
+          copy_lib "libglfw*.dylib"
+
+          # OpenMP
+          copy_lib "libomp*.dylib"
+
+          # Update library paths using install_name_tool
+          for exe in dist/bin/raytracer dist/bin/occt-rt-viewer; do
+            if [ -f "$exe" ]; then
+              # Get list of dependencies
+              for lib in dist/lib/*.dylib; do
+                libname=$(basename "$lib")
+                # Update the executable to look in @executable_path/../lib
+                install_name_tool -change "$CONDA_LIB/$libname" "@executable_path/../lib/$libname" "$exe" 2>/dev/null || true
+                install_name_tool -change "@rpath/$libname" "@executable_path/../lib/$libname" "$exe" 2>/dev/null || true
+              done
+            fi
+          done
+
+          # Create wrapper scripts for compatibility
+          cat > dist/bin/raytracer.command << 'EOF'
+#!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"
+exec "$SCRIPT_DIR/raytracer" "$@"
+EOF
+          chmod +x dist/bin/raytracer.command
+
+          cat > dist/bin/occt-rt-viewer.command << 'EOF'
+#!/bin/bash
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+export DYLD_LIBRARY_PATH="$SCRIPT_DIR/../lib:$DYLD_LIBRARY_PATH"
+exec "$SCRIPT_DIR/occt-rt-viewer" "$@"
+EOF
+          chmod +x dist/bin/occt-rt-viewer.command
+
+          # Create README
+          cat > dist/README.txt << 'EOF'
+OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
+=========================================================
+
+Usage:
+  ./bin/raytracer [options] <file.brep>
+  ./bin/occt-rt-viewer [options] <file.step|file.iges|file.brep>
+
+Note: If you get library errors, use the .command wrapper scripts instead.
+
+Viewer Controls:
+  Left-drag     Rotate (trackball)
+  Scroll        Zoom
+  Middle-drag   Pan
+  R             Reset view
+  Q/Escape      Quit
+
+For more options, run with --help
+
+GitHub: https://github.com/pozzettiandrea/OCCT-RT
+EOF
+
+          # Create tarball
+          cd dist
+          tar -czvf ../${{ matrix.artifact }}.tar.gz .
+          cd ..
+
+      - name: Package (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path dist
+
+          # Copy executables
+          Copy-Item -Path build\bin\*.exe -Destination dist\ -Force
+
+          # Copy OCCT_RT DLLs from build
+          Get-ChildItem -Path build -Recurse -Filter "OCCT_RT*.dll" |
+            Copy-Item -Destination dist\ -Force
+
+          # Copy required DLLs from conda
+          $dllSource = "$env:CONDA_PREFIX\Library\bin"
+          $patterns = @(
+            "TK*.dll",
+            "tbb*.dll",
+            "embree*.dll",
+            "glfw*.dll",
+            "freetype*.dll",
+            "freeimage*.dll",
+            "tcl*.dll",
+            "tk*.dll",
+            "zlib*.dll"
+          )
+
+          foreach ($pattern in $patterns) {
+            Get-ChildItem -Path $dllSource -Filter $pattern -ErrorAction SilentlyContinue |
+              Copy-Item -Destination dist\ -Force
+          }
+
+          # Also check lib directory
+          $libSource = "$env:CONDA_PREFIX\Library\lib"
+          foreach ($pattern in $patterns) {
+            Get-ChildItem -Path $libSource -Filter $pattern -ErrorAction SilentlyContinue |
+              Copy-Item -Destination dist\ -Force
+          }
+
+          # Create README
+          @"
+OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
+=========================================================
+
+Usage:
+  raytracer.exe [options] <file.brep>
+  occt-rt-viewer.exe [options] <file.step|file.iges|file.brep>
+
+Viewer Controls:
+  Left-drag     Rotate (trackball)
+  Scroll        Zoom
+  Middle-drag   Pan
+  R             Reset view
+  Q/Escape      Quit
+
+For more options, run with --help
+
+GitHub: https://github.com/pozzettiandrea/OCCT-RT
+"@ | Out-File -FilePath dist\README.txt -Encoding UTF8
+
+          # Create ZIP archive
+          Compress-Archive -Path dist\* -DestinationPath ${{ matrix.artifact }}.zip
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+          path: ${{ matrix.artifact }}.${{ matrix.extension }}
+
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: List artifacts
+        run: find artifacts -type f
+
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: |
+            artifacts/**/*.tar.gz
+            artifacts/**/*.zip
+          generate_release_notes: true
+          draft: false
+          prerelease: ${{ contains(github.ref, '-alpha') || contains(github.ref, '-beta') || contains(github.ref, '-rc') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
