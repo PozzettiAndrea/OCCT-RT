@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765641652420,
+  "lastUpdate": 1765642119189,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -240,6 +240,96 @@ window.BENCHMARK_DATA = {
             "value": 7273150,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.49ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "7a4aedd6cdca98982d2d838899e4199a493c0abb",
+          "message": "Increase render resolution to 1024 and add mesh statistics\n\n- Update resolution from 256 to 1024 for higher quality renders\n- Add mesh statistics collection (tessellation time, triangle count)\n- Export STL to capture triangle count from raytracer output\n- Generate metadata.json with per-geometry stats\n- Add new test geometry files\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:05:23Z",
+          "tree_id": "b96c77ca71f4bae07038a28e0aa9a1f6bbede18a",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/7a4aedd6cdca98982d2d838899e4199a493c0abb"
+        },
+        "date": 1765642118086,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7048309,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 141.88ms"
+          },
+          {
+            "name": "box",
+            "value": 19165900,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 52.18ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3971642,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.78ms"
+          },
+          {
+            "name": "cone",
+            "value": 6087020,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 164.28ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19371586,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.62ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2759001,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 362.45ms"
+          },
+          {
+            "name": "mr",
+            "value": 10768204,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.87ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10408210,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 96.08ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5040983,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 198.37ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3847589,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 259.90ms"
+          },
+          {
+            "name": "torus",
+            "value": 7261057,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.72ms"
           }
         ]
       }
