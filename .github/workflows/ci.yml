@@ -178,11 +178,25 @@ jobs:
       - name: Run benchmarks (Unix)
         if: runner.os != 'Windows'
         run: |
-          python .github/scripts/parse_benchmark.py \
-            ./build/bin/raytracer \
-            ./test_data \
-            benchmark_results.json \
-            --backend ${{ matrix.backend }}
+          # Run benchmarks at all 4 levels and combine results
+          echo "[]" > benchmark_results.json
+          for level in raw refined normals curvature; do
+            echo "Running benchmark level: $level"
+            python .github/scripts/parse_benchmark.py \
+              ./build/bin/raytracer \
+              ./test_data \
+              benchmark_${level}.json \
+              --backend ${{ matrix.backend }} \
+              --bench-level $level
+            # Merge results into combined file
+            python -c "
+          import json
+          with open('benchmark_results.json') as f: combined = json.load(f)
+          with open('benchmark_${level}.json') as f: level_data = json.load(f)
+          combined.extend(level_data)
+          with open('benchmark_results.json', 'w') as f: json.dump(combined, f, indent=2)
+          "
+          done
 
       - name: Copy DLLs for Windows
         if: runner.os == 'Windows'
@@ -266,20 +280,35 @@ jobs:
         shell: pwsh
         run: |
           $env:Path = "$PWD\build\bin;$env:Path"
-          python .github/scripts/parse_benchmark.py `
-            .\build\bin\raytracer.exe `
-            .\test_data `
-            benchmark_results.json `
-            --backend ${{ matrix.backend }}
+          # Run benchmarks at all 4 levels and combine results
+          "[]" | Out-File -FilePath benchmark_results.json -Encoding utf8
+          foreach ($level in @("raw", "refined", "normals", "curvature")) {
+            Write-Host "Running benchmark level: $level"
+            python .github/scripts/parse_benchmark.py `
+              .\build\bin\raytracer.exe `
+              .\test_data `
+              benchmark_$level.json `
+              --backend ${{ matrix.backend }} `
+              --bench-level $level
+            # Merge results into combined file
+            python -c @"
+          import json
+          with open('benchmark_results.json') as f: combined = json.load(f)
+          with open('benchmark_$level.json') as f: level_data = json.load(f)
+          combined.extend(level_data)
+          with open('benchmark_results.json', 'w') as f: json.dump(combined, f, indent=2)
+          "@
+          }
 
-      - name: Generate shaded renders (Unix)
+      - name: Generate renders (Unix)
         if: runner.os != 'Windows' && matrix.backend == 'occt'
         run: |
           python .github/scripts/render_shaded.py \
             ./build/bin/raytracer \
             ./test_data \
             ./renders \
-            --resolution 1024
+            --resolution 512 \
+            --render-types all
 
       - name: Upload rendered images
         if: matrix.backend == 'occt'

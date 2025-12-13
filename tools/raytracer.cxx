@@ -892,6 +892,11 @@ void PrintUsage(const char* progName)
   std::cout << "  -h, --help          Show this help message" << std::endl;
   std::cout << "  -r, --resolution N  Image resolution (max dimension, default 500)" << std::endl;
   std::cout << "  -b, --benchmark     Run batch raytracing benchmarks" << std::endl;
+  std::cout << "  --bench-level LVL   Benchmark level: raw, refined, normals, curvature" << std::endl;
+  std::cout << "                      raw      = BVH traversal only (no Newton refinement)" << std::endl;
+  std::cout << "                      refined  = + Newton refinement (default)" << std::endl;
+  std::cout << "                      normals  = + D1 evaluation for surface normals" << std::endl;
+  std::cout << "                      curvature= + D2 evaluation for curvatures" << std::endl;
   std::cout << "  -d, --deflection D  Tessellation deflection (default 0.02)" << std::endl;
   std::cout << "                      Smaller = finer mesh, more accurate" << std::endl;
   std::cout << "  -a, --angle A       Angular deflection in radians (default 0.1)" << std::endl;
@@ -929,6 +934,10 @@ int main(int argc, char* argv[])
   double      newtonTolerance   = 1e-7; // Newton refinement tolerance (default)
   int         newtonMaxIter     = 10;   // Newton max iterations (default)
   bool        useSIMDNewton     = false; // SIMD Newton batching (experimental)
+
+  // Benchmark level: 0=raw (no Newton), 1=refined (with Newton), 2=normals (+D1), 3=curvature (+D2)
+  enum class BenchLevel { Raw = 0, Refined = 1, Normals = 2, Curvature = 3 };
+  BenchLevel  benchLevel        = BenchLevel::Refined; // default: with Newton refinement
   bool        useROI            = false;
   double      roiX1 = 0, roiY1 = 0, roiX2 = 0, roiY2 = 0;
 
@@ -973,6 +982,27 @@ int main(int argc, char* argv[])
     else if (arg == "-b" || arg == "--benchmark")
     {
       runBenchmarks = true;
+    }
+    else if (arg == "--bench-level")
+    {
+      if (i + 1 < argc)
+      {
+        std::string level = argv[++i];
+        if (level == "raw")
+          benchLevel = BenchLevel::Raw;
+        else if (level == "refined")
+          benchLevel = BenchLevel::Refined;
+        else if (level == "normals")
+          benchLevel = BenchLevel::Normals;
+        else if (level == "curvature")
+          benchLevel = BenchLevel::Curvature;
+        else
+        {
+          std::cerr << "Unknown bench-level: " << level << std::endl;
+          std::cerr << "Valid options: raw, refined, normals, curvature" << std::endl;
+          return 1;
+        }
+      }
     }
     else if (arg == "-s" || arg == "--export-stl")
     {
@@ -1297,6 +1327,34 @@ int main(int argc, char* argv[])
   {
     std::cout << "\n=== Batch Raytracing Benchmarks ===" << std::endl;
     std::cout << "Ray grid covering bounding box, shooting -Z direction" << std::endl;
+
+    // Configure raytracer based on benchmark level
+    const char* levelName = "unknown";
+    switch (benchLevel)
+    {
+      case BenchLevel::Raw:
+        levelName = "raw";
+        raytracer.SetSkipAllNewton(Standard_True);
+        raytracer.SetComputeCurvature(Standard_False);
+        break;
+      case BenchLevel::Refined:
+        levelName = "refined";
+        raytracer.SetSkipAllNewton(Standard_False);
+        raytracer.SetComputeCurvature(Standard_False);
+        break;
+      case BenchLevel::Normals:
+        levelName = "normals";
+        raytracer.SetSkipAllNewton(Standard_False);
+        raytracer.SetComputeCurvature(Standard_False);
+        break;
+      case BenchLevel::Curvature:
+        levelName = "curvature";
+        raytracer.SetSkipAllNewton(Standard_False);
+        raytracer.SetComputeCurvature(Standard_True);
+        break;
+    }
+    std::cout << "Benchmark level: " << levelName << std::endl;
+
     if (useCoherent)
     {
       std::cout << "Using COHERENT packet raytracing" << std::endl;
