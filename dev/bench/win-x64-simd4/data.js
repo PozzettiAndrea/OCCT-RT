@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765651419686,
+  "lastUpdate": 1765651546218,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -270,6 +270,96 @@ window.BENCHMARK_DATA = {
             "value": 5775666,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 173.14ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "b93657ebb7e646875f7de8f8f30aa9351c9e5798",
+          "message": "Fix YAML heredoc syntax in release workflow\n\nReplace heredocs with printf/echo to avoid YAML parsing issues.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T18:37:02Z",
+          "tree_id": "87240cc2c1a6c9fc78abcd413e8b478e589c60df",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/b93657ebb7e646875f7de8f8f30aa9351c9e5798"
+        },
+        "date": 1765651517805,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 3916735,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 255.31ms"
+          },
+          {
+            "name": "box",
+            "value": 10355944,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 96.56ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2689115,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 371.87ms"
+          },
+          {
+            "name": "cone",
+            "value": 3903163,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 256.20ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 10780439,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 92.76ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2060398,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 485.34ms"
+          },
+          {
+            "name": "mr",
+            "value": 4272736,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 234.04ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 6197407,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 161.36ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4124666,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 242.44ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 2393497,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 417.80ms"
+          },
+          {
+            "name": "torus",
+            "value": 4463423,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 224.04ms"
           }
         ]
       }
