@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765640830321,
+  "lastUpdate": 1765641652420,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -180,6 +180,66 @@ window.BENCHMARK_DATA = {
             "value": 5926734,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 168.73ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "137cb5a927ec4fec4f78fc098528c214c42d69b2",
+          "message": "Fix render script to look for npy output in correct directory\n\nThe raytracer outputs to the same directory as the input file, not\nthe current working directory. Fixed the script to look in the\nbrep file's directory for the generated npy file.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T15:58:59Z",
+          "tree_id": "4d9fa015fbbfc07b7039f6a3daee126e517261e1",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/137cb5a927ec4fec4f78fc098528c214c42d69b2"
+        },
+        "date": 1765641651876,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 19548813,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.15ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3981526,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.16ms"
+          },
+          {
+            "name": "cone",
+            "value": 6036387,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 165.66ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19554547,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.14ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4941957,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 202.35ms"
+          },
+          {
+            "name": "torus",
+            "value": 7273150,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.49ms"
           }
         ]
       }
