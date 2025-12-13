@@ -20,7 +20,8 @@ import argparse
 from pathlib import Path
 
 
-def run_benchmark(raytracer: str, brep_file: str, backend: str = "occt", resolution: int = 1000) -> dict:
+def run_benchmark(raytracer: str, brep_file: str, backend: str = "occt",
+                  resolution: int = 1000, bench_level: str = "refined") -> dict:
     """
     Run benchmark on a single BREP file and parse output.
 
@@ -29,13 +30,15 @@ def run_benchmark(raytracer: str, brep_file: str, backend: str = "occt", resolut
         brep_file: Path to BREP file
         backend: BVH backend (occt, embree, embree4, embree8)
         resolution: Grid resolution for benchmark (default: 1000x1000 = 1M rays)
+        bench_level: Benchmark level (raw, refined, normals, curvature)
 
     Returns:
         Dictionary with benchmark results or None on failure
     """
     try:
         result = subprocess.run(
-            [raytracer, "-b", "-r", str(resolution), "--backend", backend, brep_file],
+            [raytracer, "-b", "-r", str(resolution), "--backend", backend,
+             "--bench-level", bench_level, brep_file],
             capture_output=True,
             text=True,
             timeout=600  # 10 minute timeout for large files
@@ -84,6 +87,9 @@ def main():
                         help="BVH backend to use (default: occt)")
     parser.add_argument("--resolution", type=int, default=1000,
                         help="Benchmark resolution (default: 1000 = 1M rays)")
+    parser.add_argument("--bench-level", default="refined",
+                        choices=["raw", "refined", "normals", "curvature"],
+                        help="Benchmark level (default: refined)")
 
     args = parser.parse_args()
 
@@ -92,6 +98,7 @@ def main():
     output_file = args.output_json
     backend = args.backend
     resolution = args.resolution
+    bench_level = args.bench_level
 
     # Verify raytracer exists
     if not os.path.isfile(raytracer):
@@ -112,6 +119,7 @@ def main():
     print(f"Found {len(brep_files)} BREP files to benchmark")
     print(f"Raytracer: {raytracer}")
     print(f"Backend: {backend}")
+    print(f"Bench level: {bench_level}")
     print(f"Resolution: {resolution}x{resolution} ({resolution*resolution:,} rays)")
     print()
 
@@ -121,11 +129,14 @@ def main():
         filename = brep_file.stem
         print(f"Benchmarking: {filename}...")
 
-        result = run_benchmark(raytracer, str(brep_file), backend=backend, resolution=resolution)
+        result = run_benchmark(raytracer, str(brep_file), backend=backend,
+                               resolution=resolution, bench_level=bench_level)
 
         if result:
+            # Include bench level in name for filtering in UI
+            bench_name = f"{filename}_{bench_level}"
             benchmarks.append({
-                "name": filename,
+                "name": bench_name,
                 "unit": "rays/sec",
                 "value": result["rays_per_sec"],
                 "extra": f"Rays: {result['rays']:,}, Hits: {result['hits']:,}, Time: {result['time_ms']:.2f}ms"

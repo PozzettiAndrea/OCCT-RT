@@ -306,6 +306,14 @@ public:
   //! Check if SIMD Newton batching is enabled
   Standard_Boolean GetUseSIMDNewton() const { return myUseSIMDNewton; }
 
+  //! Enable/disable skipping ALL Newton refinement (for benchmarking raw BVH performance)
+  //! When enabled, returns triangle intersection point directly without UV refinement
+  //! This gives approximate results but measures pure BVH traversal speed
+  void SetSkipAllNewton(Standard_Boolean theSkip) { mySkipAllNewton = theSkip; }
+
+  //! Check if all Newton refinement is being skipped
+  Standard_Boolean GetSkipAllNewton() const { return mySkipAllNewton; }
+
   //! Returns true if the specified face (1-based index) is planar
   Standard_Boolean IsFacePlanar(Standard_Integer theFaceIndex) const
   {
@@ -383,6 +391,7 @@ private:
   Standard_Real                 myNewtonTolerance;    //!< Newton convergence tolerance (default 1e-7)
   Standard_Integer              myNewtonMaxIter;      //!< Max Newton iterations (default 10)
   Standard_Boolean              myUseSIMDNewton;      //!< Use SIMD-accelerated Newton batching
+  Standard_Boolean              mySkipAllNewton;      //!< Skip ALL Newton refinement (raw BVH benchmark)
 
   // B-spline surface caching for fast Newton refinement
   //! B-spline surface handles (null for non-B-spline faces)

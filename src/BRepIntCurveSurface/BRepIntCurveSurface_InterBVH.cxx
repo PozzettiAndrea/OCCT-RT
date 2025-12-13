@@ -1086,6 +1086,7 @@ BRepIntCurveSurface_InterBVH::BRepIntCurveSurface_InterBVH()
       myNewtonTolerance(1e-7),                             // Default Newton tolerance
       myNewtonMaxIter(10),                                 // Default max Newton iterations
       myUseSIMDNewton(Standard_False),                     // SIMD Newton disabled by default (experimental)
+      mySkipAllNewton(Standard_False),                     // Don't skip Newton by default
       myNumBSplineCacheThreads(1)                          // B-spline cache thread count
 #ifdef OCCT_USE_EMBREE
       ,
@@ -1818,12 +1819,13 @@ void BRepIntCurveSurface_InterBVH::Perform(const gp_Lin&       theLine,
     Standard_Integer iterCount = 0;
     NewtonResult     newtonResult = NewtonResult::Converged;
 
-    // OPTIMIZATION: Skip Newton refinement for planar faces
-    Standard_Boolean isPlanar = mySkipNewtonForPlanar
-                                && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
-                                && myIsPlanarFace[hitFaceIdx];
+    // OPTIMIZATION: Skip Newton refinement for planar faces or when explicitly disabled
+    Standard_Boolean skipNewton = mySkipAllNewton  // Skip ALL Newton (raw benchmark mode)
+                                || (mySkipNewtonForPlanar
+                                    && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
+                                    && myIsPlanarFace[hitFaceIdx]);
 
-    if (!isPlanar)
+    if (!skipNewton)
     {
       newtonResult = RefineIntersectionNewton(aSurface,
                                               theLine.Location(),
@@ -1842,12 +1844,12 @@ void BRepIntCurveSurface_InterBVH::Perform(const gp_Lin&       theLine,
       BRepIntCurveSurface_HitResult aResult;
       aResult.IsValid = Standard_True;
 
-      if (isPlanar || (newtonResult == NewtonResult::Converged && finalT >= theMin && finalT <= theMax))
+      if (skipNewton || (newtonResult == NewtonResult::Converged && finalT >= theMin && finalT <= theMax))
       {
         aResult.Point = finalPnt;
-        aResult.U     = isPlanar ? initU : finalU;
-        aResult.V     = isPlanar ? initV : finalV;
-        aResult.W     = isPlanar ? hitT : finalT;
+        aResult.U     = skipNewton ? initU : finalU;
+        aResult.V     = skipNewton ? initV : finalV;
+        aResult.W     = skipNewton ? hitT : finalT;
       }
       else
       {
@@ -3090,10 +3092,11 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
     // Get thread-local surface adaptor
     const Adaptor3d_Surface& aSurface = *localSurfaces[hitFaceIdx];
 
-    // OPTIMIZATION: Check planarity early for separate code paths
-    Standard_Boolean isPlanar = mySkipNewtonForPlanar
-                                && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
-                                && myIsPlanarFace[hitFaceIdx];
+    // OPTIMIZATION: Check if Newton should be skipped (raw mode or planar face)
+    Standard_Boolean skipNewton = mySkipAllNewton  // Skip ALL Newton (raw benchmark mode)
+                                || (mySkipNewtonForPlanar
+                                    && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
+                                    && myIsPlanarFace[hitFaceIdx]);
 
     BRepIntCurveSurface_HitResult& aResult = theResults(idx);
     aResult.IsValid    = Standard_True;
@@ -3101,8 +3104,8 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
     aResult.Transition = IntCurveSurface_In;
     aResult.State      = TopAbs_IN;
 
-    // OPTIMIZATION: Completely separate paths for planar vs curved faces
-    if (isPlanar)
+    // OPTIMIZATION: Completely separate paths for skipped Newton vs refined
+    if (skipNewton)
     {
       // PLANAR PATH: No Newton, no timing overhead, direct assignment
       aResult.Point = rayOrg.Translated(hitT * gp_Vec(rayDir));
@@ -3604,13 +3607,14 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
       aResult.Transition = IntCurveSurface_In;
       aResult.State      = TopAbs_IN;
 
-      Standard_Boolean isPlanar = mySkipNewtonForPlanar
-                                  && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
-                                  && myIsPlanarFace[hitFaceIdx];
+      Standard_Boolean skipNewton = mySkipAllNewton  // Skip ALL Newton (raw benchmark mode)
+                                  || (mySkipNewtonForPlanar
+                                      && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
+                                      && myIsPlanarFace[hitFaceIdx]);
 
-      if (isPlanar)
+      if (skipNewton)
       {
-        // PLANAR: Process directly (no Newton needed)
+        // SKIP NEWTON: Process directly (no refinement)
         planarCount++;
         aResult.Point = raw.RayOrg.Translated(raw.HitT * gp_Vec(raw.RayDir));
         aResult.U     = initU;
@@ -5198,13 +5202,14 @@ void BRepIntCurveSurface_InterBVH::PerformBatchCoherent(
       gp_Lin aRay(gp_Pnt(packet.OrgX[i], packet.OrgY[i], packet.OrgZ[i]),
                   gp_Dir(packet.DirX[i], packet.DirY[i], packet.DirZ[i]));
 
-      // Check if face is planar (skip Newton for planar faces)
-      Standard_Boolean isPlanar = mySkipNewtonForPlanar
-                                  && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
-                                  && myIsPlanarFace[hitFaceIdx];
+      // Check if Newton should be skipped (raw mode or planar face)
+      Standard_Boolean skipNewton = mySkipAllNewton  // Skip ALL Newton (raw benchmark mode)
+                                  || (mySkipNewtonForPlanar
+                                      && hitFaceIdx < static_cast<Standard_Integer>(myIsPlanarFace.size())
+                                      && myIsPlanarFace[hitFaceIdx]);
 
       NewtonResult newtonResult = NewtonResult::Converged;
-      if (!isPlanar)
+      if (!skipNewton)
       {
         newtonResult = RefineIntersectionNewton(aSurface,
                                                 aRay.Location(),
@@ -5219,7 +5224,7 @@ void BRepIntCurveSurface_InterBVH::PerformBatchCoherent(
       }
       else
       {
-        // Planar face - use triangle intersection directly
+        // Newton skipped - use triangle intersection directly
         finalT = hitT;
         finalPnt = aRay.Location().Translated(hitT * gp_Vec(aRay.Direction()));
       }
@@ -5232,12 +5237,12 @@ void BRepIntCurveSurface_InterBVH::PerformBatchCoherent(
       BRepIntCurveSurface_HitResult& aResult = theResults(rayIdx);
       aResult.IsValid                        = Standard_True;
 
-      if (isPlanar || (newtonResult == NewtonResult::Converged && finalT >= 0.0))
+      if (skipNewton || (newtonResult == NewtonResult::Converged && finalT >= 0.0))
       {
         aResult.Point = finalPnt;
-        aResult.U     = isPlanar ? initU : finalU;
-        aResult.V     = isPlanar ? initV : finalV;
-        aResult.W     = isPlanar ? hitT : finalT;
+        aResult.U     = skipNewton ? initU : finalU;
+        aResult.V     = skipNewton ? initV : finalV;
+        aResult.W     = skipNewton ? hitT : finalT;
       }
       else
       {
