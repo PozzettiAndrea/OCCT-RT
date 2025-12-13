@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765664865092,
+  "lastUpdate": 1765667092468,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -720,6 +720,96 @@ window.BENCHMARK_DATA = {
             "value": 5848343,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 170.99ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "3329e5704e7c69e8ea5676f617d9c965f5f9d713",
+          "message": "Add CAD face type tracking to raytracer and benchmarks\n\n- Add FaceTypeCounts struct to BRepIntCurveSurface_InterBVH to track\n  face types (plane, cylinder, cone, sphere, torus, bspline, bezier, other)\n- Output face type breakdown in raytracer.cxx after loading\n- Parse face count and types in render_shaded.py for metadata.json\n- Benchmark page updated (gh-pages) to display face information\n\nThis enables better understanding of geometry complexity in benchmark results.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T22:56:36Z",
+          "tree_id": "6a069b08e788c56ad41d12b3d6f8d263d440dd6d",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/3329e5704e7c69e8ea5676f617d9c965f5f9d713"
+        },
+        "date": 1765667084220,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 5878508,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 170.11ms"
+          },
+          {
+            "name": "box",
+            "value": 12555842,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 79.64ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3544923,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 282.09ms"
+          },
+          {
+            "name": "cone",
+            "value": 5160449,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 193.78ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 12802671,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 78.11ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2674644,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 373.88ms"
+          },
+          {
+            "name": "mr",
+            "value": 8963023,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 111.57ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 8052314,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 124.19ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4268107,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 234.30ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3411066,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 293.16ms"
+          },
+          {
+            "name": "torus",
+            "value": 4403983,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 227.07ms"
           }
         ]
       }
