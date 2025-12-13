@@ -110,12 +110,13 @@ find_occt_library(OCCT_TKGeomBase TKGeomBase)
 find_occt_library(OCCT_TKMesh TKMesh)
 find_occt_library(OCCT_TKGeomAlgo TKGeomAlgo)
 
-# Additional libraries for raytracer tool
+# Additional libraries for raytracer tool and viewer
 find_occt_library(OCCT_TKDESTEP TKDESTEP)
 find_occt_library(OCCT_TKDEIGES TKDEIGES)
 find_occt_library(OCCT_TKDE TKDE)
 find_occt_library(OCCT_TKShHealing TKShHealing)
 find_occt_library(OCCT_TKPrim TKPrim)
+find_occt_library(OCCT_TKXSBASE TKXSBASE)
 
 # =============================================================================
 # OCCT-RT LIBRARY
@@ -279,6 +280,7 @@ if(BUILD_VIEWER)
             ${OCCT_TKDEIGES}
             ${OCCT_TKDE}
             ${OCCT_TKShHealing}
+            ${OCCT_TKXSBASE}
         )
 
         # Viewer executable
