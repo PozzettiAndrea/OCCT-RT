@@ -14,6 +14,7 @@ message(STATUS "=== OCCT-RT: BVH Raytracer for OpenCASCADE ===")
 # OPTIONS
 # =============================================================================
 option(BUILD_RAYTRACER "Build the raytracer command-line tool" ON)
+option(BUILD_VIEWER "Build the interactive viewer (requires GLFW)" ON)
 option(OCCT_RT_USE_OPENMP "Enable OpenMP for parallel ray processing" ON)
 option(OCCT_RT_USE_EMBREE "Enable Embree for SIMD ray-triangle intersection" ON)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
@@ -237,6 +238,99 @@ if(BUILD_RAYTRACER)
     install(TARGETS raytracer
         RUNTIME DESTINATION bin
     )
+endif()
+
+# =============================================================================
+# INTERACTIVE VIEWER (REQUIRES GLFW)
+# =============================================================================
+if(BUILD_VIEWER)
+    # Find GLFW
+    find_package(glfw3 3.3 QUIET CONFIG)
+    if(NOT glfw3_FOUND)
+        # Try pkg-config as fallback
+        find_package(PkgConfig QUIET)
+        if(PkgConfig_FOUND)
+            pkg_check_modules(GLFW3 QUIET glfw3)
+        endif()
+    endif()
+
+    # Find OpenGL
+    find_package(OpenGL QUIET)
+
+    if((glfw3_FOUND OR GLFW3_FOUND) AND OpenGL_FOUND)
+        message(STATUS "Building interactive viewer...")
+
+        # Viewer library
+        add_library(OCCT_RT_Viewer
+            ${PROJECT_SOURCE_DIR}/src/Viewer/Viewer_Camera.cxx
+            ${PROJECT_SOURCE_DIR}/src/Viewer/Viewer_CADLoader.cxx
+        )
+
+        target_include_directories(OCCT_RT_Viewer PUBLIC
+            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/Viewer>
+            $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/src/BRepIntCurveSurface>
+            $<INSTALL_INTERFACE:include/opencascade>
+            ${OpenCASCADE_INCLUDE_DIR}
+        )
+
+        target_link_libraries(OCCT_RT_Viewer PUBLIC
+            OCCT_RT
+            ${OCCT_TKDESTEP}
+            ${OCCT_TKDEIGES}
+            ${OCCT_TKDE}
+            ${OCCT_TKShHealing}
+        )
+
+        # Viewer executable
+        add_executable(occt-rt-viewer
+            ${PROJECT_SOURCE_DIR}/tools/viewer.cxx
+        )
+
+        target_link_libraries(occt-rt-viewer PRIVATE
+            OCCT_RT_Viewer
+        )
+
+        # Link GLFW
+        if(glfw3_FOUND)
+            target_link_libraries(occt-rt-viewer PRIVATE glfw)
+        else()
+            target_include_directories(occt-rt-viewer PRIVATE ${GLFW3_INCLUDE_DIRS})
+            target_link_libraries(occt-rt-viewer PRIVATE ${GLFW3_LIBRARIES})
+        endif()
+
+        # Link OpenGL
+        target_link_libraries(occt-rt-viewer PRIVATE OpenGL::GL)
+
+        set_target_properties(occt-rt-viewer PROPERTIES
+            RUNTIME_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/bin"
+        )
+
+        # Install viewer
+        install(TARGETS OCCT_RT_Viewer
+            LIBRARY DESTINATION lib
+            ARCHIVE DESTINATION lib
+        )
+
+        install(TARGETS occt-rt-viewer
+            RUNTIME DESTINATION bin
+        )
+
+        install(FILES
+            ${PROJECT_SOURCE_DIR}/src/Viewer/Viewer_Camera.hxx
+            ${PROJECT_SOURCE_DIR}/src/Viewer/Viewer_CADLoader.hxx
+            DESTINATION include/opencascade
+        )
+
+        message(STATUS "Interactive viewer will be built")
+    else()
+        if(NOT glfw3_FOUND AND NOT GLFW3_FOUND)
+            message(STATUS "GLFW not found - skipping interactive viewer")
+            message(STATUS "  Install GLFW: conda install -c conda-forge glfw")
+        endif()
+        if(NOT OpenGL_FOUND)
+            message(STATUS "OpenGL not found - skipping interactive viewer")
+        endif()
+    endif()
 endif()
 
 message(STATUS "=== OCCT-RT configuration complete ===")
