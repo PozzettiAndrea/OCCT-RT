@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765653405771,
+  "lastUpdate": 1765664830841,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -720,6 +720,96 @@ window.BENCHMARK_DATA = {
             "value": 2133414,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 468.73ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "9575bef07694eb15b6c47fc2a3aef882e449fb72",
+          "message": "Add ad-hoc codesigning for macOS releases\n\nSign all dylibs and executables with ad-hoc signature for better\nGatekeeper compatibility. Users will need to approve the app once\non first run (right-click → Open) but won't see the \"damaged\" error.\n\nAlso adds macOS first-run instructions to the bundled README.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T22:19:28Z",
+          "tree_id": "6d151b1308432793d2cdedb34c3ab2d36c98fee7",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/9575bef07694eb15b6c47fc2a3aef882e449fb72"
+        },
+        "date": 1765664824999,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 543962,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 1838.37ms"
+          },
+          {
+            "name": "box",
+            "value": 7055520,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 141.73ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2451588,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 407.90ms"
+          },
+          {
+            "name": "cone",
+            "value": 2818922,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 354.75ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 4178635,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 239.31ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 1688252,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 592.33ms"
+          },
+          {
+            "name": "mr",
+            "value": 3563140,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 280.65ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 2260938,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 442.29ms"
+          },
+          {
+            "name": "sphere",
+            "value": 1956807,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 511.04ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 2102753,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 475.57ms"
+          },
+          {
+            "name": "torus",
+            "value": 2175080,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 459.75ms"
           }
         ]
       }
