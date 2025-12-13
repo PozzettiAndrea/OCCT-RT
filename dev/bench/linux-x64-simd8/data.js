@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765640191009,
+  "lastUpdate": 1765640435146,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -60,6 +60,66 @@ window.BENCHMARK_DATA = {
             "value": 7391475,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 135.29ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "786108fec2805b0e864a7e7dbaeae36920f2fb25",
+          "message": "Fix render script: use absolute paths for subprocess",
+          "timestamp": "2025-12-13T15:38:45Z",
+          "tree_id": "29610083dbc0bc4630ce905dd6c1ee6b7216bb4a",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/786108fec2805b0e864a7e7dbaeae36920f2fb25"
+        },
+        "date": 1765640434732,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 19573685,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.09ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3683241,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 271.50ms"
+          },
+          {
+            "name": "cone",
+            "value": 6147302,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 162.67ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19441636,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.44ms"
+          },
+          {
+            "name": "sphere",
+            "value": 5099127,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 196.11ms"
+          },
+          {
+            "name": "torus",
+            "value": 7244539,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 138.04ms"
           }
         ]
       }
