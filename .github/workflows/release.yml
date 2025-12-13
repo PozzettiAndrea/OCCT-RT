@@ -171,23 +171,7 @@ jobs:
           chmod +x dist/bin/occt-rt-viewer.sh
 
           # Create README
-          echo 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
-=========================================================
-
-Usage:
-  ./bin/raytracer.sh [options] <file.brep>
-  ./bin/occt-rt-viewer.sh [options] <file.step|file.iges|file.brep>
-
-Viewer Controls:
-  Left-drag     Rotate (trackball)
-  Scroll        Zoom
-  Middle-drag   Pan
-  R             Reset view
-  Q/Escape      Quit
-
-For more options, run with --help
-
-GitHub: https://github.com/pozzettiandrea/OCCT-RT' > dist/README.txt
+          printf 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE\n=========================================================\n\nUsage:\n  ./bin/raytracer.sh [options] <file.brep>\n  ./bin/occt-rt-viewer.sh [options] <file.step|file.iges|file.brep>\n\nViewer Controls:\n  Left-drag     Rotate (trackball)\n  Scroll        Zoom\n  Middle-drag   Pan\n  R             Reset view\n  Q/Escape      Quit\n\nFor more options, run with --help\n\nGitHub: https://github.com/pozzettiandrea/OCCT-RT\n' > dist/README.txt
 
           # Create tarball
           cd dist
@@ -256,25 +240,7 @@ GitHub: https://github.com/pozzettiandrea/OCCT-RT' > dist/README.txt
           chmod +x dist/bin/occt-rt-viewer.command
 
           # Create README
-          echo 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
-=========================================================
-
-Usage:
-  ./bin/raytracer [options] <file.brep>
-  ./bin/occt-rt-viewer [options] <file.step|file.iges|file.brep>
-
-Note: If you get library errors, use the .command wrapper scripts instead.
-
-Viewer Controls:
-  Left-drag     Rotate (trackball)
-  Scroll        Zoom
-  Middle-drag   Pan
-  R             Reset view
-  Q/Escape      Quit
-
-For more options, run with --help
-
-GitHub: https://github.com/pozzettiandrea/OCCT-RT' > dist/README.txt
+          printf 'OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE\n=========================================================\n\nUsage:\n  ./bin/raytracer [options] <file.brep>\n  ./bin/occt-rt-viewer [options] <file.step|file.iges|file.brep>\n\nNote: If you get library errors, use the .command wrapper scripts instead.\n\nViewer Controls:\n  Left-drag     Rotate (trackball)\n  Scroll        Zoom\n  Middle-drag   Pan\n  R             Reset view\n  Q/Escape      Quit\n\nFor more options, run with --help\n\nGitHub: https://github.com/pozzettiandrea/OCCT-RT\n' > dist/README.txt
 
           # Create tarball
           cd dist
@@ -321,25 +287,8 @@ GitHub: https://github.com/pozzettiandrea/OCCT-RT' > dist/README.txt
           }
 
           # Create README
-          @"
-OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE
-=========================================================
-
-Usage:
-  raytracer.exe [options] <file.brep>
-  occt-rt-viewer.exe [options] <file.step|file.iges|file.brep>
-
-Viewer Controls:
-  Left-drag     Rotate (trackball)
-  Scroll        Zoom
-  Middle-drag   Pan
-  R             Reset view
-  Q/Escape      Quit
-
-For more options, run with --help
-
-GitHub: https://github.com/pozzettiandrea/OCCT-RT
-"@ | Out-File -FilePath dist\README.txt -Encoding UTF8
+          $readme = "OCCT-RT - High-Performance BVH Raytracer for OpenCASCADE`n=========================================================`n`nUsage:`n  raytracer.exe [options] <file.brep>`n  occt-rt-viewer.exe [options] <file.step|file.iges|file.brep>`n`nViewer Controls:`n  Left-drag     Rotate (trackball)`n  Scroll        Zoom`n  Middle-drag   Pan`n  R             Reset view`n  Q/Escape      Quit`n`nFor more options, run with --help`n`nGitHub: https://github.com/pozzettiandrea/OCCT-RT"
+          $readme | Out-File -FilePath dist\README.txt -Encoding UTF8
 
           # Create ZIP archive
           Compress-Archive -Path dist\* -DestinationPath ${{ matrix.artifact }}.zip
