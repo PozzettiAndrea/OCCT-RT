@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765643707702,
+  "lastUpdate": 1765644242017,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -780,6 +780,96 @@ window.BENCHMARK_DATA = {
             "value": 2729265,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 366.40ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "79c72c38b1fc9f733295e6c73f543c371db1a84e",
+          "message": "Add more Windows DLLs and improve raytracer debug output\n\n- Copy freetype, freeimage, tcl, zlib DLLs in addition to OCCT/TBB\n- Use dumpbin to check exe dependencies\n- Use Start-Process with output redirection for better diagnostics\n- Add continue-on-error to see benchmark step even if test fails\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:39:33Z",
+          "tree_id": "028573d93738730deb27cd6b3e49d0556407a5ae",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/79c72c38b1fc9f733295e6c73f543c371db1a84e"
+        },
+        "date": 1765644240992,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 814963,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 1227.05ms"
+          },
+          {
+            "name": "box",
+            "value": 10762641,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 92.91ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2946888,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 339.34ms"
+          },
+          {
+            "name": "cone",
+            "value": 3452168,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 289.67ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 6747411,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 148.21ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 1894542,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 527.83ms"
+          },
+          {
+            "name": "mr",
+            "value": 4944914,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 202.23ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 2820071,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 354.60ms"
+          },
+          {
+            "name": "sphere",
+            "value": 2389538,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 418.49ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 2518454,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 397.07ms"
+          },
+          {
+            "name": "torus",
+            "value": 2595656,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 385.26ms"
           }
         ]
       }
