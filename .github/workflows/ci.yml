@@ -167,13 +167,32 @@ jobs:
           Write-Host "Copied DLLs to $dllDest :"
           Get-ChildItem -Path $dllDest -Filter "*.dll" | ForEach-Object { Write-Host "  $_" }
 
+      - name: Test raytracer (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # Test if raytracer runs at all
+          Write-Host "Testing raytracer..."
+          $env:Path = "$PWD\build\bin;$env:Path"
+          try {
+            $output = & .\build\bin\raytracer.exe --help 2>&1
+            Write-Host "Raytracer output:"
+            Write-Host $output
+          } catch {
+            Write-Host "Error running raytracer: $_"
+          }
+          # List files in build\bin
+          Write-Host "Files in build\bin:"
+          Get-ChildItem build\bin | ForEach-Object { Write-Host "  $($_.Name)" }
+
       - name: Run benchmarks (Windows)
         if: runner.os == 'Windows'
         shell: pwsh
         run: |
+          $env:Path = "$PWD\build\bin;$env:Path"
           python .github/scripts/parse_benchmark.py `
-            ./build/bin/raytracer.exe `
-            ./test_data `
+            .\build\bin\raytracer.exe `
+            .\test_data `
             benchmark_results.json `
             --backend ${{ matrix.backend }}
 
