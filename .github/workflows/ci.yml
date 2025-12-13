@@ -145,6 +145,8 @@ jobs:
       - name: Run benchmarks (Windows)
         if: runner.os == 'Windows'
         run: |
+          # Add conda Library/bin to PATH for DLLs
+          export PATH="$CONDA_PREFIX/Library/bin:$PATH"
           python .github/scripts/parse_benchmark.py \
             ./build/bin/raytracer.exe \
             ./test_data \
