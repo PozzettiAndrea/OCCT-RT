@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765666765823,
+  "lastUpdate": 1765668143612,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -720,6 +720,294 @@ window.BENCHMARK_DATA = {
             "value": 8123675,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 123.10ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "968ffaf7fcadf8ccb1d43c4053e33f9b74362514",
+          "message": "Add multi-level benchmark support\n\nAdd 4 benchmark levels to measure performance at each computation stage:\n- raw: BVH traversal + triangle intersection only (skip Newton)\n- refined: Above + Newton refinement for exact UV\n- normals: Above + D1 evaluation for surface normals\n- curvature: Above + D2 evaluation for curvature values\n\nChanges:\n- Add SetSkipAllNewton() to InterBVH for raw benchmark mode\n- Add --bench-level flag to raytracer CLI\n- Update parse_benchmark.py to support --bench-level\n- Update render_shaded.py to generate 4 render types (depth, normals, curvature)\n- Update CI workflow to run all 4 benchmark levels\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T23:15:54Z",
+          "tree_id": "44cf71390c2cde5b7d1dec27a89e7e4168c9f916",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/968ffaf7fcadf8ccb1d43c4053e33f9b74362514"
+        },
+        "date": 1765668141626,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe_raw",
+            "value": 10331219,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 96.79ms"
+          },
+          {
+            "name": "box_raw",
+            "value": 22556052,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,455, Time: 44.33ms"
+          },
+          {
+            "name": "bspline_surface_raw",
+            "value": 10698963,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 93.47ms"
+          },
+          {
+            "name": "cone_raw",
+            "value": 14031543,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 71.27ms"
+          },
+          {
+            "name": "cylinder_raw",
+            "value": 17670654,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 56.59ms"
+          },
+          {
+            "name": "io1-ca-214_raw",
+            "value": 15206350,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 65.76ms"
+          },
+          {
+            "name": "mr_raw",
+            "value": 23920584,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 41.81ms"
+          },
+          {
+            "name": "simple_L021_raw",
+            "value": 15895977,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 62.91ms"
+          },
+          {
+            "name": "sphere_raw",
+            "value": 15670788,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 63.81ms"
+          },
+          {
+            "name": "spiral_wind_turbine_raw",
+            "value": 17110689,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 58.44ms"
+          },
+          {
+            "name": "torus_raw",
+            "value": 19375714,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 51.61ms"
+          },
+          {
+            "name": "bellow_pipe_refined",
+            "value": 6425703,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 155.63ms"
+          },
+          {
+            "name": "box_refined",
+            "value": 19301293,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,455, Time: 51.81ms"
+          },
+          {
+            "name": "bspline_surface_refined",
+            "value": 7176896,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 139.34ms"
+          },
+          {
+            "name": "cone_refined",
+            "value": 7251316,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 137.91ms"
+          },
+          {
+            "name": "cylinder_refined",
+            "value": 19760112,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 50.61ms"
+          },
+          {
+            "name": "io1-ca-214_refined",
+            "value": 5558736,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 179.90ms"
+          },
+          {
+            "name": "mr_refined",
+            "value": 16104616,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 62.09ms"
+          },
+          {
+            "name": "simple_L021_refined",
+            "value": 11415655,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 87.60ms"
+          },
+          {
+            "name": "sphere_refined",
+            "value": 5716278,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 174.94ms"
+          },
+          {
+            "name": "spiral_wind_turbine_refined",
+            "value": 6767502,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 147.77ms"
+          },
+          {
+            "name": "torus_refined",
+            "value": 8370232,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 119.47ms"
+          },
+          {
+            "name": "bellow_pipe_normals",
+            "value": 8485795,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 117.84ms"
+          },
+          {
+            "name": "box_normals",
+            "value": 22582029,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,455, Time: 44.28ms"
+          },
+          {
+            "name": "bspline_surface_normals",
+            "value": 5562942,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 179.76ms"
+          },
+          {
+            "name": "cone_normals",
+            "value": 5554321,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 180.04ms"
+          },
+          {
+            "name": "cylinder_normals",
+            "value": 15701545,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 63.69ms"
+          },
+          {
+            "name": "io1-ca-214_normals",
+            "value": 4739584,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 210.99ms"
+          },
+          {
+            "name": "mr_normals",
+            "value": 9736340,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 102.71ms"
+          },
+          {
+            "name": "simple_L021_normals",
+            "value": 10238558,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 97.67ms"
+          },
+          {
+            "name": "sphere_normals",
+            "value": 5623570,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 177.82ms"
+          },
+          {
+            "name": "spiral_wind_turbine_normals",
+            "value": 6222233,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 160.71ms"
+          },
+          {
+            "name": "torus_normals",
+            "value": 5073103,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 197.12ms"
+          },
+          {
+            "name": "bellow_pipe_curvature",
+            "value": 7674303,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 130.30ms"
+          },
+          {
+            "name": "box_curvature",
+            "value": 26761581,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,455, Time: 37.37ms"
+          },
+          {
+            "name": "bspline_surface_curvature",
+            "value": 5147449,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 194.27ms"
+          },
+          {
+            "name": "cone_curvature",
+            "value": 7173344,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 139.41ms"
+          },
+          {
+            "name": "cylinder_curvature",
+            "value": 15564929,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 64.25ms"
+          },
+          {
+            "name": "io1-ca-214_curvature",
+            "value": 4855854,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 205.94ms"
+          },
+          {
+            "name": "mr_curvature",
+            "value": 7963432,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 125.57ms"
+          },
+          {
+            "name": "simple_L021_curvature",
+            "value": 7310422,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 136.79ms"
+          },
+          {
+            "name": "sphere_curvature",
+            "value": 2918089,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 342.69ms"
+          },
+          {
+            "name": "spiral_wind_turbine_curvature",
+            "value": 4316317,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 231.68ms"
+          },
+          {
+            "name": "torus_curvature",
+            "value": 5864380,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 170.52ms"
           }
         ]
       }
