@@ -1,6 +1,6 @@
 {
   "bellow_pipe": {
-    "tessellation_time_ms": 50900.64,
+    "tessellation_time_ms": 50603.9,
     "triangle_count": 4105962
   },
   "box": {
@@ -8,47 +8,47 @@
     "triangle_count": 12
   },
   "bspline_surface": {
-    "tessellation_time_ms": 14.99,
+    "tessellation_time_ms": 15.14,
     "triangle_count": 1361
   },
   "cone": {
-    "tessellation_time_ms": 22.63,
+    "tessellation_time_ms": 23.12,
     "triangle_count": 1494
   },
   "cylinder": {
-    "tessellation_time_ms": 5.35,
+    "tessellation_time_ms": 5.3,
     "triangle_count": 500
   },
   "io1-ca-214": {
-    "tessellation_time_ms": 144.64,
+    "tessellation_time_ms": 148.64,
     "triangle_count": 6996
   },
   "many_tori": {
-    "tessellation_time_ms": 8069.62,
+    "tessellation_time_ms": 8213.83,
     "triangle_count": 793800
   },
   "mr": {
-    "tessellation_time_ms": 4689.18,
+    "tessellation_time_ms": 4862.13,
     "triangle_count": 363544
   },
   "multiface": {
-    "tessellation_time_ms": 1576.11,
+    "tessellation_time_ms": 1616.96,
     "triangle_count": 139256
   },
   "simple_L021": {
-    "tessellation_time_ms": 112.07,
+    "tessellation_time_ms": 111.48,
     "triangle_count": 18686
   },
   "sphere": {
-    "tessellation_time_ms": 221.76,
+    "tessellation_time_ms": 248.2,
     "triangle_count": 25138
   },
   "spiral_wind_turbine": {
-    "tessellation_time_ms": 188.13,
+    "tessellation_time_ms": 185.64,
     "triangle_count": 15484
   },
   "torus": {
-    "tessellation_time_ms": 518.21,
+    "tessellation_time_ms": 541.02,
     "triangle_count": 41580
   }
 }
