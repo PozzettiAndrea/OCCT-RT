@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765651819391,
+  "lastUpdate": 1765652176834,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -450,6 +450,96 @@ window.BENCHMARK_DATA = {
             "value": 5888893,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 169.81ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "e9f8a693514f1d1ab77c36cf19faa79c327f468a",
+          "message": "Add TKXSBASE library for XSControl_Reader symbols\n\nFixes macOS build failure due to missing XSControl_Reader symbols.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T18:47:16Z",
+          "tree_id": "9fa1e9da59b64d9e2f687cc5ef5f1a0a7a864618",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/e9f8a693514f1d1ab77c36cf19faa79c327f468a"
+        },
+        "date": 1765652169838,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 2810539,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 355.80ms"
+          },
+          {
+            "name": "box",
+            "value": 10088863,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 99.12ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 2768148,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 361.25ms"
+          },
+          {
+            "name": "cone",
+            "value": 3821721,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 261.66ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 11184894,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 89.41ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2117419,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 472.27ms"
+          },
+          {
+            "name": "mr",
+            "value": 7608017,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 131.44ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 6757455,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 147.98ms"
+          },
+          {
+            "name": "sphere",
+            "value": 3336148,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 299.75ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3498551,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 285.83ms"
+          },
+          {
+            "name": "torus",
+            "value": 6097405,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 164.00ms"
           }
         ]
       }
