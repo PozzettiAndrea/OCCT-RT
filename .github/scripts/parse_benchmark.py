@@ -2,7 +2,7 @@
 """
 Parse OCCT-RT raytracer benchmark output into JSON format for github-action-benchmark.
 
-Usage: python parse_benchmark.py <raytracer_path> <test_data_dir> <output.json>
+Usage: python parse_benchmark.py <raytracer_path> <test_data_dir> <output.json> [--backend BACKEND]
 
 The raytracer outputs benchmark results in this format:
     10000 rays |     8500 hits |     123.45 ms |    2030000 rays/sec
@@ -16,24 +16,26 @@ import json
 import re
 import sys
 import os
+import argparse
 from pathlib import Path
 
 
-def run_benchmark(raytracer: str, brep_file: str, resolution: int = 500) -> dict:
+def run_benchmark(raytracer: str, brep_file: str, backend: str = "occt", resolution: int = 1000) -> dict:
     """
     Run benchmark on a single BREP file and parse output.
 
     Args:
         raytracer: Path to raytracer executable
         brep_file: Path to BREP file
-        resolution: Grid resolution for benchmark (default: 500x500 = 250K rays)
+        backend: BVH backend (occt, embree, embree4, embree8)
+        resolution: Grid resolution for benchmark (default: 1000x1000 = 1M rays)
 
     Returns:
         Dictionary with benchmark results or None on failure
     """
     try:
         result = subprocess.run(
-            [raytracer, "-b", "-r", str(resolution), brep_file],
+            [raytracer, "-b", "-r", str(resolution), "--backend", backend, brep_file],
             capture_output=True,
             text=True,
             timeout=600  # 10 minute timeout for large files
@@ -72,18 +74,24 @@ def run_benchmark(raytracer: str, brep_file: str, resolution: int = 500) -> dict
 
 
 def main():
-    if len(sys.argv) != 4:
-        print(f"Usage: {sys.argv[0]} <raytracer> <test_data_dir> <output.json>")
-        print()
-        print("Arguments:")
-        print("  raytracer      Path to the raytracer executable")
-        print("  test_data_dir  Directory containing .brep test files")
-        print("  output.json    Output file for benchmark results")
-        sys.exit(1)
+    parser = argparse.ArgumentParser(
+        description="Parse OCCT-RT raytracer benchmark output into JSON format"
+    )
+    parser.add_argument("raytracer", help="Path to the raytracer executable")
+    parser.add_argument("test_data_dir", help="Directory containing .brep test files")
+    parser.add_argument("output_json", help="Output file for benchmark results")
+    parser.add_argument("--backend", default="occt", choices=["occt", "embree", "embree4", "embree8"],
+                        help="BVH backend to use (default: occt)")
+    parser.add_argument("--resolution", type=int, default=1000,
+                        help="Benchmark resolution (default: 1000 = 1M rays)")
 
-    raytracer = sys.argv[1]
-    test_data_dir = Path(sys.argv[2])
-    output_file = sys.argv[3]
+    args = parser.parse_args()
+
+    raytracer = args.raytracer
+    test_data_dir = Path(args.test_data_dir)
+    output_file = args.output_json
+    backend = args.backend
+    resolution = args.resolution
 
     # Verify raytracer exists
     if not os.path.isfile(raytracer):
@@ -103,6 +111,8 @@ def main():
 
     print(f"Found {len(brep_files)} BREP files to benchmark")
     print(f"Raytracer: {raytracer}")
+    print(f"Backend: {backend}")
+    print(f"Resolution: {resolution}x{resolution} ({resolution*resolution:,} rays)")
     print()
 
     benchmarks = []
@@ -111,7 +121,7 @@ def main():
         filename = brep_file.stem
         print(f"Benchmarking: {filename}...")
 
-        result = run_benchmark(raytracer, str(brep_file))
+        result = run_benchmark(raytracer, str(brep_file), backend=backend, resolution=resolution)
 
         if result:
             benchmarks.append({
