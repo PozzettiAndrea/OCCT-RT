@@ -35,27 +35,21 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
     Returns:
         True on success, False on failure
     """
-    # Create temp directory for raytracer output
-    temp_dir = Path(output_png).parent / "temp"
-    temp_dir.mkdir(exist_ok=True)
-
-    # Convert paths to absolute (needed because we change cwd)
-    raytracer_abs = str(Path(raytracer).resolve())
-    brep_file_abs = str(Path(brep_file).resolve())
-
-    brep_stem = Path(brep_file).stem
-    npy_file = temp_dir / f"{brep_stem}_data.npy"
+    # Raytracer outputs to the same directory as the input file
+    brep_path = Path(brep_file).resolve()
+    brep_dir = brep_path.parent
+    brep_stem = brep_path.stem
+    npy_file = brep_dir / f"{brep_stem}_data.npy"
 
     try:
         # Run raytracer to get normals and positions
         # --allow-disconnected: some test shapes have multiple disconnected components
         result = subprocess.run(
-            [raytracer_abs, "-r", str(resolution), "--normals", "--position",
-             "--allow-disconnected", brep_file_abs],
+            [raytracer, "-r", str(resolution), "--normals", "--position",
+             "--allow-disconnected", str(brep_path)],
             capture_output=True,
             text=True,
-            timeout=120,
-            cwd=str(temp_dir)
+            timeout=120
         )
 
         if result.returncode != 0:
@@ -63,16 +57,16 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
             print(f"  stdout: {result.stdout[:200]}", file=sys.stderr)
             return False
 
-        # Find the output npy file (raytracer outputs to current directory)
+        # Find the output npy file (raytracer outputs to input file's directory)
         if not npy_file.exists():
-            # Try to find it - list all files in temp_dir for debugging
-            all_files = list(temp_dir.glob("*"))
-            npy_files = [f for f in all_files if f.suffix == '.npy']
+            # Try to find it - list all npy files in brep_dir for debugging
+            npy_files = list(brep_dir.glob("*.npy"))
             if npy_files:
-                npy_file = npy_files[0]
+                # Use the most recently created one
+                npy_file = max(npy_files, key=lambda f: f.stat().st_mtime)
             else:
-                print(f"  No .npy output found in {temp_dir}", file=sys.stderr)
-                print(f"  Files in temp_dir: {[f.name for f in all_files]}", file=sys.stderr)
+                print(f"  No .npy output found in {brep_dir}", file=sys.stderr)
+                print(f"  Expected: {npy_file}", file=sys.stderr)
                 print(f"  Raytracer stdout: {result.stdout[:500]}", file=sys.stderr)
                 return False
 
@@ -135,7 +129,7 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
         img = Image.fromarray(rgb_8bit, mode='RGB')
         img.save(output_png)
 
-        # Clean up temp file
+        # Clean up npy file (it's in the test_data directory)
         npy_file.unlink(missing_ok=True)
 
         return True
