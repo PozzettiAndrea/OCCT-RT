@@ -45,11 +45,26 @@ jobs:
             backend: occt
             needs_embree: false
 
-          # Windows - OCCT only (benchmarks unreliable)
+          # Windows - All backends
           - os: windows-latest
             name: win-x64-occt
             backend: occt
             needs_embree: false
+
+          - os: windows-latest
+            name: win-x64-embree
+            backend: embree
+            needs_embree: true
+
+          - os: windows-latest
+            name: win-x64-simd4
+            backend: embree4
+            needs_embree: true
+
+          - os: windows-latest
+            name: win-x64-simd8
+            backend: embree8
+            needs_embree: true
 
     runs-on: ${{ matrix.os }}
     name: ${{ matrix.name }}
@@ -171,7 +186,7 @@ jobs:
           Get-ChildItem -Path $dllDest -Filter "OCCT_RT*" | ForEach-Object { Write-Host "  $($_.Name)" }
 
           # Copy all potentially needed DLLs from conda
-          $patterns = @("TK*.dll", "tbb*.dll", "freetype*.dll", "freeimage*.dll", "tcl*.dll", "tk*.dll", "zlib*.dll")
+          $patterns = @("TK*.dll", "tbb*.dll", "freetype*.dll", "freeimage*.dll", "tcl*.dll", "tk*.dll", "zlib*.dll", "embree*.dll")
           foreach ($pattern in $patterns) {
             Get-ChildItem -Path $dllSource -Filter $pattern -ErrorAction SilentlyContinue |
               Copy-Item -Destination $dllDest -Force -ErrorAction SilentlyContinue
