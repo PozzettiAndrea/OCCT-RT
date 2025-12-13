@@ -159,15 +159,26 @@ jobs:
           $dllSource = "$env:CONDA_PREFIX\Library\bin"
           $dllDest = "build\bin"
 
-          # Copy all potentially needed DLLs
+          # List all files in build directory structure for debugging
+          Write-Host "Files in build directory:"
+          Get-ChildItem -Path build -Recurse -Filter "*.dll" | ForEach-Object { Write-Host "  $($_.FullName)" }
+          Get-ChildItem -Path build -Recurse -Filter "*.exe" | ForEach-Object { Write-Host "  $($_.FullName)" }
+
+          # Copy OCCT_RT.dll from wherever CMake put it
+          Get-ChildItem -Path build -Recurse -Filter "OCCT_RT.dll" -ErrorAction SilentlyContinue |
+            Copy-Item -Destination $dllDest -Force -ErrorAction SilentlyContinue
+          Write-Host "After copying OCCT_RT.dll:"
+          Get-ChildItem -Path $dllDest -Filter "OCCT_RT*" | ForEach-Object { Write-Host "  $($_.Name)" }
+
+          # Copy all potentially needed DLLs from conda
           $patterns = @("TK*.dll", "tbb*.dll", "freetype*.dll", "freeimage*.dll", "tcl*.dll", "tk*.dll", "zlib*.dll")
           foreach ($pattern in $patterns) {
             Get-ChildItem -Path $dllSource -Filter $pattern -ErrorAction SilentlyContinue |
               Copy-Item -Destination $dllDest -Force -ErrorAction SilentlyContinue
           }
 
-          # List copied DLLs for debugging
-          Write-Host "Copied DLLs to $dllDest :"
+          # List all DLLs in dest for debugging
+          Write-Host "`nAll DLLs in $dllDest :"
           Get-ChildItem -Path $dllDest -Filter "*.dll" | ForEach-Object { Write-Host "  $($_.Name)" }
 
       - name: Test raytracer (Windows)
