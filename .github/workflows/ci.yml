@@ -223,8 +223,9 @@ jobs:
           # Create renders directory
           mkdir -p gh-pages-repo/dev/renders
 
-          # Copy rendered images
+          # Copy rendered images and metadata
           cp renders/*.png gh-pages-repo/dev/renders/ 2>/dev/null || true
+          cp renders/metadata.json gh-pages-repo/dev/renders/ 2>/dev/null || true
 
           # Commit and push if there are changes
           cd gh-pages-repo
