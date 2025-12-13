@@ -151,16 +151,30 @@ jobs:
             benchmark_results.json \
             --backend ${{ matrix.backend }}
 
+      - name: Copy DLLs for Windows
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          # Copy OCCT and TBB DLLs to build directory so raytracer can find them
+          $dllSource = "$env:CONDA_PREFIX\Library\bin"
+          $dllDest = "build\bin"
+
+          # Copy all TK*.dll (OCCT) and tbb*.dll files
+          Get-ChildItem -Path $dllSource -Filter "TK*.dll" | Copy-Item -Destination $dllDest -Force
+          Get-ChildItem -Path $dllSource -Filter "tbb*.dll" | Copy-Item -Destination $dllDest -Force
+
+          # List copied DLLs for debugging
+          Write-Host "Copied DLLs to $dllDest :"
+          Get-ChildItem -Path $dllDest -Filter "*.dll" | ForEach-Object { Write-Host "  $_" }
+
       - name: Run benchmarks (Windows)
         if: runner.os == 'Windows'
-        continue-on-error: true  # Windows DLL loading in subprocess is unreliable
+        shell: pwsh
         run: |
-          # Add conda Library/bin to PATH for DLLs
-          export PATH="$CONDA_PREFIX/Library/bin:$PATH"
-          python .github/scripts/parse_benchmark.py \
-            ./build/bin/raytracer.exe \
-            ./test_data \
-            benchmark_results.json \
+          python .github/scripts/parse_benchmark.py `
+            ./build/bin/raytracer.exe `
+            ./test_data `
+            benchmark_results.json `
             --backend ${{ matrix.backend }}
 
       - name: Generate shaded renders (Unix)
