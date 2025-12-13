@@ -18,11 +18,50 @@
     h1 { margin: 0 0 5px 0; font-size: 28px; }
     .subtitle {
       color: #666;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
       font-size: 14px;
     }
     .subtitle a { color: #0066cc; text-decoration: none; }
     .subtitle a:hover { text-decoration: underline; }
+
+    /* Tab Navigation */
+    .tabs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 20px;
+      background: white;
+      padding: 6px;
+      border-radius: 10px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .tab {
+      padding: 10px 18px;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 500;
+      color: #666;
+      border-radius: 6px;
+      transition: all 0.2s;
+    }
+    .tab:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .tab.active {
+      background: #333;
+      color: white;
+    }
+    .tab-desc {
+      font-size: 11px;
+      color: #999;
+      display: block;
+      margin-top: 2px;
+    }
+    .tab.active .tab-desc {
+      color: #aaa;
+    }
 
     /* Geometry Section */
     .geometry-section {
@@ -39,6 +78,13 @@
     @media (max-width: 700px) {
       .geometry-section {
         grid-template-columns: 1fr;
+      }
+      .tabs {
+        flex-wrap: wrap;
+      }
+      .tab {
+        flex: 1;
+        min-width: 120px;
       }
     }
     .geometry-header {
@@ -137,6 +183,25 @@
     &nbsp;•&nbsp; Values in M rays/sec (higher is better)
   </p>
 
+  <div class="tabs" id="tabs">
+    <button class="tab active" data-level="raw">
+      Intersection
+      <span class="tab-desc">BVH + triangles</span>
+    </button>
+    <button class="tab" data-level="refined">
+      + Refinement
+      <span class="tab-desc">Newton UV solve</span>
+    </button>
+    <button class="tab" data-level="normals">
+      + Normals
+      <span class="tab-desc">D1 evaluation</span>
+    </button>
+    <button class="tab" data-level="curvature">
+      + Curvature
+      <span class="tab-desc">D2 evaluation</span>
+    </button>
+  </div>
+
   <div id="content">
     <div class="loading">Loading benchmark data...</div>
   </div>
@@ -159,8 +224,19 @@
 
     const backendOrder = ['occt', 'embree', 'simd4', 'simd8'];
     const osOrder = ['Linux x64', 'macOS ARM64', 'Windows x64'];
+    const benchLevels = ['raw', 'refined', 'normals', 'curvature'];
+
+    // Map bench levels to render types
+    const levelToRender = {
+      'raw': 'raw',
+      'refined': 'refined',
+      'normals': 'normals',
+      'curvature': 'curvature'
+    };
 
     let meshMetadata = null;
+    let allData = {};
+    let currentLevel = 'raw';
 
     async function loadData(platformId) {
       try {
@@ -180,26 +256,40 @@
       return null;
     }
 
-    function getLatestValue(data, geomName) {
+    function getLatestValue(data, benchName) {
       const entries = data?.entries?.Benchmark || [];
       if (entries.length === 0) return null;
       const latest = entries[entries.length - 1];
-      const bench = latest.benches?.find(b => b.name === geomName);
+      const bench = latest.benches?.find(b => b.name === benchName);
       return bench ? bench.value / 1000000 : null;
     }
 
     function formatNumber(num) {
+      if (num === undefined || num === null) return 'N/A';
       if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
       if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
       return num.toString();
     }
 
     function formatTime(ms) {
+      if (ms === undefined || ms === null) return 'N/A';
       if (ms >= 1000) return (ms / 1000).toFixed(2) + 's';
       return ms.toFixed(1) + 'ms';
     }
 
-    function createGeometrySection(geomName, allData) {
+    function parseGeometryName(benchName) {
+      // Extract base geometry name by removing level suffix
+      for (const level of benchLevels) {
+        const suffix = `_${level}`;
+        if (benchName.endsWith(suffix)) {
+          return benchName.slice(0, -suffix.length);
+        }
+      }
+      return benchName; // Legacy format without suffix
+    }
+
+    function createGeometrySection(geomName, level) {
+      const benchName = `${geomName}_${level}`;
       const section = document.createElement('div');
       section.className = 'geometry-section';
 
@@ -273,7 +363,11 @@
           const platformId = platforms.find(p => p.os === os && p.backend === backend)?.id;
 
           if (platformId && allData[platformId]) {
-            const value = getLatestValue(allData[platformId], geomName);
+            // Try with level suffix first, then without (for legacy data)
+            let value = getLatestValue(allData[platformId], benchName);
+            if (value === null) {
+              value = getLatestValue(allData[platformId], geomName);
+            }
             if (value !== null) {
               cell.innerHTML = `<span class="value">${value.toFixed(1)}</span>`;
             } else {
@@ -290,39 +384,33 @@
       tableWrapper.appendChild(table);
       section.appendChild(tableWrapper);
 
-      // Render image
+      // Render image - use level-specific render
       const renderContainer = document.createElement('div');
       renderContainer.className = 'render-container';
-      const imgUrl = `../renders/${geomName}.png`;
+      const renderType = levelToRender[level];
+      const imgUrl = `../renders/${geomName}_${renderType}.png`;
+      // Fallback to legacy format without suffix
+      const fallbackUrl = `../renders/${geomName}.png`;
       renderContainer.innerHTML = `
         <img src="${imgUrl}" alt="${geomName}"
-             onerror="this.outerHTML='<div class=\\'placeholder\\'>No render</div>'" />
+             onerror="this.onerror=null; this.src='${fallbackUrl}'; this.onerror=function(){this.outerHTML='<div class=\\'placeholder\\'>No render</div>';}" />
       `;
       section.appendChild(renderContainer);
 
       return section;
     }
 
-    async function init() {
+    function renderContent() {
       const content = document.getElementById('content');
 
-      // Load mesh metadata
-      meshMetadata = await loadMeshMetadata();
-
-      // Load all platform data
-      const allData = {};
-      for (const platform of platforms) {
-        const data = await loadData(platform.id);
-        if (data) allData[platform.id] = data;
-      }
-
-      // Collect all geometry names
+      // Collect all unique geometry names from benchmark data
       const allGeometries = new Set();
       for (const data of Object.values(allData)) {
         const entries = data?.entries?.Benchmark || [];
         for (const entry of entries) {
           for (const bench of entry.benches || []) {
-            allGeometries.add(bench.name);
+            const geomName = parseGeometryName(bench.name);
+            allGeometries.add(geomName);
           }
         }
       }
@@ -336,8 +424,42 @@
 
       // Create section for each geometry
       for (const geomName of [...allGeometries].sort()) {
-        content.appendChild(createGeometrySection(geomName, allData));
+        content.appendChild(createGeometrySection(geomName, currentLevel));
       }
+    }
+
+    function setupTabs() {
+      const tabs = document.querySelectorAll('.tab');
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          // Update active state
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          // Update current level and re-render
+          currentLevel = tab.dataset.level;
+          renderContent();
+        });
+      });
+    }
+
+    async function init() {
+      const content = document.getElementById('content');
+
+      // Load mesh metadata
+      meshMetadata = await loadMeshMetadata();
+
+      // Load all platform data
+      for (const platform of platforms) {
+        const data = await loadData(platform.id);
+        if (data) allData[platform.id] = data;
+      }
+
+      // Setup tab handlers
+      setupTabs();
+
+      // Initial render
+      renderContent();
     }
 
     init();
