@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765651201139,
+  "lastUpdate": 1765651381151,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -1140,6 +1140,96 @@ window.BENCHMARK_DATA = {
             "value": 7317109,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 136.67ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "21aead782944001b36bee36a52ac4cc20035f71e",
+          "message": "Fix remaining YAML multi-line string issues in release workflow\n\nConvert all multi-line strings to single-line printf/PowerShell format.\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T18:38:35Z",
+          "tree_id": "f7b591fb00e98f686ddd9077e75edd1f24e7fe93",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/21aead782944001b36bee36a52ac4cc20035f71e"
+        },
+        "date": 1765651380564,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 7055122,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 141.74ms"
+          },
+          {
+            "name": "box",
+            "value": 18767008,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 53.29ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3963206,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 252.32ms"
+          },
+          {
+            "name": "cone",
+            "value": 5994305,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 166.82ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19343482,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.70ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2767293,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.36ms"
+          },
+          {
+            "name": "mr",
+            "value": 10694615,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 93.51ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10178117,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 98.25ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4993459,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 200.26ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3814464,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 262.16ms"
+          },
+          {
+            "name": "torus",
+            "value": 7201083,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 138.87ms"
           }
         ]
       }
