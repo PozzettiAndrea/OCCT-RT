@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765640438482,
+  "lastUpdate": 1765640830321,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -120,6 +120,66 @@ window.BENCHMARK_DATA = {
             "value": 7290064,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.17ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "41f1e7d379f7c277b8a81d0a4b26bd4c3ee6bd32",
+          "message": "Fix render: add --allow-disconnected flag and debug output",
+          "timestamp": "2025-12-13T15:45:25Z",
+          "tree_id": "96cd32a57c2c5d4e1595cdea279d70cfa57071d8",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/41f1e7d379f7c277b8a81d0a4b26bd4c3ee6bd32"
+        },
+        "date": 1765640829517,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "box",
+            "value": 13299995,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 75.19ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3450632,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 289.80ms"
+          },
+          {
+            "name": "cone",
+            "value": 4967019,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 201.33ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 13516619,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 73.98ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4198576,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 238.18ms"
+          },
+          {
+            "name": "torus",
+            "value": 5926734,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 168.73ms"
           }
         ]
       }
