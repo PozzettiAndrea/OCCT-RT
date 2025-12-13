@@ -41,13 +41,31 @@
         grid-template-columns: 1fr;
       }
     }
+    .geometry-header {
+      grid-column: 1 / -1;
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
     .geometry-title {
       font-size: 18px;
       font-weight: 600;
-      margin: 0 0 15px 0;
+      margin: 0;
       color: #333;
       text-transform: capitalize;
-      grid-column: 1 / -1;
+    }
+    .mesh-stats {
+      font-size: 12px;
+      color: #888;
+      font-family: "SF Mono", Monaco, "Consolas", monospace;
+    }
+    .mesh-stats span {
+      margin-left: 15px;
+    }
+    .mesh-stats span:first-child {
+      margin-left: 0;
     }
 
     /* Performance Table */
@@ -130,6 +148,9 @@
       { id: 'linux-x64-simd4', os: 'Linux x64', backend: 'simd4' },
       { id: 'linux-x64-simd8', os: 'Linux x64', backend: 'simd8' },
       { id: 'macos-arm64-occt', os: 'macOS ARM64', backend: 'occt' },
+      { id: 'macos-arm64-embree', os: 'macOS ARM64', backend: 'embree' },
+      { id: 'macos-arm64-simd4', os: 'macOS ARM64', backend: 'simd4' },
+      { id: 'macos-arm64-simd8', os: 'macOS ARM64', backend: 'simd8' },
       { id: 'win-x64-occt', os: 'Windows x64', backend: 'occt' },
       { id: 'win-x64-embree', os: 'Windows x64', backend: 'embree' },
       { id: 'win-x64-simd4', os: 'Windows x64', backend: 'simd4' },
@@ -139,12 +160,22 @@
     const backendOrder = ['occt', 'embree', 'simd4', 'simd8'];
     const osOrder = ['Linux x64', 'macOS ARM64', 'Windows x64'];
 
+    let meshMetadata = null;
+
     async function loadData(platformId) {
       try {
         const response = await fetch(`${platformId}/data.js`);
         const text = await response.text();
         const match = text.match(/window\.BENCHMARK_DATA\s*=\s*(\{[\s\S]*\});?/);
         if (match) return JSON.parse(match[1]);
+      } catch (e) {}
+      return null;
+    }
+
+    async function loadMeshMetadata() {
+      try {
+        const response = await fetch('../renders/metadata.json');
+        return await response.json();
       } catch (e) {}
       return null;
     }
@@ -157,15 +188,43 @@
       return bench ? bench.value / 1000000 : null;
     }
 
+    function formatNumber(num) {
+      if (num >= 1000000) return (num / 1000000).toFixed(1) + 'M';
+      if (num >= 1000) return (num / 1000).toFixed(1) + 'K';
+      return num.toString();
+    }
+
+    function formatTime(ms) {
+      if (ms >= 1000) return (ms / 1000).toFixed(2) + 's';
+      return ms.toFixed(1) + 'ms';
+    }
+
     function createGeometrySection(geomName, allData) {
       const section = document.createElement('div');
       section.className = 'geometry-section';
 
-      // Title
+      // Header with title and mesh stats
+      const header = document.createElement('div');
+      header.className = 'geometry-header';
+
       const title = document.createElement('h2');
       title.className = 'geometry-title';
       title.textContent = geomName.replace(/_/g, ' ');
-      section.appendChild(title);
+      header.appendChild(title);
+
+      // Add mesh stats if available
+      const geomMeta = meshMetadata?.[geomName];
+      if (geomMeta) {
+        const stats = document.createElement('div');
+        stats.className = 'mesh-stats';
+        stats.innerHTML = `
+          <span>${formatNumber(geomMeta.triangle_count)} triangles</span>
+          <span>meshed in ${formatTime(geomMeta.tessellation_time_ms)}</span>
+        `;
+        header.appendChild(stats);
+      }
+
+      section.appendChild(header);
 
       // Table
       const tableWrapper = document.createElement('div');
@@ -226,6 +285,9 @@
 
     async function init() {
       const content = document.getElementById('content');
+
+      // Load mesh metadata
+      meshMetadata = await loadMeshMetadata();
 
       // Load all platform data
       const allData = {};
