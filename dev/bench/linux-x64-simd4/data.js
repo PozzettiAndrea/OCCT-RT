@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765644725099,
+  "lastUpdate": 1765645486970,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -780,6 +780,96 @@ window.BENCHMARK_DATA = {
             "value": 7266597,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.62ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "f328d144d970736e029332a469674c798bb8cbe1",
+          "message": "Add Windows Embree/SIMD4/SIMD8 benchmark configurations\n\n- Add win-x64-embree, win-x64-simd4, win-x64-simd8 jobs to CI matrix\n- Include embree*.dll in Windows DLL copy step\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T17:01:27Z",
+          "tree_id": "2d2257f28d1e0b2b1f826e44f318d75f5e0e73af",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/f328d144d970736e029332a469674c798bb8cbe1"
+        },
+        "date": 1765645486232,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 6945795,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 143.97ms"
+          },
+          {
+            "name": "box",
+            "value": 19534302,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 51.19ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 3978199,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 251.37ms"
+          },
+          {
+            "name": "cone",
+            "value": 6092434,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 164.14ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 19533921,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 51.19ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2764027,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 361.79ms"
+          },
+          {
+            "name": "mr",
+            "value": 10828957,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 92.34ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 10391554,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 96.23ms"
+          },
+          {
+            "name": "sphere",
+            "value": 4966230,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 201.36ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 3671328,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 272.38ms"
+          },
+          {
+            "name": "torus",
+            "value": 7283162,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 137.30ms"
           }
         ]
       }
