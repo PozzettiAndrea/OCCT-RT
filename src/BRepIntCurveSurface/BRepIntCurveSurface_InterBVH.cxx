@@ -3988,7 +3988,7 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
         ThreadLocalSurfaces threadSurfaces = createLocalSurfaces();
 
         #pragma omp for schedule(dynamic)
-        for (size_t fi = 0; fi < faceHitPairs.size(); ++fi)
+        for (int fi = 0; fi < static_cast<int>(faceHitPairs.size()); ++fi)
         {
           Standard_Integer faceIdx = faceHitPairs[fi].first;
           std::vector<PendingCurvedHit>& hits = *faceHitPairs[fi].second;
