@@ -4,7 +4,6 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>OCCT-RT Benchmarks</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
   <style>
     * { box-sizing: border-box; }
     body {
@@ -13,111 +12,102 @@
       padding: 20px;
       background: #f5f5f5;
       color: #333;
-      max-width: 1400px;
+      max-width: 1200px;
       margin: 0 auto;
     }
     h1 { margin: 0 0 5px 0; font-size: 28px; }
-    h2 { margin: 30px 0 15px 0; font-size: 20px; color: #444; }
     .subtitle {
       color: #666;
-      margin-bottom: 25px;
+      margin-bottom: 30px;
       font-size: 14px;
     }
     .subtitle a { color: #0066cc; text-decoration: none; }
     .subtitle a:hover { text-decoration: underline; }
 
-    /* Geometry Gallery */
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .gallery-item {
-      background: white;
-      border-radius: 8px;
-      padding: 10px;
-      text-align: center;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .gallery-item img {
-      width: 100%;
-      height: auto;
-      border-radius: 4px;
-      background: #f0f0f0;
-    }
-    .gallery-item .name {
-      margin-top: 8px;
-      font-size: 13px;
-      font-weight: 500;
-      color: #333;
-    }
-    .gallery-item .placeholder {
-      width: 100%;
-      aspect-ratio: 1;
-      background: linear-gradient(135deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
-      border-radius: 4px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #999;
-      font-size: 12px;
-    }
-
-    /* Performance Table */
-    .table-container {
-      background: white;
-      border-radius: 8px;
-      padding: 20px;
-      margin-bottom: 30px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-      overflow-x: auto;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: 14px;
-    }
-    th, td {
-      padding: 10px 12px;
-      text-align: right;
-      border-bottom: 1px solid #eee;
-    }
-    th {
-      font-weight: 600;
-      color: #555;
-      background: #fafafa;
-    }
-    th:first-child, td:first-child {
-      text-align: left;
-      font-weight: 500;
-    }
-    tr:hover td { background: #f8f8f8; }
-    .value { font-family: "SF Mono", Monaco, monospace; }
-    .na { color: #ccc; }
-
-    /* Charts */
-    .chart-section {
+    /* Geometry Section */
+    .geometry-section {
       background: white;
       border-radius: 8px;
       padding: 20px;
       margin-bottom: 20px;
       box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: grid;
+      grid-template-columns: 1fr 200px;
+      gap: 20px;
+      align-items: start;
     }
-    .chart-title {
-      font-size: 16px;
+    @media (max-width: 700px) {
+      .geometry-section {
+        grid-template-columns: 1fr;
+      }
+    }
+    .geometry-title {
+      font-size: 18px;
       font-weight: 600;
       margin: 0 0 15px 0;
       color: #333;
+      text-transform: capitalize;
+      grid-column: 1 / -1;
     }
-    .chart-container {
-      position: relative;
-      height: 250px;
+
+    /* Performance Table */
+    .perf-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+    .perf-table th, .perf-table td {
+      padding: 8px 10px;
+      text-align: right;
+      border-bottom: 1px solid #eee;
+    }
+    .perf-table th {
+      font-weight: 600;
+      color: #555;
+      background: #fafafa;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .perf-table th:first-child, .perf-table td:first-child {
+      text-align: left;
+    }
+    .perf-table tr:hover td { background: #f8f8f8; }
+    .value {
+      font-family: "SF Mono", Monaco, "Consolas", monospace;
+      font-weight: 500;
+    }
+    .na { color: #ccc; }
+
+    /* Render Image */
+    .render-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .render-container img {
+      width: 100%;
+      max-width: 180px;
+      height: auto;
+      border-radius: 6px;
+      background: #f0f0f0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    .placeholder {
+      width: 180px;
+      height: 180px;
+      background: linear-gradient(135deg, #e8e8e8 0%, #f5f5f5 50%, #e8e8e8 100%);
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #aaa;
+      font-size: 12px;
     }
 
     .loading {
       text-align: center;
-      padding: 40px;
+      padding: 60px;
       color: #666;
     }
   </style>
@@ -126,36 +116,14 @@
   <h1>OCCT-RT Benchmark Results</h1>
   <p class="subtitle">
     Performance tracking for <a href="https://github.com/PozzettiAndrea/OCCT-RT">OCCT-RT</a> raytracer
+    &nbsp;•&nbsp; Values in M rays/sec (higher is better)
   </p>
 
-  <h2>Geometry Gallery</h2>
-  <div id="gallery" class="gallery">
-    <div class="loading">Loading renders...</div>
+  <div id="content">
+    <div class="loading">Loading benchmark data...</div>
   </div>
-
-  <h2>Performance Summary (M rays/sec)</h2>
-  <div class="table-container">
-    <table id="perf-table">
-      <thead>
-        <tr>
-          <th>Platform</th>
-          <th>OCCT</th>
-          <th>Embree</th>
-          <th>SIMD4</th>
-          <th>SIMD8</th>
-        </tr>
-      </thead>
-      <tbody id="perf-tbody">
-        <tr><td colspan="5" class="loading">Loading data...</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Performance by Geometry</h2>
-  <div id="charts"></div>
 
   <script>
-    // Platform configurations
     const platforms = [
       { id: 'linux-x64-occt', os: 'Linux x64', backend: 'occt' },
       { id: 'linux-x64-embree', os: 'Linux x64', backend: 'embree' },
@@ -168,103 +136,100 @@
     const backendOrder = ['occt', 'embree', 'simd4', 'simd8'];
     const osOrder = ['Linux x64', 'macOS ARM64', 'Windows x64'];
 
-    const colors = {
-      'linux-x64-occt': '#2196F3',
-      'linux-x64-embree': '#4CAF50',
-      'linux-x64-simd4': '#FF9800',
-      'linux-x64-simd8': '#F44336',
-      'macos-arm64-occt': '#9C27B0',
-      'win-x64-occt': '#00BCD4'
-    };
-
-    // Known geometries for gallery
-    const geometries = ['box', 'sphere', 'torus', 'cone', 'cylinder', 'bspline_surface'];
-
     async function loadData(platformId) {
       try {
         const response = await fetch(`${platformId}/data.js`);
         const text = await response.text();
         const match = text.match(/window\.BENCHMARK_DATA\s*=\s*(\{[\s\S]*\});?/);
-        if (match) {
-          return JSON.parse(match[1]);
-        }
-      } catch (e) {
-        console.log(`No data for ${platformId}`);
-      }
+        if (match) return JSON.parse(match[1]);
+      } catch (e) {}
       return null;
     }
 
-    function getLatestBenchmarks(data) {
+    function getLatestValue(data, geomName) {
       const entries = data?.entries?.Benchmark || [];
-      if (entries.length === 0) return {};
+      if (entries.length === 0) return null;
       const latest = entries[entries.length - 1];
-      const result = {};
-      for (const bench of latest.benches || []) {
-        result[bench.name] = bench.value / 1000000; // Convert to millions
-      }
-      return result;
+      const bench = latest.benches?.find(b => b.name === geomName);
+      return bench ? bench.value / 1000000 : null;
     }
 
-    function renderGallery() {
-      const gallery = document.getElementById('gallery');
-      gallery.innerHTML = '';
+    function createGeometrySection(geomName, allData) {
+      const section = document.createElement('div');
+      section.className = 'geometry-section';
 
-      for (const geom of geometries) {
-        const item = document.createElement('div');
-        item.className = 'gallery-item';
+      // Title
+      const title = document.createElement('h2');
+      title.className = 'geometry-title';
+      title.textContent = geomName.replace(/_/g, ' ');
+      section.appendChild(title);
 
-        const imgUrl = `../renders/${geom}.png`;
-        item.innerHTML = `
-          <img src="${imgUrl}" alt="${geom}" onerror="this.outerHTML='<div class=\\'placeholder\\'>No render</div>'" />
-          <div class="name">${geom.replace('_', ' ')}</div>
-        `;
+      // Table
+      const tableWrapper = document.createElement('div');
+      const table = document.createElement('table');
+      table.className = 'perf-table';
 
-        gallery.appendChild(item);
-      }
-    }
+      // Header
+      const thead = document.createElement('thead');
+      const headerRow = document.createElement('tr');
+      headerRow.innerHTML = '<th>Platform</th>' +
+        backendOrder.map(b => `<th>${b.toUpperCase()}</th>`).join('');
+      thead.appendChild(headerRow);
+      table.appendChild(thead);
 
-    function renderTable(allData) {
-      const tbody = document.getElementById('perf-tbody');
-      tbody.innerHTML = '';
-
-      // Group by OS
+      // Body
+      const tbody = document.createElement('tbody');
       for (const os of osOrder) {
         const row = document.createElement('tr');
 
-        // Platform name
         const nameCell = document.createElement('td');
         nameCell.textContent = os;
         row.appendChild(nameCell);
 
-        // Backend columns
         for (const backend of backendOrder) {
           const cell = document.createElement('td');
           const platformId = platforms.find(p => p.os === os && p.backend === backend)?.id;
 
           if (platformId && allData[platformId]) {
-            const benches = getLatestBenchmarks(allData[platformId]);
-            // Average across all geometries
-            const values = Object.values(benches);
-            if (values.length > 0) {
-              const avg = values.reduce((a, b) => a + b, 0) / values.length;
-              cell.innerHTML = `<span class="value">${avg.toFixed(1)}</span>`;
+            const value = getLatestValue(allData[platformId], geomName);
+            if (value !== null) {
+              cell.innerHTML = `<span class="value">${value.toFixed(1)}</span>`;
             } else {
               cell.innerHTML = '<span class="na">-</span>';
             }
           } else {
             cell.innerHTML = '<span class="na">-</span>';
           }
-
           row.appendChild(cell);
         }
-
         tbody.appendChild(row);
       }
+      table.appendChild(tbody);
+      tableWrapper.appendChild(table);
+      section.appendChild(tableWrapper);
+
+      // Render image
+      const renderContainer = document.createElement('div');
+      renderContainer.className = 'render-container';
+      const imgUrl = `../renders/${geomName}.png`;
+      renderContainer.innerHTML = `
+        <img src="${imgUrl}" alt="${geomName}"
+             onerror="this.outerHTML='<div class=\\'placeholder\\'>No render</div>'" />
+      `;
+      section.appendChild(renderContainer);
+
+      return section;
     }
 
-    function renderCharts(allData) {
-      const chartsDiv = document.getElementById('charts');
-      chartsDiv.innerHTML = '';
+    async function init() {
+      const content = document.getElementById('content');
+
+      // Load all platform data
+      const allData = {};
+      for (const platform of platforms) {
+        const data = await loadData(platform.id);
+        if (data) allData[platform.id] = data;
+      }
 
       // Collect all geometry names
       const allGeometries = new Set();
@@ -277,106 +242,17 @@
         }
       }
 
-      // Create one chart per geometry
+      content.innerHTML = '';
+
+      if (allGeometries.size === 0) {
+        content.innerHTML = '<div class="loading">No benchmark data available yet.</div>';
+        return;
+      }
+
+      // Create section for each geometry
       for (const geomName of [...allGeometries].sort()) {
-        const section = document.createElement('div');
-        section.className = 'chart-section';
-
-        const title = document.createElement('h3');
-        title.className = 'chart-title';
-        title.textContent = geomName.replace('_', ' ');
-        section.appendChild(title);
-
-        const container = document.createElement('div');
-        container.className = 'chart-container';
-        const canvas = document.createElement('canvas');
-        container.appendChild(canvas);
-        section.appendChild(container);
-
-        chartsDiv.appendChild(section);
-
-        // Build datasets for this geometry
-        const datasets = [];
-        let maxCommits = 0;
-
-        for (const platform of platforms) {
-          const data = allData[platform.id];
-          if (!data) continue;
-
-          const entries = data.entries?.Benchmark || [];
-          if (entries.length === 0) continue;
-
-          maxCommits = Math.max(maxCommits, entries.length);
-
-          const values = entries.map(entry => {
-            const bench = entry.benches?.find(b => b.name === geomName);
-            return bench ? bench.value / 1000000 : null;
-          });
-
-          datasets.push({
-            label: `${platform.os} (${platform.backend.toUpperCase()})`,
-            data: values,
-            borderColor: colors[platform.id] || '#999',
-            backgroundColor: colors[platform.id] || '#999',
-            tension: 0.1,
-            pointRadius: 2
-          });
-        }
-
-        // Generate commit labels from first dataset with data
-        let labels = [];
-        for (const platform of platforms) {
-          const data = allData[platform.id];
-          if (data?.entries?.Benchmark?.length > 0) {
-            labels = data.entries.Benchmark.map(e => e.commit?.id?.substring(0, 7) || '?');
-            break;
-          }
-        }
-
-        new Chart(canvas, {
-          type: 'line',
-          data: { labels, datasets },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            interaction: { intersect: false, mode: 'index' },
-            plugins: {
-              legend: { position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
-              tooltip: {
-                callbacks: {
-                  label: ctx => `${ctx.dataset.label}: ${ctx.parsed.y?.toFixed(1) || '-'}M rays/sec`
-                }
-              }
-            },
-            scales: {
-              y: {
-                beginAtZero: true,
-                title: { display: true, text: 'M rays/sec' },
-                ticks: { callback: v => v.toFixed(1) }
-              },
-              x: { title: { display: true, text: 'Commit' } }
-            }
-          }
-        });
+        content.appendChild(createGeometrySection(geomName, allData));
       }
-    }
-
-    async function init() {
-      // Render gallery immediately
-      renderGallery();
-
-      // Load all platform data
-      const allData = {};
-      for (const platform of platforms) {
-        const data = await loadData(platform.id);
-        if (data) {
-          allData[platform.id] = data;
-        }
-      }
-
-      // Render table and charts
-      renderTable(allData);
-      renderCharts(allData);
     }
 
     init();
