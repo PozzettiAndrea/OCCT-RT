@@ -1,6 +1,10 @@
 # OCCT-RT: High-Performance BVH Raytracer for OpenCASCADE
 
+[![CI](https://github.com/PozzettiAndrea/OCCT-RT/actions/workflows/ci.yml/badge.svg)](https://github.com/PozzettiAndrea/OCCT-RT/actions/workflows/ci.yml)
+
 A BVH-accelerated ray-surface intersection extension for [OpenCASCADE Technology (OCCT)](https://www.opencascade.com/).
+
+[**View Benchmark Results**](https://pozzettiandrea.github.io/OCCT-RT/dev/bench/)
 
 ## Features
 
