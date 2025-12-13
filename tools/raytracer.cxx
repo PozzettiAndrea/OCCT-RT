@@ -1230,6 +1230,17 @@ int main(int argc, char* argv[])
             << loadTimer.ElapsedTime() * 1000.0 << " ms" << std::endl;
   std::cout << "Number of faces: " << raytracer.NbFaces() << std::endl;
 
+  // Output face type breakdown for benchmarks
+  const auto& ftc = raytracer.GetFaceTypeCounts();
+  std::cout << "Face types: " << ftc.Plane << " plane, "
+            << ftc.Cylinder << " cylinder, "
+            << ftc.Cone << " cone, "
+            << ftc.Sphere << " sphere, "
+            << ftc.Torus << " torus, "
+            << ftc.BSpline << " bspline, "
+            << ftc.Bezier << " bezier, "
+            << ftc.Other << " other" << std::endl;
+
   // Output images if requested
   std::string outDir   = inputFile.empty() ? "." : GetDirectory(inputFile);
   std::string baseName = inputFile.empty() ? "sphere" : GetBasename(inputFile);

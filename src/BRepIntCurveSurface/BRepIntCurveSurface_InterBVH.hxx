@@ -323,6 +323,25 @@ public:
     return count;
   }
 
+  //! Structure for face type counts
+  struct FaceTypeCounts
+  {
+    Standard_Integer Plane;
+    Standard_Integer Cylinder;
+    Standard_Integer Cone;
+    Standard_Integer Sphere;
+    Standard_Integer Torus;
+    Standard_Integer BSpline;
+    Standard_Integer Bezier;
+    Standard_Integer Other;
+
+    FaceTypeCounts() : Plane(0), Cylinder(0), Cone(0), Sphere(0),
+                       Torus(0), BSpline(0), Bezier(0), Other(0) {}
+  };
+
+  //! Returns face type breakdown for the loaded shape
+  const FaceTypeCounts& GetFaceTypeCounts() const { return myFaceTypeCounts; }
+
 private:
   // Face data
   TopTools_IndexedMapOfShape myFaces;
@@ -358,6 +377,7 @@ private:
   // Newton refinement optimization
   std::vector<Standard_Boolean> myIsPlanarFace;       //!< Pre-classified face planarity
   std::vector<Standard_Boolean> myFaceReversed;       //!< Pre-cached face orientation (true if reversed)
+  FaceTypeCounts                myFaceTypeCounts;     //!< Count of each surface type
   Standard_Boolean              myComputeCurvature;   //!< Whether to compute curvatures (D2)
   Standard_Boolean              mySkipNewtonForPlanar; //!< Skip Newton for planar faces
   Standard_Real                 myNewtonTolerance;    //!< Newton convergence tolerance (default 1e-7)

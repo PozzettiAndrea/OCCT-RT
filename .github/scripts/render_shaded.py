@@ -39,6 +39,29 @@ def parse_mesh_stats(stdout: str) -> dict:
     if tri_match:
         stats["triangle_count"] = int(tri_match.group(1))
 
+    # Parse face count: "Number of faces: N"
+    face_match = re.search(r"Number of faces: (\d+)", stdout)
+    if face_match:
+        stats["cad_face_count"] = int(face_match.group(1))
+
+    # Parse face types: "Face types: N plane, N cylinder, N cone, N sphere, N torus, N bspline, N bezier, N other"
+    face_types_match = re.search(
+        r"Face types: (\d+) plane, (\d+) cylinder, (\d+) cone, (\d+) sphere, "
+        r"(\d+) torus, (\d+) bspline, (\d+) bezier, (\d+) other",
+        stdout
+    )
+    if face_types_match:
+        stats["face_types"] = {
+            "plane": int(face_types_match.group(1)),
+            "cylinder": int(face_types_match.group(2)),
+            "cone": int(face_types_match.group(3)),
+            "sphere": int(face_types_match.group(4)),
+            "torus": int(face_types_match.group(5)),
+            "bspline": int(face_types_match.group(6)),
+            "bezier": int(face_types_match.group(7)),
+            "other": int(face_types_match.group(8)),
+        }
+
     return stats
 
 
@@ -224,7 +247,12 @@ def main():
             if stats:
                 tess_time = stats.get("tessellation_time_ms", "N/A")
                 tri_count = stats.get("triangle_count", "N/A")
-                print(f"     Tessellation: {tess_time} ms, {tri_count} triangles")
+                face_count = stats.get("cad_face_count", "N/A")
+                print(f"     Tessellation: {tess_time} ms, {tri_count} triangles, {face_count} CAD faces")
+                if "face_types" in stats:
+                    ft = stats["face_types"]
+                    types_str = ", ".join(f"{v} {k}" for k, v in ft.items() if v > 0)
+                    print(f"     Face types: {types_str}")
             all_stats[filename] = stats
             success_count += 1
         else:
