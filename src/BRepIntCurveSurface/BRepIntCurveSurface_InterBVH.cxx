@@ -1421,25 +1421,36 @@ void BRepIntCurveSurface_InterBVH::Load(const TopoDS_Shape& theShape,
   myIsPlanarFace.resize(myFaces.Extent());
   myFaceReversed.resize(myFaces.Extent());
   myBSplineSurfaces.resize(myFaces.Extent());
-  Standard_Integer nPlanar = 0;
-  Standard_Integer nBSpline = 0;
+
+  // Reset face type counts
+  myFaceTypeCounts = FaceTypeCounts();
 
   for (Standard_Integer i = 1; i <= myFaces.Extent(); ++i)
   {
     const TopoDS_Face& aFace = TopoDS::Face(myFaces.FindKey(i));
     mySurfaceAdaptors[i - 1] = new BRepAdaptor_Surface(aFace, Standard_True);
 
-    // Classify face by surface type for Newton optimization
+    // Classify face by surface type for Newton optimization and statistics
     GeomAbs_SurfaceType surfType = mySurfaceAdaptors[i - 1]->GetType();
     myIsPlanarFace[i - 1] = (surfType == GeomAbs_Plane);
-    if (myIsPlanarFace[i - 1])
-      ++nPlanar;
+
+    // Count face types
+    switch (surfType)
+    {
+      case GeomAbs_Plane:           ++myFaceTypeCounts.Plane;    break;
+      case GeomAbs_Cylinder:        ++myFaceTypeCounts.Cylinder; break;
+      case GeomAbs_Cone:            ++myFaceTypeCounts.Cone;     break;
+      case GeomAbs_Sphere:          ++myFaceTypeCounts.Sphere;   break;
+      case GeomAbs_Torus:           ++myFaceTypeCounts.Torus;    break;
+      case GeomAbs_BSplineSurface:  ++myFaceTypeCounts.BSpline;  break;
+      case GeomAbs_BezierSurface:   ++myFaceTypeCounts.Bezier;   break;
+      default:                      ++myFaceTypeCounts.Other;    break;
+    }
 
     // Extract B-spline surface handle for cached evaluation
     if (surfType == GeomAbs_BSplineSurface)
     {
       myBSplineSurfaces[i - 1] = mySurfaceAdaptors[i - 1]->BSpline();
-      ++nBSpline;
     }
     else
     {
@@ -1450,11 +1461,11 @@ void BRepIntCurveSurface_InterBVH::Load(const TopoDS_Shape& theShape,
     myFaceReversed[i - 1] = (aFace.Orientation() == TopAbs_REVERSED);
   }
 
-  std::cout << "  Face classification: " << nPlanar << "/" << myFaces.Extent()
+  std::cout << "  Face classification: " << myFaceTypeCounts.Plane << "/" << myFaces.Extent()
             << " planar faces (Newton will be skipped for these)" << std::endl;
-  if (nBSpline > 0)
+  if (myFaceTypeCounts.BSpline > 0)
   {
-    std::cout << "  B-spline surfaces: " << nBSpline << " faces (using BSplSLib_Cache for fast eval)"
+    std::cout << "  B-spline surfaces: " << myFaceTypeCounts.BSpline << " faces (using BSplSLib_Cache for fast eval)"
               << std::endl;
   }
 
