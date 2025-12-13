@@ -48,8 +48,10 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
 
     try:
         # Run raytracer to get normals and positions
+        # --allow-disconnected: some test shapes have multiple disconnected components
         result = subprocess.run(
-            [raytracer_abs, "-r", str(resolution), "--normals", "--position", brep_file_abs],
+            [raytracer_abs, "-r", str(resolution), "--normals", "--position",
+             "--allow-disconnected", brep_file_abs],
             capture_output=True,
             text=True,
             timeout=120,
@@ -58,16 +60,20 @@ def render_shaded(raytracer: str, brep_file: str, output_png: str, resolution: i
 
         if result.returncode != 0:
             print(f"  Raytracer failed: {result.stderr[:200]}", file=sys.stderr)
+            print(f"  stdout: {result.stdout[:200]}", file=sys.stderr)
             return False
 
         # Find the output npy file (raytracer outputs to current directory)
         if not npy_file.exists():
-            # Try to find it
-            npy_files = list(temp_dir.glob("*_data.npy"))
+            # Try to find it - list all files in temp_dir for debugging
+            all_files = list(temp_dir.glob("*"))
+            npy_files = [f for f in all_files if f.suffix == '.npy']
             if npy_files:
                 npy_file = npy_files[0]
             else:
                 print(f"  No .npy output found in {temp_dir}", file=sys.stderr)
+                print(f"  Files in temp_dir: {[f.name for f in all_files]}", file=sys.stderr)
+                print(f"  Raytracer stdout: {result.stdout[:500]}", file=sys.stderr)
                 return False
 
         # Load the data
