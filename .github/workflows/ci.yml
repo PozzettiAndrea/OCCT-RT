@@ -156,6 +156,17 @@ jobs:
       - name: Display benchmark results
         run: cat benchmark_results.json
 
+      - name: Check benchmark results validity
+        id: check_benchmark
+        run: |
+          # Check if benchmark_results.json has actual entries (not just [])
+          if python -c "import json; data=json.load(open('benchmark_results.json')); exit(0 if len(data) > 0 else 1)"; then
+            echo "valid=true" >> $GITHUB_OUTPUT
+          else
+            echo "valid=false" >> $GITHUB_OUTPUT
+            echo "::warning::No benchmark results were collected"
+          fi
+
       - name: Upload benchmark results
         uses: actions/upload-artifact@v4
         with:
@@ -164,7 +175,7 @@ jobs:
 
       - name: Store benchmark result
         uses: benchmark-action/github-action-benchmark@v1
-        if: github.ref == 'refs/heads/dev' && github.event_name == 'push'
+        if: github.ref == 'refs/heads/dev' && github.event_name == 'push' && steps.check_benchmark.outputs.valid == 'true'
         with:
           tool: 'customBiggerIsBetter'
           output-file-path: benchmark_results.json
