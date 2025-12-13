@@ -80,6 +80,10 @@ jobs:
             conda install -y embree
           fi
 
+      - name: Setup MSVC (Windows)
+        if: runner.os == 'Windows'
+        uses: ilammy/msvc-dev-cmd@v1
+
       - name: Install dependencies (macOS)
         if: runner.os == 'macOS'
         run: |
@@ -90,7 +94,47 @@ jobs:
         with:
           key: ${{ matrix.name }}
 
-      - name: Configure CMake
+      - name: Configure CMake (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_FLAGS="-msse4.1" \
+            -DOCCT_RT_NATIVE_ARCH=OFF \
+            -DOCCT_RT_USE_OPENMP=ON \
+            -DOCCT_RT_USE_EMBREE=${{ matrix.embree && 'ON' || 'OFF' }} \
+            -DBUILD_RAYTRACER=ON
+
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \
+            -DCMAKE_C_COMPILER=cl \
+            -DCMAKE_CXX_COMPILER=cl \
+            -DCMAKE_CXX_FLAGS="/arch:AVX2 /EHsc" \
+            -DOCCT_RT_NATIVE_ARCH=OFF \
+            -DOCCT_RT_USE_OPENMP=ON \
+            -DOCCT_RT_USE_EMBREE=${{ matrix.embree && 'ON' || 'OFF' }} \
+            -DBUILD_RAYTRACER=ON
+
+      - name: Configure CMake (macOS x64)
+        if: runner.os == 'macOS' && runner.arch == 'X64'
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \
+            -DCMAKE_C_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_COMPILER_LAUNCHER=ccache \
+            -DCMAKE_CXX_FLAGS="-msse4.1" \
+            -DOCCT_RT_NATIVE_ARCH=OFF \
+            -DOCCT_RT_USE_OPENMP=ON \
+            -DOCCT_RT_USE_EMBREE=${{ matrix.embree && 'ON' || 'OFF' }} \
+            -DBUILD_RAYTRACER=ON
+
+      - name: Configure CMake (macOS ARM64)
+        if: runner.os == 'macOS' && runner.arch == 'ARM64'
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=${{ env.CMAKE_BUILD_TYPE }} \

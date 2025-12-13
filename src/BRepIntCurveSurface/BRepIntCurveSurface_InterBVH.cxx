@@ -3294,11 +3294,16 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
     // Use Embree8 when available for best performance
     auto phase1Start = std::chrono::high_resolution_clock::now();
 
+#ifdef OCCT_USE_EMBREE
     bool useEmbree = (effectiveBackend == BRepIntCurveSurface_BVHBackend::Embree_SIMD8 ||
                       effectiveBackend == BRepIntCurveSurface_BVHBackend::Embree_SIMD4 ||
                       effectiveBackend == BRepIntCurveSurface_BVHBackend::Embree_Scalar) &&
                      myEmbreeScene != nullptr;
+#else
+    bool useEmbree = false;
+#endif
 
+#ifdef OCCT_USE_EMBREE
     if (useEmbree && effectiveBackend == BRepIntCurveSurface_BVHBackend::Embree_SIMD8)
     {
       // Embree SIMD8 path - process 8 rays at a time
@@ -3477,6 +3482,7 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
       }
     }
     else
+#endif // OCCT_USE_EMBREE
     {
       // OCCT BVH fallback path
 #ifdef _OPENMP
