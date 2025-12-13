@@ -39,11 +39,26 @@ jobs:
             backend: embree8
             needs_embree: true
 
-          # macOS ARM64 - OCCT only (no Embree on ARM)
+          # macOS ARM64 - All backends (Embree supports ARM64 since v3.13)
           - os: macos-14
             name: macos-arm64-occt
             backend: occt
             needs_embree: false
+
+          - os: macos-14
+            name: macos-arm64-embree
+            backend: embree
+            needs_embree: true
+
+          - os: macos-14
+            name: macos-arm64-simd4
+            backend: embree4
+            needs_embree: true
+
+          - os: macos-14
+            name: macos-arm64-simd8
+            backend: embree8
+            needs_embree: true
 
           # Windows - All backends
           - os: windows-latest
@@ -110,6 +125,9 @@ jobs:
         if: runner.os == 'macOS'
         run: |
           conda install -y occt cmake ninja llvm-openmp pillow
+          if [ "${{ matrix.needs_embree }}" == "true" ]; then
+            conda install -y embree
+          fi
 
       - name: Setup ccache
         uses: hendrikmuhs/ccache-action@v1.2
