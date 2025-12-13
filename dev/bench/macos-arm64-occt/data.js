@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1765642174465,
+  "lastUpdate": 1765643205381,
   "repoUrl": "https://github.com/PozzettiAndrea/OCCT-RT",
   "entries": {
     "Benchmark": [
@@ -510,6 +510,96 @@ window.BENCHMARK_DATA = {
             "value": 3300461,
             "unit": "rays/sec",
             "extra": "Rays: 1,000,000, Hits: 438,558, Time: 302.99ms"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "committer": {
+            "email": "andrea@pozzetti.it",
+            "name": "Andrea Pozzetti",
+            "username": "PozzettiAndrea"
+          },
+          "distinct": true,
+          "id": "052942841368d952e7b29fb8c3720dcc0118f255",
+          "message": "Also upload metadata.json to gh-pages with renders\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>",
+          "timestamp": "2025-12-13T16:22:21Z",
+          "tree_id": "38be952309c19e209b3d41c38b541dc8af29a428",
+          "url": "https://github.com/PozzettiAndrea/OCCT-RT/commit/052942841368d952e7b29fb8c3720dcc0118f255"
+        },
+        "date": 1765643204026,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "bellow_pipe",
+            "value": 741510,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 492,198, Time: 1348.60ms"
+          },
+          {
+            "name": "box",
+            "value": 15351079,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 65.14ms"
+          },
+          {
+            "name": "bspline_surface",
+            "value": 4144494,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 824,464, Time: 241.28ms"
+          },
+          {
+            "name": "cone",
+            "value": 3711016,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 269.47ms"
+          },
+          {
+            "name": "cylinder",
+            "value": 9832262,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,540, Time: 101.71ms"
+          },
+          {
+            "name": "io1-ca-214",
+            "value": 2786191,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 621,066, Time: 358.91ms"
+          },
+          {
+            "name": "mr",
+            "value": 6799067,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 134,219, Time: 147.08ms"
+          },
+          {
+            "name": "simple_L021",
+            "value": 5557562,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 496,400, Time: 179.93ms"
+          },
+          {
+            "name": "sphere",
+            "value": 3291238,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 647,632, Time: 303.84ms"
+          },
+          {
+            "name": "spiral_wind_turbine",
+            "value": 4691664,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 441,594, Time: 213.14ms"
+          },
+          {
+            "name": "torus",
+            "value": 3758862,
+            "unit": "rays/sec",
+            "extra": "Rays: 1,000,000, Hits: 438,558, Time: 266.04ms"
           }
         ]
       }
