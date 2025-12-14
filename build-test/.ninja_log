@@ -1,0 +1,12 @@
+# ninja log v7
+1	1061	1765650758150407373	CMakeFiles/OCCT_RT.dir/src/BRepIntCurveSurface/BRepIntCurveSurface_OverlapAnalyzer.cxx.o	da54c442202d8b11
+1	1090	1765650758150407373	CMakeFiles/OCCT_RT_Viewer.dir/src/Viewer/Viewer_Camera.cxx.o	a652c6eb4bb4d6f2
+1	1755	1765650758150407373	CMakeFiles/OCCT_RT_Viewer.dir/src/Viewer/Viewer_CADLoader.cxx.o	b70526926e5494b8
+2	1925	1765650758154407386	CMakeFiles/occt-rt-viewer.dir/tools/viewer.cxx.o	1558d89f125def24
+1	3106	1765650758150407373	CMakeFiles/raytracer.dir/tools/raytracer.cxx.o	32fc51b087d1b41e
+0	3433	1765650758150407373	CMakeFiles/OCCT_RT.dir/src/BRepIntCurveSurface/BRepIntCurveSurface_ZEvaluator.cxx.o	26c5758f48a28333
+0	7584	1765650758150407373	CMakeFiles/OCCT_RT.dir/src/BRepIntCurveSurface/BRepIntCurveSurface_InterBVH.cxx.o	4b2c4858d03b702f
+7584	7702	1765650765734433477	libOCCT_RT.so	9b3642a69e26573e
+7702	7795	1765650765854433890	bin/raytracer	cfef8bea212d8f56
+7702	7844	1765650765854433890	libOCCT_RT_Viewer.so	6ac73826ccc06a47
+7844	7938	1765650765994434372	bin/occt-rt-viewer	90daf416af7162cd
