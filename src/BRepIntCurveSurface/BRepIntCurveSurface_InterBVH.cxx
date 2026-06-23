@@ -69,6 +69,55 @@ enum class NewtonResult
   ResidualTooLarge
 };
 
+//! Compute the height-field Hessian (∂²Z/∂X², ∂²Z/∂Y², ∂²Z/∂X∂Y) of the world-Z
+//! top-down projection Z = h(X, Y), by reprojecting the surface's (u,v) second-order
+//! jet into the world (X,Y) image basis:
+//!   Hess = Jinv^T (H_Z - a H_X - b H_Y) Jinv
+//! where J is the (u,v)->(X,Y) Jacobian and (a, b) = Jinv^T (Z_u, Z_v) is the world-frame
+//! slope ∇Z. Exact (no finite differences, no eigensolve). Outputs are left untouched
+//! (caller-initialised to 0) when the projected Jacobian is near-singular — i.e. a
+//! near-vertical / silhouette surface with n_z ~ 0, where the height field is degenerate.
+inline void ComputeHeightHessian(const gp_Vec&  dSdu,
+                                 const gp_Vec&  dSdv,
+                                 const gp_Vec&  d2Sdu2,
+                                 const gp_Vec&  d2Sdv2,
+                                 const gp_Vec&  d2Sduv,
+                                 Standard_Real& hxx,
+                                 Standard_Real& hyy,
+                                 Standard_Real& hxy)
+{
+  const Standard_Real j00 = dSdu.X(), j01 = dSdv.X();
+  const Standard_Real j10 = dSdu.Y(), j11 = dSdv.Y();
+  const Standard_Real detJ = j00 * j11 - j01 * j10; // == (dSdu x dSdv).Z, proportional to n_z
+  if (std::abs(detJ) < 1e-12)
+    return;
+
+  const Standard_Real invDet = 1.0 / detJ;
+  // Jinv = invDet * [[ j11, -j01], [-j10, j00]]
+  const Standard_Real p00 = invDet * j11, p01 = -invDet * j01;
+  const Standard_Real p10 = -invDet * j10, p11 = invDet * j00;
+
+  // World-frame slope (a, b) = Jinv^T * (Z_u, Z_v)
+  const Standard_Real zu = dSdu.Z(), zv = dSdv.Z();
+  const Standard_Real a = p00 * zu + p10 * zv;
+  const Standard_Real b = p01 * zu + p11 * zv;
+
+  // Combined uv-Hessian C = H_Z - a H_X - b H_Y (symmetric: cuu, cuv, cvv)
+  const Standard_Real cuu = d2Sdu2.Z() - a * d2Sdu2.X() - b * d2Sdu2.Y();
+  const Standard_Real cuv = d2Sduv.Z() - a * d2Sduv.X() - b * d2Sduv.Y();
+  const Standard_Real cvv = d2Sdv2.Z() - a * d2Sdv2.X() - b * d2Sdv2.Y();
+
+  // Hess = P^T C P, with P = Jinv
+  const Standard_Real cp00 = cuu * p00 + cuv * p10;
+  const Standard_Real cp01 = cuu * p01 + cuv * p11;
+  const Standard_Real cp10 = cuv * p00 + cvv * p10;
+  const Standard_Real cp11 = cuv * p01 + cvv * p11;
+
+  hxx = p00 * cp00 + p10 * cp10;
+  hxy = p00 * cp01 + p10 * cp11;
+  hyy = p01 * cp01 + p11 * cp11;
+}
+
 // Default vertex welding tolerance
 constexpr double DEFAULT_WELD_TOLERANCE = 1.0e-3;
 
@@ -1349,6 +1398,16 @@ void BRepIntCurveSurface_InterBVH::Perform(const gp_Lin&       theLine,
           aResult.MinCurvature   = aResult.MeanCurvature - sqrtDisc;
           aResult.MaxCurvature   = aResult.MeanCurvature + sqrtDisc;
         }
+
+        // Analytic height-field Hessian in the world-Z projection frame
+        ComputeHeightHessian(dSdu,
+                             dSdv,
+                             d2Sdu2,
+                             d2Sdv2,
+                             d2Sduv,
+                             aResult.HeightHessXX,
+                             aResult.HeightHessYY,
+                             aResult.HeightHessXY);
       }
       else
       {
@@ -1527,6 +1586,16 @@ void BRepIntCurveSurface_InterBVH::PerformBatch(
           aResult.MinCurvature   = aResult.MeanCurvature - sqrtDisc;
           aResult.MaxCurvature   = aResult.MeanCurvature + sqrtDisc;
         }
+
+        // Analytic height-field Hessian in the world-Z projection frame
+        ComputeHeightHessian(dSdu,
+                             dSdv,
+                             d2Sdu2,
+                             d2Sdv2,
+                             d2Sduv,
+                             aResult.HeightHessXX,
+                             aResult.HeightHessYY,
+                             aResult.HeightHessXY);
       }
       else
       {
@@ -2083,6 +2152,33 @@ Standard_Real BRepIntCurveSurface_InterBVH::MaxCurvature(const Standard_Integer 
   if (theIndex < 1 || theIndex > myNbPnt)
     throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::MaxCurvature - index out of range");
   return myResults[theIndex - 1].MaxCurvature;
+}
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::HeightHessXX(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::HeightHessXX - index out of range");
+  return myResults[theIndex - 1].HeightHessXX;
+}
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::HeightHessYY(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::HeightHessYY - index out of range");
+  return myResults[theIndex - 1].HeightHessYY;
+}
+
+//=================================================================================================
+
+Standard_Real BRepIntCurveSurface_InterBVH::HeightHessXY(const Standard_Integer theIndex) const
+{
+  if (theIndex < 1 || theIndex > myNbPnt)
+    throw Standard_OutOfRange("BRepIntCurveSurface_InterBVH::HeightHessXY - index out of range");
+  return myResults[theIndex - 1].HeightHessXY;
 }
 
 //=================================================================================================

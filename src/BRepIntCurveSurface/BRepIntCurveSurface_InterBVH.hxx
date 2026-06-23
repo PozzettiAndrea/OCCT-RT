@@ -86,6 +86,12 @@ struct BRepIntCurveSurface_HitResult
   Standard_Real MinCurvature;      //!< Minimum principal curvature κ1
   Standard_Real MaxCurvature;      //!< Maximum principal curvature κ2
 
+  // Height-field Hessian in the world-Z top-down projection frame, Z = h(X, Y).
+  // Computed analytically from the surface 2nd-order jet (no finite differences).
+  Standard_Real HeightHessXX;      //!< ∂²Z/∂X²
+  Standard_Real HeightHessYY;      //!< ∂²Z/∂Y²
+  Standard_Real HeightHessXY;      //!< ∂²Z/∂X∂Y
+
   BRepIntCurveSurface_HitResult()
       : IsValid(Standard_False),
         U(0.0),
@@ -97,7 +103,10 @@ struct BRepIntCurveSurface_HitResult
         GaussianCurvature(0.0),
         MeanCurvature(0.0),
         MinCurvature(0.0),
-        MaxCurvature(0.0)
+        MaxCurvature(0.0),
+        HeightHessXX(0.0),
+        HeightHessYY(0.0),
+        HeightHessXY(0.0)
   {
   }
 };
@@ -214,6 +223,15 @@ public:
 
   //! Returns maximum principal curvature (κ2) at i-th intersection
   Standard_EXPORT Standard_Real MaxCurvature(const Standard_Integer theIndex) const;
+
+  //! Returns height-field Hessian ∂²Z/∂X² (world-Z projection) at i-th intersection
+  Standard_EXPORT Standard_Real HeightHessXX(const Standard_Integer theIndex) const;
+
+  //! Returns height-field Hessian ∂²Z/∂Y² (world-Z projection) at i-th intersection
+  Standard_EXPORT Standard_Real HeightHessYY(const Standard_Integer theIndex) const;
+
+  //! Returns height-field Hessian ∂²Z/∂X∂Y (world-Z projection) at i-th intersection
+  Standard_EXPORT Standard_Real HeightHessXY(const Standard_Integer theIndex) const;
 
   //! Returns the face index (1-based) at i-th intersection
   Standard_EXPORT Standard_Integer FaceIndex(const Standard_Integer theIndex) const;
